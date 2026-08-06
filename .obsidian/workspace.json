@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "02-工具手册/01-Lighthouse.md",
+                "file": "03-测试记录/测试记录模板.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "01-Lighthouse"
+              "title": "测试记录模板"
             }
           }
         ]
@@ -185,29 +185,29 @@
   "active": "7e8e1e1e85775408",
   "lastOpenFiles": [
     "02-工具手册/02-WebPageTest.md",
-    "02-工具手册/01-Lighthouse.md",
     "01-总览/测试靶标搭建.md",
-    "01-总览/工具对比总表.md",
-    "Web测试工具调研-给蓝哥看的v0.1.html",
-    "Web测试工具调研-给蓝哥看的.html.tmp.8264.f9ada1483fab",
-    "Web测试工具调研-给蓝哥看的.html.tmp.8264.70cfbeef6e9a",
-    "Web测试工具调研-给蓝哥看的.html.tmp.8264.adc87c2fc946",
-    "Web测试工具调研-给蓝哥看的.html.tmp.8264.ee0696ffd07e",
-    "Web测试工具调研-给蓝哥看的.html.tmp.8264.c30d392de041",
     "02-工具手册/06-Nikto.md",
     "02-工具手册/05-OWASP-ZAP.md",
+    "02-工具手册/07-Screaming-Frog.md",
     "02-工具手册/04-Wget-Spider.md",
     "02-工具手册/03-LinkChecker.md",
+    "02-工具手册/01-Lighthouse.md",
+    "02-工具手册/04-Wget-Spider.md.tmp.14628.39c21063db61",
+    "02-工具手册/04-Wget-Spider.md.tmp.14628.9ec57cb70676",
+    "02-工具手册/04-Wget-Spider.md.tmp.14628.2d0fb92a4364",
+    "02-工具手册/04-Wget-Spider.md.tmp.14628.78b2f58126b5",
+    "02-工具手册/04-Wget-Spider.md.tmp.14628.9fb51c4a9129",
+    "02-工具手册/04-Wget-Spider.md.tmp.14628.a89c8d9c38e7",
     "01-总览/测试方法论.md",
-    "Web测试工具调研-给蓝哥看的.html",
-    "Web测试工具调研-领导汇报.html.tmp.31508.0de8c5138c20",
-    "Web测试工具调研-领导汇报.html.tmp.31508.068a2d96dfe0",
-    "Web测试工具调研-领导汇报.html",
+    "02-工具手册/05-OWASP-ZAP.md.tmp.14628.f1b254fdb152",
+    "02-工具手册/05-OWASP-ZAP.md.tmp.14628.c4be44c3177c",
+    "02-工具手册/05-OWASP-ZAP.md.tmp.14628.8a266ebcde80",
+    "02-工具手册/05-OWASP-ZAP.md.tmp.14628.26ef4719adbd",
+    "01-总览/工具对比总表.md",
     "03-测试记录/测试记录模板.md",
     "README.md",
     "04-结论/后续行动.md",
     "04-结论/选型建议.md",
-    "02-工具手册/07-Screaming-Frog.md",
     "Web测试工具调研总览.md",
     "Welcome.md",
     "Linkchecker调研.md",

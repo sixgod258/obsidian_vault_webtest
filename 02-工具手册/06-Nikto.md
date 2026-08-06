@@ -49,7 +49,7 @@ Nikto 是免费开源（GPL-3.0）的 **Web 服务器扫描器**（Perl 编写�
 
 ### 方式 A：Docker（本机推荐）
 
-```bash
+```powershell
 docker pull ghcr.io/sullo/nikto:latest
 ```
 
@@ -64,19 +64,15 @@ nikto -Version
 
 ### 6.1 基础扫描 + 保存报告（Docker）
 
-```bash
-# 扫描本地靶场 Juice Shop，输出 JSON 报告到当前目录
-docker run --rm -v $(pwd):/tmp ghcr.io/sullo/nikto:latest \
-  -h http://localhost:3000 \
-  -o /tmp/nikto-report.json \
-  -Format json
+```powershell
+# 扫描本地靶场 Juice Shop（容器内访问宿主机用 host.docker.internal），输出 JSON 报告到当前目录
+docker run --rm -v "${PWD}:/tmp" ghcr.io/sullo/nikto:latest -h http://host.docker.internal:3000 -o /tmp/nikto-report.json -Format json
 
 # 输出 HTML
-docker run --rm -v $(pwd):/tmp ghcr.io/sullo/nikto:latest \
-  -h http://localhost:3000 -o /tmp/nikto-report.html -Format html
+docker run --rm -v "${PWD}:/tmp" ghcr.io/sullo/nikto:latest -h http://host.docker.internal:3000 -o /tmp/nikto-report.html -Format html
 ```
 
-> `-v $(pwd):/tmp` 把当前目录挂载进容器，报告写在 `-o /tmp/...` 就留在宿主机了。
+> `-v "${PWD}:/tmp"` 把当前目录挂载进容器，报告写在 `-o /tmp/...` 就留在宿主机了。
 
 ### 6.2 常用参数
 

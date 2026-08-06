@@ -47,7 +47,7 @@ LinkChecker 是免费开源（GPL）的**网站链接检查工具**，递归爬�
 
 ### 方式 A：Docker（本机推荐，最省事）
 
-```bash
+```powershell
 # 官方镜像在 GitHub Packages
 docker pull ghcr.io/linkchecker/linkchecker:latest
 ```
@@ -76,16 +76,19 @@ linkchecker --version
 
 ### 6.1 最简单用法（本地靶场 / 静态站）
 
-```bash
-# Docker 方式（注意 -u 避免权限问题；/mnt 为容器内工作目录）
-docker run --rm -it -u $(id -u):$(id -g) \
-  -v "$PWD":/mnt ghcr.io/linkchecker/linkchecker:latest \
-  --verbose http://localhost:8888
+```powershell
+# ✅ 实践成功的方式（Windows，推荐）：输出 HTML 报告到宿主机 D:\webest_report\LinkChecker
+docker run --rm -v D:\webest_report\LinkChecker:/output --user root -w /output ghcr.io/linkchecker/linkchecker:latest -F html/report.html http://host.docker.internal:3000
+
+# 简单版：检查本地静态站（容器内访问宿主机端口必须用 host.docker.internal，不能写 localhost）
+docker run --rm -v "${PWD}:/output" --user root -w /output ghcr.io/linkchecker/linkchecker:latest --verbose http://host.docker.internal:8888
 ```
 
-### 6.2 原生/WSL 方式
+> 💡 **要点**：容器里访问宿主机服务用 `host.docker.internal`；`--user root -w /output` 保证输出目录可写。
 
-```bash
+### 6.2 原生 / WSL 方式
+
+```powershell
 # 检查本地静态站
 linkchecker http://localhost:8888
 
@@ -98,6 +101,8 @@ linkchecker --file-output=csv/report.csv https://example.com
 # 输出 HTML 报告
 linkchecker --file-output=html/report.html https://example.com
 ```
+
+> WSL 用户在 WSL 终端内运行上述命令；Windows 原生 pip 安装见第 5 节。
 
 ### 6.3 常用参数
 

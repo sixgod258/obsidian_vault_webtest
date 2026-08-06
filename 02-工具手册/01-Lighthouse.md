@@ -54,7 +54,7 @@ Lighthouse 是 Google 官方开源（Apache-2.0）的**页面质量审计工具*
 
 ## 5. 安装指南
 
-```bash
+```powershell
 # 全局安装（推荐）
 npm install -g lighthouse
 
@@ -72,7 +72,7 @@ npx lighthouse --version
 
 ### 6.1 单页全量审计（推荐）
 
-```bash
+```powershell
 # 输出 HTML 报告到当前目录
 lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html
 
@@ -82,7 +82,7 @@ lighthouse http://localhost:3000 --output=html,json --output-path=./report --chr
 
 ### 6.2 只测某一类
 
-```bash
+```powershell
 # 只看性能
 lighthouse http://localhost:3000 --only-categories=performance
 
@@ -92,7 +92,7 @@ lighthouse http://localhost:3000 --only-categories=seo,accessibility
 
 ### 6.3 指定模拟设备（默认移动端）
 
-```bash
+```powershell
 # 桌面端视角
 lighthouse http://localhost:3000 --form-factor=desktop --screenEmulation.desktop=true
 
@@ -102,7 +102,7 @@ lighthouse http://localhost:3000 --throttling-method=simulate --throttling.rttMs
 
 ### 6.4 快速看 JSON 关键指标（Git Bash / PowerShell 均可）
 
-```bash
+```powershell
 lighthouse http://localhost:3000 --output=json --output-path=./lh.json --quiet
 node -e "const r=require('./lh.json'); console.log(JSON.stringify(r.categories,null,2))"
 ```

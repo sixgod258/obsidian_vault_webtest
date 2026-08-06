@@ -52,7 +52,7 @@ WebPageTest 是业界知名的**深度性能测试平台**（原 Google 工具�
 2. 输入网址 → 选 Location / 浏览器 / 连接 → **Start Test**
 
 ### 方式 B：npm CLI（推荐自动化）
-```bash
+```powershell
 # 1. 免费申请 API key：https://www.webpagetest.org/getkey.php
 # 2. 安装
 npm install -g webpagetest
@@ -64,14 +64,14 @@ webpagetest --help
 
 ### 6.1 发起一次测试并等待结果
 
-```bash
+```powershell
 # testAndWait：提交后轮询直到结果出来
 webpagetest testAndWait https://example.com -k YOUR_API_KEY --location Dulles --browser Chrome --runs 3 --video 1
 ```
 
 ### 6.2 分步操作（发起 → 查状态 → 取结果）
 
-```bash
+```powershell
 # 发起测试，拿到 testId
 webpagetest test https://example.com -k YOUR_API_KEY
 # 查状态（返回 pending / running / completed）

@@ -15,10 +15,10 @@ tags:
 
 | 能力 | 说明 |
 |---|---|
-| 单链接检查 | `wget --spider <url>` 秒级判断可用性 |
+| 单链接检查 | `wget.exe --spider <url>` 秒级判断可用性（PowerShell 必须写 `wget.exe`） |
 | 递归检查 | `-r` 全站爬取，找站内死链 |
 | 不下载内容 | 只发 HEAD/GET 请求，带宽占用极小 |
-| 脚本友好 | 可配合 `for` 循环批量检查 URL 列表 |
+| 脚本友好 | 可配合 `ForEach-Object` 批量检查 URL 列表 |
 | 认证支持 | `--user/--password` 支持需要登录的页面 |
 
 **适用场景**：快速确认一批 URL 是否有效、CI 里做链接冒烟测试、运维巡检。
@@ -39,7 +39,7 @@ tags:
 | 平台 | Linux/macOS 原生；**Windows 需 winget 或下载安装** |
 | 许可证 | GPL，免费 |
 | 依赖 | 无（独立二进制） |
-| 安装方式 | `winget install GnuWin32.Wget` 或 Chocolatey |
+| 安装方式 | `winget install JernejSimoncic.Wget` 或 Chocolatey |
 | 资源占用 | 极低 |
 | 学习成本 | ★☆☆，最易上手 |
 | 与现有环境 | 本机已装 curl（含 `--spider` 等价能力），**curl 方案零安装** |
@@ -49,16 +49,22 @@ tags:
 ### 方式 A：winget 安装（推荐）
 
 ```powershell
-winget install GnuWin32.Wget
-# 重新打开终端后验证
-wget --version
+# 经典 GNU wget 的 Windows 移植版（1.21.4，支持 --spider）
+winget install JernejSimoncic.Wget
+# 重新打开终端后验证（注意：必须写 wget.exe，见下方陷阱说明）
+wget.exe --version
 ```
+
+> ⚠️ **PowerShell 陷阱**：`wget` 是 PowerShell 内置别名（指向 `Invoke-WebRequest`），直接敲 `wget` 走的是 PowerShell 命令而不是 GNU wget（同理 `curl` 要用 `curl.exe`）。本手册一律写 **`wget.exe`**。想一劳永逸，可在 `$PROFILE` 里加一行：
+> ```powershell
+> Remove-Item Alias:wget -ErrorAction SilentlyContinue
+> ```
 
 ### 方式 B：Chocolatey
 
 ```powershell
 choco install wget
-wget --version
+wget.exe --version
 ```
 
 > ⚠️ **不要用 `pip install wget`**：那是 Python 库，不是命令行工具，装完终端里依然没有 `wget`。
@@ -71,33 +77,35 @@ curl 有 `--spider` 模式，功能等价，下面的"基本用法"两种命令�
 
 ### 6.1 检查单个链接
 
-```bash
-# wget
-wget --spider https://example.com
+```powershell
+# wget（PowerShell 必须写 wget.exe）
+wget.exe --spider https://example.com
 
-# curl 等价
-curl -s -o /dev/null -w "HTTP %{http_code} in %{time_total}s\n" https://example.com
+# curl 等价（PowerShell 里必须写 curl.exe；两者都是 PowerShell 内置命令的别名）
+curl.exe -s -o NUL -w "HTTP %{http_code} in %{time_total}s\n" https://example.com
 ```
 
 ### 6.2 递归检查整个站（找站内死链）
 
-```bash
-# wget：递归 2 层，spider 模式，不下载
-wget --spider -r -l 2 http://localhost:8888
+```powershell
+# wget.exe：递归 2 层，spider 模式，不下载
+wget.exe --spider -r -l 2 http://localhost:8888
 
-# 只显示出错链接（过滤出非 200 的行）
-wget --spider -r -l 2 http://localhost:8888 2>&1 | grep -E "HTTP response|Remote file does not exist|404"
+# 只显示出错链接（把日志写入文件后用 Select-String 过滤，替代 grep）
+wget.exe --spider -r -l 2 http://localhost:8888 *> spider.log
+Select-String -Path spider.log -Pattern "HTTP response|Remote file does not exist|404"
 ```
 
 ### 6.3 批量检查 URL 列表（脚本）
 
-```bash
+```powershell
 # 准备 url.txt，每行一个 URL
-# 逐行用 curl 判断（Git Bash）
-while read -r u; do
-  code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$u")
-  echo "$code  $u"
-done < url.txt
+# 逐行用 curl.exe 判断（PowerShell）
+Get-Content url.txt | ForEach-Object {
+  $u = $_
+  $code = curl.exe -s -o NUL -w "%{http_code}" --max-time 10 $u
+  "{0}  {1}" -f $code, $u
+}
 ```
 
 ### 6.4 常用参数（wget）
@@ -122,7 +130,7 @@ done < url.txt
 | `301/302 Moved` | 重定向 |
 | `Connection refused` | 站点未启动或端口错 |
 
-**配合 curl 的技巧**：`-w "%{http_code}"` 直接输出数字状态码，方便脚本里判断（`if [ "$code" = "200" ]`）。
+**配合 curl 的技巧**：`-w "%{http_code}"` 直接输出数字状态码，方便脚本里判断（PowerShell：`if ($code -eq "200")`）。
 
 ## 8. 测试记录模板
 
