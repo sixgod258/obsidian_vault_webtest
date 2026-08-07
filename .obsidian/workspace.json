@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "c1117c76c675110f",
+        "id": "097525f8a6fb4a1e",
         "type": "tabs",
         "children": [
           {
-            "id": "7e8e1e1e85775408",
+            "id": "0e5a6758e785a6d1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "03-测试记录/测试记录模板.md",
+                "file": "03-测试记录/测试记录_2026-08-05_OWASP-ZAP_基线_本地靶场.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "测试记录模板"
+              "title": "测试记录_2026-08-05_OWASP-ZAP_基线_本地靶场"
             }
           }
         ]
@@ -80,7 +80,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 312.92858505249023
   },
   "right": {
     "id": "b3498a4f3adb5cda",
@@ -182,36 +182,53 @@
       "bases:Create new base": false
     }
   },
-  "active": "7e8e1e1e85775408",
+  "active": "0e5a6758e785a6d1",
   "lastOpenFiles": [
-    "02-工具手册/02-WebPageTest.md",
-    "01-总览/测试靶标搭建.md",
-    "02-工具手册/06-Nikto.md",
-    "02-工具手册/05-OWASP-ZAP.md",
-    "02-工具手册/07-Screaming-Frog.md",
-    "02-工具手册/04-Wget-Spider.md",
+    "03-测试记录/测试记录_2026-08-04_WebPageTest_perfeye.md",
+    "03-测试记录/测试记录_2026-08-05_ScreamingFrog_本地靶场.md",
+    "03-测试记录/测试记录_2026-08-05_OWASP-ZAP_基线_本地靶场.md",
+    "05-ClaudeCode-Playwright实现/03-测试记录/测试记录_2026-08-06_Playwright实现_Lighthouse_JuiceShop.md",
+    "05-ClaudeCode-Playwright实现/03-测试记录/测试记录_2026-08-06_Playwright实现_LinkChecker_JuiceShop.md",
+    "05-ClaudeCode-Playwright实现/03-测试记录/测试记录_2026-08-06_Playwright实现_Nikto_JuiceShop.md",
+    "05-ClaudeCode-Playwright实现/03-测试记录/测试记录_2026-08-06_Playwright实现_ScreamingFrog_JuiceShop.md",
+    "05-ClaudeCode-Playwright实现/03-测试记录/测试记录_2026-08-06_Playwright实现_WebPageTest_JuiceShop.md",
+    "05-ClaudeCode-Playwright实现/03-测试记录/测试记录_2026-08-06_Playwright实现_WgetSpider_JuiceShop.md",
+    "05-ClaudeCode-Playwright实现/03-测试记录/测试记录_2026-08-06_Playwright实现_ZAP_JuiceShop.md",
+    "03-测试记录/测试记录_2026-08-04_Lighthouse_perfeye.md",
+    "03-测试记录/测试记录_2026-08-04_LinkChecker_本地靶场.md",
+    "03-测试记录/测试记录_2026-08-05_Nikto_本地靶场.md",
+    "03-测试记录/测试记录_2026-08-05_OWASP-ZAP_主动扫描_本地靶场.md",
+    "03-测试记录/测试记录_2026-08-05_Wget-Spider_本地靶场.md",
     "02-工具手册/03-LinkChecker.md",
-    "02-工具手册/01-Lighthouse.md",
-    "02-工具手册/04-Wget-Spider.md.tmp.14628.39c21063db61",
-    "02-工具手册/04-Wget-Spider.md.tmp.14628.9ec57cb70676",
-    "02-工具手册/04-Wget-Spider.md.tmp.14628.2d0fb92a4364",
-    "02-工具手册/04-Wget-Spider.md.tmp.14628.78b2f58126b5",
-    "02-工具手册/04-Wget-Spider.md.tmp.14628.9fb51c4a9129",
-    "02-工具手册/04-Wget-Spider.md.tmp.14628.a89c8d9c38e7",
-    "01-总览/测试方法论.md",
-    "02-工具手册/05-OWASP-ZAP.md.tmp.14628.f1b254fdb152",
-    "02-工具手册/05-OWASP-ZAP.md.tmp.14628.c4be44c3177c",
-    "02-工具手册/05-OWASP-ZAP.md.tmp.14628.8a266ebcde80",
-    "02-工具手册/05-OWASP-ZAP.md.tmp.14628.26ef4719adbd",
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析v0.0.1.html.tmp.50716.55c377bb5a20",
+    "02-工具手册/07-Screaming-Frog.md",
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析v0.0.1.html",
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析.html",
     "01-总览/工具对比总表.md",
-    "03-测试记录/测试记录模板.md",
-    "README.md",
-    "04-结论/后续行动.md",
-    "04-结论/选型建议.md",
-    "Web测试工具调研总览.md",
-    "Welcome.md",
-    "Linkchecker调研.md",
-    "WebPageTest调研.md",
-    "Lighthouse调研.md"
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析.html.tmp.50716.99fdf2532a8b",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/modal-webpagetest-waterfall2.png",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/modal-webpagetest-waterfall.png",
+    "05-ClaudeCode-Playwright实现/02-实现脚本/05-webpagetest.js.tmp.50716.9178defa701f",
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析.html.tmp.50716.fb875b4f2712",
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析.html.tmp.50716.ac802e1e76e7",
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析.html.tmp.50716.61d41fe9b0d7",
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析.html.tmp.50716.f24ac41779de",
+    "05-ClaudeCode-Playwright实现/Playwright实现web测试工具可行性分析.html.tmp.50716.ed3c34fee26d",
+    "05-ClaudeCode-Playwright复现/01-可行性分析.md",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/filmstrip/06_fully_loaded.png",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/filmstrip/05_4000ms.png",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/filmstrip/01_250ms.png",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/filmstrip/04_2000ms.png",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/filmstrip/02_500ms.png",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/filmstrip/03_1000ms.png",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/filmstrip/00_commit.png",
+    "05-ClaudeCode-Playwright实现/03-测试记录/assets/可行性分析-preview.png",
+    "05-ClaudeCode-Playwright实现/README.md",
+    "05-ClaudeCode-Playwright实现/01-可行性分析.md",
+    "05-ClaudeCode-Playwright复现/03-测试记录/测试记录_2026-08-06_Playwright复现_LinkChecker_JuiceShop.md",
+    "05-ClaudeCode-Playwright复现/03-测试记录/测试记录_2026-08-06_Playwright复现_Lighthouse_JuiceShop.md",
+    "05-ClaudeCode-Playwright复现/README.md",
+    "05-ClaudeCode-Playwright复现/03-测试记录/测试记录_2026-08-06_Playwright复现_ZAP_JuiceShop.md",
+    "05-ClaudeCode-Playwright复现/03-测试记录/测试记录_2026-08-06_Playwright复现_Nikto_JuiceShop.md"
   ]
 }

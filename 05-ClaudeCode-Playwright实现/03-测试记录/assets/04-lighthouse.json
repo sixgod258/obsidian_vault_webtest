@@ -1,0 +1,79 @@
+{
+  "tool": "Lighthouse 实现（单页审计）",
+  "target": "http://localhost:3000",
+  "timestamp": "2026-08-06T06:13:20.240Z",
+  "loadingMs": 4676,
+  "performance": {
+    "lcpMs": 456,
+    "lcpGrade": "green",
+    "cls": 0.061456113629543896,
+    "clsGrade": "green",
+    "inpMs": null,
+    "inpGrade": "N/A",
+    "ttfbMs": 4,
+    "ttfbGrade": "green",
+    "domContentLoadedMs": 146,
+    "loadMs": 181,
+    "totalRequests": 53,
+    "totalBytes": 1111417,
+    "resourcesByType": {
+      "other": {
+        "count": 11,
+        "bytes": 152340
+      },
+      "script": {
+        "count": 5,
+        "bytes": 313978
+      },
+      "link": {
+        "count": 1,
+        "bytes": 22355
+      },
+      "xmlhttprequest": {
+        "count": 18,
+        "bytes": 34007
+      },
+      "img": {
+        "count": 17,
+        "bytes": 460085
+      },
+      "css": {
+        "count": 1,
+        "bytes": 128652
+      }
+    }
+  },
+  "seo": {
+    "title": "OWASP Juice Shop",
+    "titleLength": 16,
+    "metaDescription": "Probably the most modern and sophisticated insecure web application",
+    "viewport": "width=device-width, initial-scale=1",
+    "htmlLang": "en",
+    "robots": null,
+    "canonical": null,
+    "checks": {
+      "title_present": true,
+      "meta_description_present": true,
+      "viewport_present": true,
+      "html_lang_set": true,
+      "canonical_present": false
+    }
+  },
+  "accessibility": {
+    "imgTotal": 17,
+    "imgNoAlt": 0,
+    "formControlsTotal": 1,
+    "formControlsUnlabeled": 1,
+    "btnTotal": 29,
+    "btnNoName": 1,
+    "h1count": 2,
+    "headingsSequence": "h2 > h3 > h3 > h3 > h1 > h1",
+    "checks": {
+      "imgs_have_alt": true,
+      "form_controls_labeled": false,
+      "buttons_have_names": false,
+      "exactly_one_h1": false
+    }
+  },
+  "verdict": "核心可实现：Web Vitals(LCP/CLS/INP/TTFB) 实测值 + 资源清单 + SEO/可访问性检查清单；Lighthouse 专有评分需引入其审计库，不在此脚本内。"
+}

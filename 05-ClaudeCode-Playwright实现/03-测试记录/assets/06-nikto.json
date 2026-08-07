@@ -1,0 +1,747 @@
+{
+  "tool": "Nikto 实现（服务器侦察）",
+  "target": "http://localhost:3000",
+  "timestamp": "2026-08-06T06:18:04.672Z",
+  "serverHeaders": {
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "SAMEORIGIN",
+    "x-recruiting": "/#/jobs",
+    "date": "Thu, 06 Aug 2026 06:18:04 GMT"
+  },
+  "headerLeaks": [],
+  "probes": [
+    {
+      "path": "/admin",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/admin/",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/administration",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/admin/login",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/backup",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/backup.zip",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/db.sqlite",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/config",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/config.js",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/.env",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/.git/HEAD",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/.git/config",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/.htaccess",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/.DS_Store",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "len": 28,
+      "ct": "text/plain; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/server-status",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/server-info",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/phpmyadmin/",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/phpinfo.php",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/ftp/",
+      "status": 200,
+      "len": 11273,
+      "ct": "text/html; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false
+    },
+    {
+      "path": "/cgi-bin/",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/test.php",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/info.php",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/uploads/",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/api/",
+      "status": 500,
+      "len": 2410,
+      "ct": "text/html; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false
+    },
+    {
+      "path": "/rest/",
+      "status": 500,
+      "len": 2412,
+      "ct": "text/html; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false
+    },
+    {
+      "path": "/docs",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/swagger",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/swagger-ui.html",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/composer.json",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/package.json",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/LICENSE",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/readme.md",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/health",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true
+    },
+    {
+      "path": "/metrics",
+      "status": 200,
+      "len": 26032,
+      "ct": "text/plain; version=0.0.4; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false
+    }
+  ],
+  "findings": [
+    {
+      "path": "/admin",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /admin"
+    },
+    {
+      "path": "/admin/",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /admin/"
+    },
+    {
+      "path": "/administration",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /administration"
+    },
+    {
+      "path": "/admin/login",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /admin/login"
+    },
+    {
+      "path": "/backup",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /backup"
+    },
+    {
+      "path": "/backup.zip",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /backup.zip"
+    },
+    {
+      "path": "/db.sqlite",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /db.sqlite"
+    },
+    {
+      "path": "/config",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /config"
+    },
+    {
+      "path": "/config.js",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /config.js"
+    },
+    {
+      "path": "/.env",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /.env"
+    },
+    {
+      "path": "/.git/HEAD",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /.git/HEAD"
+    },
+    {
+      "path": "/.git/config",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /.git/config"
+    },
+    {
+      "path": "/.htaccess",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /.htaccess"
+    },
+    {
+      "path": "/.DS_Store",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /.DS_Store"
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "len": 28,
+      "ct": "text/plain; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false,
+      "snippet": "User-agent: * Disallow: /ftp",
+      "err": null,
+      "level": "low",
+      "finding": "路径存在(200): /robots.txt"
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /sitemap.xml"
+    },
+    {
+      "path": "/server-status",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /server-status"
+    },
+    {
+      "path": "/server-info",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /server-info"
+    },
+    {
+      "path": "/phpmyadmin/",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /phpmyadmin/"
+    },
+    {
+      "path": "/phpinfo.php",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /phpinfo.php"
+    },
+    {
+      "path": "/ftp/",
+      "status": 200,
+      "len": 11273,
+      "ct": "text/html; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false,
+      "snippet": "<!DOCTYPE html> <html> <head> <meta charset='utf-8'> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.",
+      "err": null,
+      "level": "low",
+      "finding": "路径存在(200): /ftp/"
+    },
+    {
+      "path": "/cgi-bin/",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /cgi-bin/"
+    },
+    {
+      "path": "/test.php",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /test.php"
+    },
+    {
+      "path": "/info.php",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /info.php"
+    },
+    {
+      "path": "/uploads/",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /uploads/"
+    },
+    {
+      "path": "/api/",
+      "status": 500,
+      "len": 2410,
+      "ct": "text/html; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false,
+      "snippet": "<html> <head> <meta charset='utf-8'> <title>Error: Unexpected path: /api/</title> <style>* { margin: 0; padding: 0; outl",
+      "err": null,
+      "level": "medium",
+      "finding": "服务器错误 500: /api/"
+    },
+    {
+      "path": "/rest/",
+      "status": 500,
+      "len": 2412,
+      "ct": "text/html; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false,
+      "snippet": "<html> <head> <meta charset='utf-8'> <title>Error: Unexpected path: /rest/</title> <style>* { margin: 0; padding: 0; out",
+      "err": null,
+      "level": "medium",
+      "finding": "服务器错误 500: /rest/"
+    },
+    {
+      "path": "/docs",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /docs"
+    },
+    {
+      "path": "/swagger",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /swagger"
+    },
+    {
+      "path": "/swagger-ui.html",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /swagger-ui.html"
+    },
+    {
+      "path": "/composer.json",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /composer.json"
+    },
+    {
+      "path": "/package.json",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /package.json"
+    },
+    {
+      "path": "/LICENSE",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /LICENSE"
+    },
+    {
+      "path": "/readme.md",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /readme.md"
+    },
+    {
+      "path": "/health",
+      "status": 200,
+      "len": 9903,
+      "ct": "text/html; charset=UTF-8",
+      "dirListing": false,
+      "isCatchAll": true,
+      "snippet": "<!-- ~ Copyright (c) 2014-2026 Bjoern Kimminich & the OWASP Juice Shop contributors. ~ SPDX-License-Identifier: MIT --> ",
+      "err": null,
+      "level": "info",
+      "finding": "SPA catch-all（200 但为 index.html 壳，非真实文件）: /health"
+    },
+    {
+      "path": "/metrics",
+      "status": 200,
+      "len": 26032,
+      "ct": "text/plain; version=0.0.4; charset=utf-8",
+      "dirListing": false,
+      "isCatchAll": false,
+      "snippet": "# HELP juiceshop_llm_input_tokens_total Number of total input tokens processed # TYPE juiceshop_llm_input_tokens_total c",
+      "err": null,
+      "level": "low",
+      "finding": "路径存在(200): /metrics"
+    }
+  ],
+  "summary": {
+    "probes": 36,
+    "findings": 36,
+    "byLevel": {
+      "info": 31,
+      "low": 3,
+      "medium": 2
+    }
+  },
+  "verdict": "可基本实现——响应头指纹 + 敏感路径探测 + 目录列表检测都能做；但与 Nikto 的差异是检查项数量（Nikto 8000+ 条）与 CVE 版本匹配库。",
+  "spaCaveat": "SPA catch-all 路由会让所有未知路径返回 200(index.html)，纯 HTTP 探测会产生大量假阳性；需对比 index.html 壳签名剔除。"
+}

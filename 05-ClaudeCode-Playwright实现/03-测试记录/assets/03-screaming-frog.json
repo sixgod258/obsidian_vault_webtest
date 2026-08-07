@@ -1,0 +1,732 @@
+{
+  "tool": "Screaming Frog SEO Spider 实现",
+  "target": "http://localhost:3000",
+  "timestamp": "2026-08-06T06:10:15.044Z",
+  "summary": {
+    "pagesCrawled": 19,
+    "routesDiscovered": 19,
+    "issueTotal": 70,
+    "byType": {
+      "title_duplicate": 19,
+      "meta_description_duplicate": 19,
+      "h1_missing": 8,
+      "canonical_missing": 19,
+      "img_no_alt": 4,
+      "h1_multiple": 1
+    }
+  },
+  "pages": [
+    {
+      "route": "product/1",
+      "url": "http://localhost:3000/#/product/1",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [],
+      "h1count": 0,
+      "canonical": null,
+      "imgTotal": 17,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 1567
+    },
+    {
+      "route": "product/2",
+      "url": "http://localhost:3000/#/product/2",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [],
+      "h1count": 0,
+      "canonical": null,
+      "imgTotal": 17,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 1567
+    },
+    {
+      "route": "score-board",
+      "url": "http://localhost:3000/#/score-board",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [],
+      "h1count": 0,
+      "canonical": null,
+      "imgTotal": 2,
+      "imgNoAlt": 1,
+      "jsonldCount": 0,
+      "bodyTextLen": 28239
+    },
+    {
+      "route": "deluxe-membership",
+      "url": "http://localhost:3000/#/deluxe-membership",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [],
+      "h1count": 0,
+      "canonical": null,
+      "imgTotal": 1,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 554
+    },
+    {
+      "route": "recycle",
+      "url": "http://localhost:3000/#/recycle",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Request Recycling Box",
+        "My saved addresses"
+      ],
+      "h1count": 2,
+      "canonical": null,
+      "imgTotal": 3,
+      "imgNoAlt": 2,
+      "jsonldCount": 0,
+      "bodyTextLen": 1073
+    },
+    {
+      "route": "privacy-security",
+      "url": "http://localhost:3000/#/privacy-security",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [],
+      "h1count": 0,
+      "canonical": null,
+      "imgTotal": 1,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 519
+    },
+    {
+      "route": "privacy-security/privacy-policy",
+      "url": "http://localhost:3000/#/privacy-security/privacy-policy",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Privacy Policy"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 2,
+      "imgNoAlt": 1,
+      "jsonldCount": 0,
+      "bodyTextLen": 7051
+    },
+    {
+      "route": "track-order",
+      "url": "http://localhost:3000/#/track-order",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [],
+      "h1count": 0,
+      "canonical": null,
+      "imgTotal": 17,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 1567
+    },
+    {
+      "route": "complain",
+      "url": "http://localhost:3000/#/complain",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Complaint"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 1,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 594
+    },
+    {
+      "route": "login",
+      "url": "http://localhost:3000/#/login",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Login"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 1,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 646
+    },
+    {
+      "route": "contact",
+      "url": "http://localhost:3000/#/contact",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Customer Feedback"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 1,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 627
+    },
+    {
+      "route": "chatbot",
+      "url": "http://localhost:3000/#/chatbot",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Juicy the Smart Assistant"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 2,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 639
+    },
+    {
+      "route": "about",
+      "url": "http://localhost:3000/#/about",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "About Us"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 9,
+      "imgNoAlt": 8,
+      "jsonldCount": 0,
+      "bodyTextLen": 2644
+    },
+    {
+      "route": "photo-wall",
+      "url": "http://localhost:3000/#/photo-wall",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Photo Wall"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 11,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 915
+    },
+    {
+      "route": "search",
+      "url": "http://localhost:3000/#/search",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [],
+      "h1count": 0,
+      "canonical": null,
+      "imgTotal": 17,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 1567
+    },
+    {
+      "route": "basket",
+      "url": "http://localhost:3000/#/basket",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Your Basket (anonymous)"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 1,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 613
+    },
+    {
+      "route": "ftp/legal.md",
+      "url": "http://localhost:3000/#/ftp/legal.md",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [],
+      "h1count": 0,
+      "canonical": null,
+      "imgTotal": 17,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 1567
+    },
+    {
+      "route": "forgot-password",
+      "url": "http://localhost:3000/#/forgot-password",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "Forgot Password"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 1,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 774
+    },
+    {
+      "route": "register",
+      "url": "http://localhost:3000/#/register",
+      "status": 200,
+      "title": "OWASP Juice Shop",
+      "metaDescription": "Probably the most modern and sophisticated insecure web application",
+      "h1s": [
+        "User Registration"
+      ],
+      "h1count": 1,
+      "canonical": null,
+      "imgTotal": 1,
+      "imgNoAlt": 0,
+      "jsonldCount": 0,
+      "bodyTextLen": 723
+    }
+  ],
+  "issues": [
+    {
+      "route": "product/1",
+      "url": "http://localhost:3000/#/product/1",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "product/1",
+      "url": "http://localhost:3000/#/product/1",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "product/1",
+      "url": "http://localhost:3000/#/product/1",
+      "type": "h1_missing",
+      "detail": "页面无 H1"
+    },
+    {
+      "route": "product/1",
+      "url": "http://localhost:3000/#/product/1",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "product/2",
+      "url": "http://localhost:3000/#/product/2",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "product/2",
+      "url": "http://localhost:3000/#/product/2",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "product/2",
+      "url": "http://localhost:3000/#/product/2",
+      "type": "h1_missing",
+      "detail": "页面无 H1"
+    },
+    {
+      "route": "product/2",
+      "url": "http://localhost:3000/#/product/2",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "score-board",
+      "url": "http://localhost:3000/#/score-board",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "score-board",
+      "url": "http://localhost:3000/#/score-board",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "score-board",
+      "url": "http://localhost:3000/#/score-board",
+      "type": "h1_missing",
+      "detail": "页面无 H1"
+    },
+    {
+      "route": "score-board",
+      "url": "http://localhost:3000/#/score-board",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "score-board",
+      "url": "http://localhost:3000/#/score-board",
+      "type": "img_no_alt",
+      "detail": "1/2 张图片缺 alt"
+    },
+    {
+      "route": "deluxe-membership",
+      "url": "http://localhost:3000/#/deluxe-membership",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "deluxe-membership",
+      "url": "http://localhost:3000/#/deluxe-membership",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "deluxe-membership",
+      "url": "http://localhost:3000/#/deluxe-membership",
+      "type": "h1_missing",
+      "detail": "页面无 H1"
+    },
+    {
+      "route": "deluxe-membership",
+      "url": "http://localhost:3000/#/deluxe-membership",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "recycle",
+      "url": "http://localhost:3000/#/recycle",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "recycle",
+      "url": "http://localhost:3000/#/recycle",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "recycle",
+      "url": "http://localhost:3000/#/recycle",
+      "type": "h1_multiple",
+      "detail": "页面有 2 个 H1"
+    },
+    {
+      "route": "recycle",
+      "url": "http://localhost:3000/#/recycle",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "recycle",
+      "url": "http://localhost:3000/#/recycle",
+      "type": "img_no_alt",
+      "detail": "2/3 张图片缺 alt"
+    },
+    {
+      "route": "privacy-security",
+      "url": "http://localhost:3000/#/privacy-security",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "privacy-security",
+      "url": "http://localhost:3000/#/privacy-security",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "privacy-security",
+      "url": "http://localhost:3000/#/privacy-security",
+      "type": "h1_missing",
+      "detail": "页面无 H1"
+    },
+    {
+      "route": "privacy-security",
+      "url": "http://localhost:3000/#/privacy-security",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "privacy-security/privacy-policy",
+      "url": "http://localhost:3000/#/privacy-security/privacy-policy",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "privacy-security/privacy-policy",
+      "url": "http://localhost:3000/#/privacy-security/privacy-policy",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "privacy-security/privacy-policy",
+      "url": "http://localhost:3000/#/privacy-security/privacy-policy",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "privacy-security/privacy-policy",
+      "url": "http://localhost:3000/#/privacy-security/privacy-policy",
+      "type": "img_no_alt",
+      "detail": "1/2 张图片缺 alt"
+    },
+    {
+      "route": "track-order",
+      "url": "http://localhost:3000/#/track-order",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "track-order",
+      "url": "http://localhost:3000/#/track-order",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "track-order",
+      "url": "http://localhost:3000/#/track-order",
+      "type": "h1_missing",
+      "detail": "页面无 H1"
+    },
+    {
+      "route": "track-order",
+      "url": "http://localhost:3000/#/track-order",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "complain",
+      "url": "http://localhost:3000/#/complain",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "complain",
+      "url": "http://localhost:3000/#/complain",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "complain",
+      "url": "http://localhost:3000/#/complain",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "login",
+      "url": "http://localhost:3000/#/login",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "login",
+      "url": "http://localhost:3000/#/login",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "login",
+      "url": "http://localhost:3000/#/login",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "contact",
+      "url": "http://localhost:3000/#/contact",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "contact",
+      "url": "http://localhost:3000/#/contact",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "contact",
+      "url": "http://localhost:3000/#/contact",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "chatbot",
+      "url": "http://localhost:3000/#/chatbot",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "chatbot",
+      "url": "http://localhost:3000/#/chatbot",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "chatbot",
+      "url": "http://localhost:3000/#/chatbot",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "about",
+      "url": "http://localhost:3000/#/about",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "about",
+      "url": "http://localhost:3000/#/about",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "about",
+      "url": "http://localhost:3000/#/about",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "about",
+      "url": "http://localhost:3000/#/about",
+      "type": "img_no_alt",
+      "detail": "8/9 张图片缺 alt"
+    },
+    {
+      "route": "photo-wall",
+      "url": "http://localhost:3000/#/photo-wall",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "photo-wall",
+      "url": "http://localhost:3000/#/photo-wall",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "photo-wall",
+      "url": "http://localhost:3000/#/photo-wall",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "search",
+      "url": "http://localhost:3000/#/search",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "search",
+      "url": "http://localhost:3000/#/search",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "search",
+      "url": "http://localhost:3000/#/search",
+      "type": "h1_missing",
+      "detail": "页面无 H1"
+    },
+    {
+      "route": "search",
+      "url": "http://localhost:3000/#/search",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "basket",
+      "url": "http://localhost:3000/#/basket",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "basket",
+      "url": "http://localhost:3000/#/basket",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "basket",
+      "url": "http://localhost:3000/#/basket",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "ftp/legal.md",
+      "url": "http://localhost:3000/#/ftp/legal.md",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "ftp/legal.md",
+      "url": "http://localhost:3000/#/ftp/legal.md",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "ftp/legal.md",
+      "url": "http://localhost:3000/#/ftp/legal.md",
+      "type": "h1_missing",
+      "detail": "页面无 H1"
+    },
+    {
+      "route": "ftp/legal.md",
+      "url": "http://localhost:3000/#/ftp/legal.md",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "forgot-password",
+      "url": "http://localhost:3000/#/forgot-password",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "forgot-password",
+      "url": "http://localhost:3000/#/forgot-password",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "forgot-password",
+      "url": "http://localhost:3000/#/forgot-password",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    },
+    {
+      "route": "register",
+      "url": "http://localhost:3000/#/register",
+      "type": "title_duplicate",
+      "detail": "标题被 19 个页面复用"
+    },
+    {
+      "route": "register",
+      "url": "http://localhost:3000/#/register",
+      "type": "meta_description_duplicate",
+      "detail": "description 被 19 个页面复用"
+    },
+    {
+      "route": "register",
+      "url": "http://localhost:3000/#/register",
+      "type": "canonical_missing",
+      "detail": "页面无 canonical 标签"
+    }
+  ],
+  "verdict": "可基本实现——全站爬取 + 逐页提取 SEO 指标 + 聚合问题；与 SF 的主要差距是无法给出专有评分与可视化图。"
+}

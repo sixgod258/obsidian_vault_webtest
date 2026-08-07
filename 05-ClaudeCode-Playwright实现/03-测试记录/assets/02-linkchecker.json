@@ -1,0 +1,70 @@
+{
+  "tool": "LinkChecker 实现",
+  "target": "http://localhost:3000",
+  "timestamp": "2026-08-06T06:09:32.873Z",
+  "summary": {
+    "pagesCrawled": 22,
+    "routesDiscovered": 22,
+    "uniqueLinksChecked": 7,
+    "ok": 2,
+    "broken": 0,
+    "redirects": 5
+  },
+  "broken": [],
+  "redirects": [
+    {
+      "url": "http://localhost:3000/redirect?to=https://github.com/juice-shop/juice-shop",
+      "status": 302,
+      "redirect": "https://github.com/juice-shop/juice-shop",
+      "err": null,
+      "timeMs": 3,
+      "from": [
+        "product/1",
+        "product/2",
+        "product/999"
+      ]
+    },
+    {
+      "url": "http://localhost:3000/redirect?to=http://shop.spreadshirt.com/juiceshop",
+      "status": 302,
+      "redirect": "http://shop.spreadshirt.com/juiceshop",
+      "err": null,
+      "timeMs": 2,
+      "from": [
+        "payment/shop"
+      ]
+    },
+    {
+      "url": "http://localhost:3000/redirect?to=http://shop.spreadshirt.de/juiceshop",
+      "status": 302,
+      "redirect": "http://shop.spreadshirt.de/juiceshop",
+      "err": null,
+      "timeMs": 4,
+      "from": [
+        "payment/shop"
+      ]
+    },
+    {
+      "url": "http://localhost:3000/redirect?to=https://www.stickeryou.com/products/owasp-juice-shop/794",
+      "status": 302,
+      "redirect": "https://www.stickeryou.com/products/owasp-juice-shop/794",
+      "err": null,
+      "timeMs": 3,
+      "from": [
+        "payment/shop"
+      ]
+    },
+    {
+      "url": "http://localhost:3000/redirect?to=http://leanpub.com/juice-shop",
+      "status": 302,
+      "redirect": "http://leanpub.com/juice-shop",
+      "err": null,
+      "timeMs": 3,
+      "from": [
+        "payment/shop"
+      ]
+    }
+  ],
+  "emptyPages": [],
+  "spaNote": "SPA 特性：服务器对任意 hash 路由都返回 200(index.html)，HTTP 状态码无法区分死路由，需结合内容渲染判断。"
+}

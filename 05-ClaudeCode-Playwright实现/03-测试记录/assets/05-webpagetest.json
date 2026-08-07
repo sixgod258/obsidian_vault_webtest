@@ -1,0 +1,542 @@
+{
+  "tool": "WebPageTest 实现",
+  "target": "http://localhost:3000",
+  "timestamp": "2026-08-06T06:15:26.078Z",
+  "timings": {
+    "ttfb": 5,
+    "firstPaint": 160,
+    "firstContentfulPaint": 164,
+    "domContentLoaded": 149,
+    "load": 183,
+    "fullyLoadedMs": 4531
+  },
+  "requests": {
+    "count": 53,
+    "totalBytes": 947172,
+    "byType": {
+      "other": 8038,
+      "script": 294035,
+      "link": 22355,
+      "xmlhttprequest": 34007,
+      "img": 460085,
+      "css": 128652
+    }
+  },
+  "filmstrip": [
+    {
+      "label": "00_commit",
+      "file": "filmstrip/00_commit.png",
+      "atMs": 181
+    },
+    {
+      "label": "01_250ms",
+      "file": "filmstrip/01_250ms.png",
+      "atMs": 497
+    },
+    {
+      "label": "02_500ms",
+      "file": "filmstrip/02_500ms.png",
+      "atMs": 825
+    },
+    {
+      "label": "03_1000ms",
+      "file": "filmstrip/03_1000ms.png",
+      "atMs": 1382
+    },
+    {
+      "label": "04_2000ms",
+      "file": "filmstrip/04_2000ms.png",
+      "atMs": 2457
+    },
+    {
+      "label": "05_4000ms",
+      "file": "filmstrip/05_4000ms.png",
+      "atMs": 4530
+    },
+    {
+      "label": "06_fully_loaded",
+      "file": "filmstrip/06_fully_loaded.png",
+      "atMs": 4594
+    }
+  ],
+  "waterfallTable": [
+    {
+      "name": "http://localhost:3000/chunk-5K74DZ2F.js",
+      "start": 9,
+      "end": 12,
+      "duration": 4,
+      "type": "other",
+      "size": 300,
+      "status": 304
+    },
+    {
+      "name": "http://localhost:3000/chunk-VS3A3LTT.js",
+      "start": 9,
+      "end": 13,
+      "duration": 4,
+      "type": "other",
+      "size": 300,
+      "status": 304
+    },
+    {
+      "name": "http://localhost:3000/chunk-PX7UKXVL.js",
+      "start": 9,
+      "end": 19,
+      "duration": 10,
+      "type": "other",
+      "size": 300,
+      "status": 304
+    },
+    {
+      "name": "http://localhost:3000/chunk-VJL3IV3O.js",
+      "start": 9,
+      "end": 19,
+      "duration": 10,
+      "type": "other",
+      "size": 300,
+      "status": 304
+    },
+    {
+      "name": "http://localhost:3000/chunk-OKA37M7B.js",
+      "start": 9,
+      "end": 21,
+      "duration": 12,
+      "type": "other",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/chunk-UNFVUBM2.js",
+      "start": 9,
+      "end": 22,
+      "duration": 13,
+      "type": "other",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/chunk-DYXK4NW4.js",
+      "start": 9,
+      "end": 21,
+      "duration": 12,
+      "type": "other",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/chunk-QBYXNN7Z.js",
+      "start": 9,
+      "end": 19,
+      "duration": 10,
+      "type": "other",
+      "size": 300,
+      "status": 304
+    },
+    {
+      "name": "http://localhost:3000/chunk-YVDT5JXT.js",
+      "start": 9,
+      "end": 22,
+      "duration": 13,
+      "type": "other",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/polyfills.js",
+      "start": 9,
+      "end": 22,
+      "duration": 13,
+      "type": "script",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/chunk-NWDAIMF4.js",
+      "start": 9,
+      "end": 22,
+      "duration": 13,
+      "type": "other",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/scripts.js",
+      "start": 9,
+      "end": 28,
+      "duration": 19,
+      "type": "script",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/main.js",
+      "start": 9,
+      "end": 43,
+      "duration": 34,
+      "type": "script",
+      "size": 186367,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/styles.css",
+      "start": 11,
+      "end": 30,
+      "duration": 19,
+      "type": "link",
+      "size": 22355,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/chunk-NUMHA4AJ.js",
+      "start": 56,
+      "end": 58,
+      "duration": 2,
+      "type": "script",
+      "size": 1316,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/chunk-QDZ6R7S6.js",
+      "start": 56,
+      "end": 63,
+      "duration": 7,
+      "type": "script",
+      "size": 105752,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/socket.io/?EIO=4&transport=polling&t=P_Ljahd",
+      "start": 106,
+      "end": 108,
+      "duration": 2,
+      "type": "xmlhttprequest",
+      "size": 396,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/i18n/en.json",
+      "start": 110,
+      "end": 112,
+      "duration": 3,
+      "type": "xmlhttprequest",
+      "size": 13337,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/admin/application-version",
+      "start": 125,
+      "end": 127,
+      "duration": 2,
+      "type": "xmlhttprequest",
+      "size": 320,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/admin/application-configuration",
+      "start": 125,
+      "end": 147,
+      "duration": 22,
+      "type": "xmlhttprequest",
+      "size": 9403,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/api/Challenges/?name=Score%20Board",
+      "start": 125,
+      "end": 297,
+      "duration": 172,
+      "type": "xmlhttprequest",
+      "size": 775,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/languages",
+      "start": 126,
+      "end": 215,
+      "duration": 89,
+      "type": "xmlhttprequest",
+      "size": 1369,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/admin/application-version",
+      "start": 126,
+      "end": 143,
+      "duration": 17,
+      "type": "xmlhttprequest",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/admin/application-configuration",
+      "start": 126,
+      "end": 150,
+      "duration": 23,
+      "type": "xmlhttprequest",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/api/Challenges/?name=Score%20Board",
+      "start": 127,
+      "end": 319,
+      "duration": 192,
+      "type": "xmlhttprequest",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/admin/application-configuration",
+      "start": 127,
+      "end": 161,
+      "duration": 34,
+      "type": "xmlhttprequest",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/admin/application-configuration",
+      "start": 127,
+      "end": 205,
+      "duration": 78,
+      "type": "xmlhttprequest",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/admin/application-configuration",
+      "start": 128,
+      "end": 217,
+      "duration": 89,
+      "type": "xmlhttprequest",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/api/Quantitys/",
+      "start": 147,
+      "end": 311,
+      "duration": 164,
+      "type": "xmlhttprequest",
+      "size": 784,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/products/search?q=",
+      "start": 147,
+      "end": 259,
+      "duration": 112,
+      "type": "xmlhttprequest",
+      "size": 4588,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/JuiceShop_Logo.png",
+      "start": 148,
+      "end": 176,
+      "duration": 28,
+      "type": "img",
+      "size": 28941,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/media/material-icons-LEZCGFVT.woff2",
+      "start": 151,
+      "end": 176,
+      "duration": 25,
+      "type": "css",
+      "size": 128652,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/socket.io/?EIO=4&transport=polling&t=P_LjaiY&sid=0j_hvAPObtNn5BP4AAAi",
+      "start": 164,
+      "end": 194,
+      "duration": 30,
+      "type": "xmlhttprequest",
+      "size": 302,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/socket.io/?EIO=4&transport=polling&t=P_LjaiZ&sid=0j_hvAPObtNn5BP4AAAi",
+      "start": 164,
+      "end": 215,
+      "duration": 51,
+      "type": "xmlhttprequest",
+      "size": 332,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/favicon_js.ico",
+      "start": 188,
+      "end": 220,
+      "duration": 32,
+      "type": "other",
+      "size": 5038,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/socket.io/?EIO=4&transport=polling&t=P_LjajM&sid=0j_hvAPObtNn5BP4AAAi",
+      "start": 216,
+      "end": 321,
+      "duration": 105,
+      "type": "xmlhttprequest",
+      "size": 301,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/rest/admin/application-configuration",
+      "start": 231,
+      "end": 233,
+      "duration": 3,
+      "type": "xmlhttprequest",
+      "size": 300,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/apple_juice.jpg",
+      "start": 321,
+      "end": 324,
+      "duration": 3,
+      "type": "img",
+      "size": 12304,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/banana_juice.jpg",
+      "start": 321,
+      "end": 324,
+      "duration": 3,
+      "type": "img",
+      "size": 15178,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/apple_pressings.jpg",
+      "start": 321,
+      "end": 325,
+      "duration": 3,
+      "type": "img",
+      "size": 21028,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/basil_smoothie.png",
+      "start": 321,
+      "end": 325,
+      "duration": 3,
+      "type": "img",
+      "size": 25492,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/berry_juice.png",
+      "start": 321,
+      "end": 325,
+      "duration": 4,
+      "type": "img",
+      "size": 29969,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/artwork2.jpg",
+      "start": 321,
+      "end": 325,
+      "duration": 4,
+      "type": "img",
+      "size": 26898,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/braga.jpg",
+      "start": 321,
+      "end": 326,
+      "duration": 5,
+      "type": "img",
+      "size": 43965,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/carrot_juice.jpeg",
+      "start": 322,
+      "end": 327,
+      "duration": 5,
+      "type": "img",
+      "size": 14598,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/dragonfruit_juice.png",
+      "start": 322,
+      "end": 327,
+      "duration": 6,
+      "type": "img",
+      "size": 31162,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/eggfruit_juice.jpg",
+      "start": 322,
+      "end": 327,
+      "duration": 6,
+      "type": "img",
+      "size": 12219,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/elderflower_cordial.jpg",
+      "start": 322,
+      "end": 328,
+      "duration": 6,
+      "type": "img",
+      "size": 50900,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/fruit_press.jpg",
+      "start": 322,
+      "end": 328,
+      "duration": 6,
+      "type": "img",
+      "size": 13399,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/grape_juice.png",
+      "start": 322,
+      "end": 328,
+      "duration": 6,
+      "type": "img",
+      "size": 14196,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/green_smoothie.jpg",
+      "start": 322,
+      "end": 329,
+      "duration": 8,
+      "type": "img",
+      "size": 12564,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/permafrost.jpg",
+      "start": 322,
+      "end": 329,
+      "duration": 8,
+      "type": "img",
+      "size": 93941,
+      "status": 200
+    },
+    {
+      "name": "http://localhost:3000/assets/public/images/products/lemon_juice.jpg",
+      "start": 330,
+      "end": 332,
+      "duration": 2,
+      "type": "img",
+      "size": 13331,
+      "status": 200
+    }
+  ],
+  "verdict": "核心可实现：瀑布图数据（每个资源 start/end/size/type）+ 时序指标 + 电影胶片逐帧截图。无法实现多地域节点（本地直连）。"
+}

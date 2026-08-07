@@ -43,6 +43,10 @@ cssclasses:
 - [[选型建议]] — 按场景的工具推荐组合
 - [[后续行动]] — 落地到日常 QA/发布流程
 
+### 05 · Claude Code + Playwright 实现（2026-08-06 新增）
+- `05-ClaudeCode-Playwright实现/` — 用 Claude Code 驱动 Playwright 实现 7 款工具的实验
+- [[05-ClaudeCode-Playwright实现/README]] · [[01-可行性分析]] — 结论总表与逐工具实现方法
+
 ---
 
 ## 🚀 快速开始

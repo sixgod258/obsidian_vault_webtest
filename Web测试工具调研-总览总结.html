@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web 测试工具调研 · 总览总结</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-dark: #1e40af;
+    --ink: #1f2937;
+    --ink-soft: #4b5563;
+    --ink-faint: #9ca3af;
+    --line: #e5e7eb;
+    --bg: #f3f5f9;
+    --card: #ffffff;
+    --perf: #1a56db;      /* 性能 */
+    --link: #0e9f6e;      /* 链接 */
+    --sec: #e02424;       /* 安全 */
+    --seo: #7e3af2;       /* SEO */
+    --gold: #b45309;
+    --ok: #0e9f6e;
+    --warn: #d97706;
+    --bad: #dc2626;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(135deg, #1e40af 0%, #1a56db 55%, #2563eb 100%);
+    color: #fff;
+    padding: 60px 24px 52px;
+    text-align: center;
+  }
+  .hero .kicker { font-size: 13px; letter-spacing: 3px; opacity: .8; text-transform: uppercase; }
+  .hero h1 { font-size: 36px; font-weight: 700; letter-spacing: 1px; margin-top: 10px; }
+  .hero .subtitle { font-size: 17px; margin-top: 12px; opacity: .95; max-width: 760px; margin-left: auto; margin-right: auto; }
+  .hero .meta {
+    display: inline-block; margin-top: 22px;
+    background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.3);
+    padding: 6px 18px; border-radius: 999px; font-size: 13px;
+  }
+  .hero .legend { margin-top: 26px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .hero .tag {
+    padding: 4px 14px; border-radius: 999px; font-size: 13px;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28);
+  }
+  .tag.perf { background: rgba(37,99,235,.55); border-color: rgba(255,255,255,.35); }
+  .tag.link { background: rgba(14,159,110,.55); border-color: rgba(255,255,255,.35); }
+  .tag.sec  { background: rgba(224,36,36,.55);  border-color: rgba(255,255,255,.35); }
+  .tag.seo  { background: rgba(126,58,242,.55); border-color: rgba(255,255,255,.35); }
+
+  /* ===== Nav ===== */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav ul { max-width: 1080px; margin: 0 auto; padding: 0 20px; list-style: none; display: flex; gap: 4px; overflow-x: auto; }
+  nav a {
+    display: block; padding: 13px 14px; font-size: 14px; color: var(--ink-soft);
+    text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent;
+  }
+  nav a:hover { color: var(--primary); }
+  nav a.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+
+  main { max-width: 1080px; margin: 0 auto; padding: 36px 20px 60px; }
+
+  /* ===== Sections ===== */
+  section { margin-bottom: 48px; scroll-margin-top: 60px; }
+  h2 {
+    font-size: 23px; color: var(--primary-dark);
+    padding-left: 12px; border-left: 4px solid var(--primary);
+    margin-bottom: 8px;
+  }
+  .sec-desc { color: var(--ink-soft); font-size: 14px; margin-bottom: 18px; }
+  .lead { color: var(--ink-soft); font-size: 15px; margin-bottom: 16px; }
+
+  /* ===== Cards ===== */
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 22px 24px; box-shadow: 0 1px 3px rgba(17,24,39,.05);
+  }
+  .card + .card { margin-top: 16px; }
+
+  /* ===== Stats ===== */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 18px; }
+  .stat {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 16px; text-align: center;
+  }
+  .stat .num { font-size: 30px; font-weight: 700; color: var(--primary); line-height: 1.2; }
+  .stat .num.gold { color: var(--gold); }
+  .stat .num.green { color: var(--ok); }
+  .stat .num.red { color: var(--bad); }
+  .stat .lbl { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
+  .stat .sub { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+
+  /* ===== Tables ===== */
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+  th, td { padding: 11px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+  thead th { background: #f8fafc; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #f8fafc; }
+  td.mono, code { font-family: Consolas, "Courier New", monospace; font-size: 13px; }
+  code {
+    background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 4px;
+    padding: 1px 6px; color: #be185d;
+  }
+
+  /* ===== Badges ===== */
+  .badge {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; white-space: nowrap;
+  }
+  .b-perf { background: rgba(26,86,219,.12); color: var(--perf); }
+  .b-link { background: rgba(14,159,110,.12); color: var(--link); }
+  .b-sec  { background: rgba(224,36,36,.12);  color: var(--sec); }
+  .b-seo  { background: rgba(126,58,242,.12); color: var(--seo); }
+  .b-ok   { background: rgba(14,159,110,.12); color: var(--ok); }
+  .b-warn { background: rgba(217,119,6,.14);  color: var(--warn); }
+  .b-bad  { background: rgba(220,38,38,.12);  color: var(--bad); }
+  .b-info { background: rgba(156,163,175,.14); color: var(--ink-soft); }
+
+  /* ===== Tool cards ===== */
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .tool {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 22px; position: relative; overflow: hidden;
+    box-shadow: 0 1px 3px rgba(17,24,39,.05);
+  }
+  .tool::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+  .tool.t-perf::before { background: var(--perf); }
+  .tool.t-link::before { background: var(--link); }
+  .tool.t-sec::before  { background: var(--sec); }
+  .tool.t-seo::before  { background: var(--seo); }
+  .tool .t-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .tool .t-name { font-size: 17px; font-weight: 700; }
+  .tool .t-idx { font-size: 12px; color: var(--ink-faint); font-weight: 600; }
+  .tool .t-core { color: var(--ink-soft); font-size: 13.5px; margin-bottom: 10px; min-height: 42px; }
+  .tool .t-rows { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 13px; }
+  .tool .t-rows dt { color: var(--ink-faint); white-space: nowrap; }
+  .tool .t-rows dd { color: var(--ink); }
+  .stars { color: var(--gold); letter-spacing: 1px; }
+  .stars .dim { color: #d1d5db; }
+
+  /* ===== Progress bars ===== */
+  .bar-row { display: grid; grid-template-columns: 120px 1fr 90px; gap: 12px; align-items: center; font-size: 13.5px; padding: 7px 0; }
+  .bar-row .lbl { color: var(--ink-soft); }
+  .bar-row .val { text-align: right; color: var(--ink); font-weight: 600; }
+  .bar { height: 10px; border-radius: 999px; background: #eef2f7; overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 999px; }
+  .bar.good i { background: linear-gradient(90deg,#0e9f6e,#34d399); }
+  .bar.mid i  { background: linear-gradient(90deg,#d97706,#fbbf24); }
+  .bar.bad i  { background: linear-gradient(90deg,#dc2626,#f87171); }
+
+  /* ===== Timeline / checklist ===== */
+  .stage { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 22px; }
+  .stage + .stage { margin-top: 12px; }
+  .stage h4 { font-size: 15.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .stage ul { list-style: none; }
+  .stage li { padding: 3px 0 3px 26px; position: relative; color: var(--ink-soft); font-size: 14px; }
+  .stage li::before {
+    content: ""; position: absolute; left: 2px; top: 9px;
+    width: 12px; height: 12px; border-radius: 4px; border: 2px solid #cbd5e1;
+  }
+  .stage li.done { color: var(--ink); text-decoration: line-through; opacity: .75; }
+  .stage li.done::before { background: var(--ok); border-color: var(--ok); }
+  .stage .tag-note { margin-left: 6px; font-size: 12px; color: var(--ink-faint); }
+
+  /* ===== Combo ===== */
+  .combos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .combo {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 22px; position: relative;
+  }
+  .combo.reco { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(26,86,219,.18); }
+  .combo .c-flag {
+    position: absolute; top: -11px; left: 18px;
+    background: var(--primary); color: #fff; font-size: 12px; font-weight: 600;
+    padding: 2px 12px; border-radius: 999px;
+  }
+  .combo h4 { font-size: 16px; margin-bottom: 4px; }
+  .combo .c-tools { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; }
+  .combo .c-desc { font-size: 13.5px; }
+  .combo .c-fit { font-size: 13px; color: var(--ink-faint); margin-top: 10px; }
+
+  /* ===== Callout ===== */
+  .callout {
+    border-radius: 10px; padding: 14px 18px; font-size: 14px; margin-top: 16px;
+    border: 1px solid; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .callout.warn { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+  .callout.info { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+  .callout .emoji { font-size: 16px; }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 24px 20px; text-align: center;
+    color: var(--ink-faint); font-size: 13px; background: var(--card);
+  }
+
+  @media (max-width: 900px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .tools, .combos { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 26px; }
+    .stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= Hero ================= -->
+<header class="hero">
+  <div class="kicker">Web Testing Tools Research Hub</div>
+  <h1>🧰 Web 测试工具调研中心</h1>
+  <p class="subtitle">对 7 款 Web 测试工具的<b>调研、可行性分析与实战测试</b>汇总 —— 性能 / 链接 / 安全 / SEO 四大维度全覆盖，附真实测试记录与选型落地建议。</p>
+  <div class="meta">基于 Obsidian 笔记库 · 创建 2026-08-03 · 测试截至 2026-08-05</div>
+  <div class="legend">
+    <span class="tag perf">🚀 性能 / 体验</span>
+    <span class="tag link">🔗 链接质量</span>
+    <span class="tag sec">🛡️ 安全</span>
+    <span class="tag seo">🐸 SEO</span>
+  </div>
+</header>
+
+<!-- ================= Nav ================= -->
+<nav>
+  <ul>
+    <li><a href="#overview" class="active">总览</a></li>
+    <li><a href="#matrix">对比矩阵</a></li>
+    <li><a href="#tools">七大工具</a></li>
+    <li><a href="#records">测试记录</a></li>
+    <li><a href="#findings">关键发现</a></li>
+    <li><a href="#recommend">选型建议</a></li>
+    <li><a href="#roadmap">后续行动</a></li>
+    <li><a href="#compliance">合规提示</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ================= Overview ================= -->
+  <section id="overview">
+    <h2>📊 仓库总览</h2>
+    <p class="sec-desc">本仓库是一套「调研 → 可行性分析 → 实战测试 → 结论落地」的完整 Web 测试工具体系，涵盖工具手册、方法论、靶场搭建与 8 份真实测试记录。</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">7</div>
+        <div class="lbl">调研工具</div>
+        <div class="sub">性能 2 · 链接 2 · 安全 2 · SEO 1</div>
+      </div>
+      <div class="stat">
+        <div class="num">7</div>
+        <div class="lbl">工具手册</div>
+        <div class="sub">安装 / 用法 / 解读 / 模板</div>
+      </div>
+      <div class="stat">
+        <div class="num green">8</div>
+        <div class="lbl">测试记录</div>
+        <div class="sub">5 类工具 · 2 种靶场</div>
+      </div>
+      <div class="stat">
+        <div class="num gold">2</div>
+        <div class="lbl">结论文档</div>
+        <div class="sub">选型建议 + 行动清单</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-bottom:10px; font-size:16px;">🗂️ 文档地图</h4>
+      <table>
+        <thead><tr><th style="width:120px">板块</th><th>内容</th><th style="width:150px">关键产出</th></tr></thead>
+        <tbody>
+          <tr><td><b>01 · 总览</b></td><td>工具横向对比矩阵、统一测试方法论、本地靶场搭建（Juice Shop / DVWA / 静态站）</td><td>3 篇</td></tr>
+          <tr><td><b>02 · 工具手册</b></td><td>每款工具一册：简介 · 能力 · 优缺点 · 可行性 · 安装 · 用法 · 输出解读 · 记录模板</td><td>7 篇</td></tr>
+          <tr><td><b>03 · 测试记录</b></td><td>按统一模板归档的实战结果（命令原文 + 结构化数据 + 结论）</td><td>8 篇</td></tr>
+          <tr><td><b>04 · 结论</b></td><td>按场景的推荐组合、落地到日常 QA / 发布流程的分阶段行动</td><td>2 篇</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= Matrix ================= -->
+  <section id="matrix">
+    <h2>🔁 工具对比矩阵</h2>
+    <p class="sec-desc">7 款工具横向对比。★ 越多代表上手难度越高、学习成本越大。</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th>🚀 Lighthouse</th>
+            <th>🌐 WebPageTest</th>
+            <th>🔗 LinkChecker</th>
+            <th>🕷️ Wget-Spider</th>
+            <th>🛡️ OWASP ZAP</th>
+            <th>🔍 Nikto</th>
+            <th>🐸 Screaming Frog</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>类别</b></td>
+            <td><span class="badge b-perf">性能/SEO</span></td>
+            <td><span class="badge b-perf">性能</span></td>
+            <td><span class="badge b-link">链接</span></td>
+            <td><span class="badge b-link">链接</span></td>
+            <td><span class="badge b-sec">安全</span></td>
+            <td><span class="badge b-sec">安全</span></td>
+            <td><span class="badge b-seo">SEO</span></td>
+          </tr>
+          <tr>
+            <td><b>核心用途</b></td>
+            <td>性能/体验/SEO 综合评分</td>
+            <td>深度性能分析、瀑布图</td>
+            <td>全站死链检测</td>
+            <td>快速链接有效性</td>
+            <td>Web 应用漏洞扫描 (DAST)</td>
+            <td>服务器配置/已知漏洞</td>
+            <td>全站 SEO 技术审核</td>
+          </tr>
+          <tr>
+            <td><b>测试类型</b></td>
+            <td>单页审计</td>
+            <td>单页 / 多节点</td>
+            <td>全站递归</td>
+            <td>全站递归</td>
+            <td>全站主动/被动</td>
+            <td>服务器指纹</td>
+            <td>全站爬取</td>
+          </tr>
+          <tr>
+            <td><b>安装方式</b></td>
+            <td>npm（已装 Chrome）</td>
+            <td>云端 API / npm</td>
+            <td>pip / WSL / Docker</td>
+            <td>winget / 下载</td>
+            <td>Docker / 桌面版</td>
+            <td>Docker / Kali</td>
+            <td>桌面安装包</td>
+          </tr>
+          <tr>
+            <td><b>许可证 / 费用</b></td>
+            <td>Apache-2.0 免费</td>
+            <td>公共实例免费(限量)</td>
+            <td>GPL 免费</td>
+            <td>GPL 免费</td>
+            <td>Apache-2.0 免费</td>
+            <td>GPL 免费</td>
+            <td>免费≤500 URL；£199/年</td>
+          </tr>
+          <tr>
+            <td><b>报告输出</b></td>
+            <td>HTML/JSON/CSV</td>
+            <td>云端页面/JSON</td>
+            <td>Text/CSV/HTML/XML</td>
+            <td>命令行</td>
+            <td>HTML/JSON/XML</td>
+            <td>HTML/JSON/XML/TXT</td>
+            <td>CSV/XLSX/可视化</td>
+          </tr>
+          <tr>
+            <td><b>上手难度</b></td>
+            <td><span class="stars">★<span class="dim">★★</span></span></td>
+            <td><span class="stars">★★<span class="dim">★</span></span></td>
+            <td><span class="stars">★★<span class="dim">★</span></span></td>
+            <td><span class="stars">★<span class="dim">★★</span></span></td>
+            <td><span class="stars">★★★★</span></td>
+            <td><span class="stars">★★★<span class="dim">★</span></span></td>
+            <td><span class="stars">★★<span class="dim">★</span></span></td>
+          </tr>
+          <tr>
+            <td><b>典型耗时</b></td>
+            <td>1–2 分钟/页</td>
+            <td>1–5 分钟/页</td>
+            <td>视站点大小</td>
+            <td>视站点大小</td>
+            <td>几分钟–几小时</td>
+            <td>几分钟–1 小时</td>
+            <td>视站点大小</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h4 style="margin-bottom:8px; font-size:16px;">🎯 按用途选工具</h4>
+      <div class="tbl-wrap" style="border:none;">
+        <table>
+          <thead><tr><th>你的需求</th><th>推荐工具</th></tr></thead>
+          <tbody>
+            <tr><td>一键拿到页面性能/SEO/可访问性评分</td><td><code>Lighthouse</code></td></tr>
+            <tr><td>看资源加载瀑布图、模拟不同网速/地域</td><td><code>WebPageTest</code></td></tr>
+            <tr><td>全站扫描 404/死链，出报告给运维</td><td><code>LinkChecker</code></td></tr>
+            <tr><td>快速确认一批 URL 是否有效（不装工具）</td><td><code>Wget-Spider</code>（或 curl）</td></tr>
+            <tr><td>上线前安全扫描、找漏洞</td><td><code>OWASP ZAP</code></td></tr>
+            <tr><td>检查服务器版本、危险文件、已知漏洞</td><td><code>Nikto</code></td></tr>
+            <tr><td>全站 SEO 技术审核、重定向/Canonical 检查</td><td><code>Screaming Frog</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info"><span class="emoji">💡</span><div><b>分层防御组合</b>：日常巡检 → <code>Wget --spider / LinkChecker</code>；性能监控 → <code>Lighthouse</code>（CI 集成）+ <code>WebPageTest</code>（深度诊断）；上线前安全 → <code>ZAP 被动扫描</code> + <code>Nikto 服务器基线</code>；SEO 审核 → <code>Screaming Frog</code>（低频、全站）。</div></div>
+    </div>
+  </section>
+
+  <!-- ================= Tools ================= -->
+  <section id="tools">
+    <h2>🛠️ 七大工具手册速览</h2>
+    <p class="sec-desc">每款工具的定位、安装要点与可行性结论（详见仓库「02-工具手册」各篇）。</p>
+
+    <div class="tools">
+      <div class="tool t-perf">
+        <div class="t-head"><span class="t-idx">01</span><span class="t-name">🚀 Lighthouse</span></div>
+        <div class="t-core">Google 官方页面质量审计，无头 Chrome 五维打分（性能/可访问性/最佳实践/SEO/PWA），事实标准性能基准工具。</div>
+        <dl class="t-rows">
+          <dt>安装</dt><dd><code>npm install -g lighthouse</code></dd>
+          <dt>依赖</dt><dd>Node ≥ 20 + Chrome（本机已装 ✅）</dd>
+          <dt>特点</dt><dd>单页审计、报告直观、可接入 CI</dd>
+          <dt>局限</dt><dd>只测单页，实验室数据非真实用户</dd>
+        </dl>
+      </div>
+
+      <div class="tool t-perf">
+        <div class="t-head"><span class="t-idx">02</span><span class="t-name">🌐 WebPageTest</span></div>
+        <div class="t-core">业界知名深度性能平台，真实浏览器 + 全球多节点 + 多种网速，核心杀手锏是资源加载<strong>瀑布图</strong>。</div>
+        <dl class="t-rows">
+          <dt>安装</dt><dd>网页直接用 或 <code>npm install -g webpagetest</code></dd>
+          <dt>依赖</dt><dd>云端运行，本机零资源（需免费 API key）</dd>
+          <dt>特点</dt><dd>瀑布图 / Filmstrip / 多轮取均值</dd>
+          <dt>局限</dt><dd>测本机 localhost 需内网穿透；公共实例限量</dd>
+        </dl>
+      </div>
+
+      <div class="tool t-link">
+        <div class="t-head"><span class="t-idx">03</span><span class="t-name">🔗 LinkChecker</span></div>
+        <div class="t-core">免费开源死链检测器，递归爬取全站链接，检查 404/重定向/超时/SSL，多线程 + 多格式报告。</div>
+        <dl class="t-rows">
+          <dt>安装</dt><dd>Docker 推荐：<code>ghcr.io/linkchecker/linkchecker</code></dd>
+          <dt>依赖</dt><dd>Python 3.10+ / Docker</dd>
+          <dt>特点</dt><dd>CSV/HTML/XML 报告、遵守 robots.txt</dd>
+          <dt>局限</dt><dd>大站爬取较慢；Windows 原生装需 WSL</dd>
+        </dl>
+      </div>
+
+      <div class="tool t-link">
+        <div class="t-head"><span class="t-idx">04</span><span class="t-name">🕷️ Wget --spider</span></div>
+        <div class="t-core">GNU Wget 爬虫模式：只检查链接有效性不下载内容，极轻量、零依赖、脚本友好。Windows 需用 <code>wget.exe</code> 或等价 <code>curl.exe --spider</code>。</div>
+        <dl class="t-rows">
+          <dt>安装</dt><dd><code>winget install JernejSimoncic.Wget</code></dd>
+          <dt>依赖</dt><dd>无（独立二进制）；本机 curl 零安装</dd>
+          <dt>特点</dt><dd>秒级判断、可批量、CI 冒烟测试</dd>
+          <dt>局限</dt><dd>无报告页面；对 JS 渲染页无效</dd>
+        </dl>
+      </div>
+
+      <div class="tool t-sec">
+        <div class="t-head"><span class="t-idx">05</span><span class="t-name">🛡️ OWASP ZAP</span></div>
+        <div class="t-core">OWASP 官方 Web 应用安全扫描器（DAST），代理 + 爬虫 + 被动/主动扫描 + 模糊测试，可图形化也可 Docker 自动化接 CI。</div>
+        <dl class="t-rows">
+          <dt>安装</dt><dd>Docker 推荐：<code>ghcr.io/zaproxy/zaproxy:stable</code></dd>
+          <dt>依赖</dt><dd>Docker（免 Java）或桌面版需 JDK 17+</dd>
+          <dt>特点</dt><dd>基线/主动/API 三套脚本；告警分级；HTML/JSON 报告</dd>
+          <dt>局限</dt><dd>主动扫描慢且耗资源、误报需研判、上手难</dd>
+        </dl>
+      </div>
+
+      <div class="tool t-sec">
+        <div class="t-head"><span class="t-idx">06</span><span class="t-name">🔍 Nikto</span></div>
+        <div class="t-core">Web 服务器扫描器（Perl，8000+ 条检查）：危险文件、过期软件、配置错误、信息泄露。定位是快速侦察，与 ZAP 互补。</div>
+        <dl class="t-rows">
+          <dt>安装</dt><dd>Docker 推荐：<code>ghcr.io/sullo/nikto</code></dd>
+          <dt>依赖</dt><dd>Docker（推荐）或 Perl</dd>
+          <dt>特点</dt><dd>几秒–几分钟极快；Tuning 分类 / -update 更新</dd>
+          <dt>局限</dt><dd>只扫服务器/已知模式；误报偏多；不隐身</dd>
+        </dl>
+      </div>
+
+      <div class="tool t-seo" style="grid-column:1 / -1;">
+        <div class="t-head"><span class="t-idx">07</span><span class="t-name">🐸 Screaming Frog SEO Spider</span></div>
+        <div class="t-core">知名商业全站爬虫，输出每页 Title / Meta / H1 / 状态码 / Canonical / 重定向链 / 结构化数据等数十项 SEO 指标，可视化强。免费版限 500 URL 且不可导出。</div>
+        <dl class="t-rows">
+          <dt>安装</dt><dd>官网下载桌面版（GUI）；CLI 需付费授权</dd>
+          <dt>依赖</dt><dd>Java Runtime</dd>
+          <dt>特点</dt><dd>全站 SEO 审计、404/重定向排查、图表可视化</dd>
+          <dt>局限</dt><dd>商业软件；大站爬取吃内存；无人值守难</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Records ================= -->
+  <section id="records">
+    <h2>🧪 实战测试记录</h2>
+    <p class="sec-desc">8 份按统一模板归档的测试记录，覆盖 5 类工具 × 2 种靶场（本地 Juice Shop + 公网站点 perfeye）。</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>日期</th><th>工具</th><th>靶标</th><th>扫描方式</th><th>核心结果</th><th>状态</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">08-04</td>
+            <td><span class="badge b-perf">Lighthouse</span> v13.3.0</td>
+            <td>公网 perfeye</td>
+            <td>移动端模拟 ×2 次</td>
+            <td>Performance <b>57/58</b>；CLS <b>0.903</b> 🔴 极差；TBT 400ms</td>
+            <td><span class="badge b-warn">需修复</span></td>
+          </tr>
+          <tr>
+            <td class="mono">08-04</td>
+            <td><span class="badge b-perf">WebPageTest</span></td>
+            <td>公网 perfeye</td>
+            <td>公共实例 1 轮</td>
+            <td>TTFB 1912ms / LCP 9819ms 🔴；因<strong>未登录跳转 SSO</strong> 数据失真</td>
+            <td><span class="badge b-info">待复测</span></td>
+          </tr>
+          <tr>
+            <td class="mono">08-04</td>
+            <td><span class="badge b-link">LinkChecker</span> 10.6.0</td>
+            <td>本地 Juice Shop</td>
+            <td>Docker 全站递归</td>
+            <td>检查 <b>572</b> 链接 · <b>0</b> 死链 · 0 警告 · 3'12"</td>
+            <td><span class="badge b-ok">PASS</span></td>
+          </tr>
+          <tr>
+            <td class="mono">08-05</td>
+            <td><span class="badge b-sec">OWASP ZAP</span> 2.17.0</td>
+            <td>本地 Juice Shop</td>
+            <td>基线（被动）扫描</td>
+            <td>42 实例：0 高危；中危 2 类（CSP 缺失、CORS *）</td>
+            <td><span class="badge b-warn">有中危</span></td>
+          </tr>
+          <tr>
+            <td class="mono">08-05</td>
+            <td><span class="badge b-sec">OWASP ZAP</span> 2.17.0</td>
+            <td>本地 Juice Shop</td>
+            <td>主动扫描（轻量化）</td>
+            <td>79 实例：0 高危；中危 4 类，<strong>备份文件泄露 31 条</strong></td>
+            <td><span class="badge b-warn">有中危</span></td>
+          </tr>
+          <tr>
+            <td class="mono">08-05</td>
+            <td><span class="badge b-sec">Nikto</span></td>
+            <td>本地 Juice Shop</td>
+            <td>无认证黑盒</td>
+            <td>152 条：1 高危（<code>.htpasswd</code> 疑似误报）、6 中危；<strong>SPA 误报率高</strong></td>
+            <td><span class="badge b-warn">有中危</span></td>
+          </tr>
+          <tr>
+            <td class="mono">08-05</td>
+            <td><span class="badge b-link">Wget-Spider</span> 1.21.4</td>
+            <td>本地 Juice Shop</td>
+            <td>递归 2 层 spider</td>
+            <td><b>574</b> 请求全部 200 · <b>0</b> 断链 · 仅 0.5s</td>
+            <td><span class="badge b-ok">PASS</span></td>
+          </tr>
+          <tr>
+            <td class="mono">08-05</td>
+            <td><span class="badge b-seo">Screaming Frog</span></td>
+            <td>本地 Juice Shop</td>
+            <td>GUI 全站爬取</td>
+            <td>结果以 5 张截图留存，数值<strong>待人工补全</strong></td>
+            <td><span class="badge b-info">待补充</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h4 style="margin-bottom:12px; font-size:16px;">📈 链接健康度：两台工具交叉验证一致</h4>
+      <div class="bar-row"><span class="lbl">LinkChecker</span><div class="bar good"><i style="width:100%"></i></div><span class="val">572 链接 · 0 错误</span></div>
+      <div class="bar-row"><span class="lbl">Wget-Spider</span><div class="bar good"><i style="width:100%"></i></div><span class="val">574 请求 · 0 断链</span></div>
+      <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;">→ 两工具对同一靶场结论一致，均 <b>PASS</b>，验证了链接类工具的可靠性。</p>
+    </div>
+  </section>
+
+  <!-- ================= Findings ================= -->
+  <section id="findings">
+    <h2>🔎 关键发现</h2>
+    <p class="sec-desc">从测试记录中提炼的、需要行动的核心问题（跨工具、跨维度）。</p>
+
+    <div class="card">
+      <h4 style="margin-bottom:12px; font-size:16px;">🚀 性能 —— 首屏核心问题是 JS 大包 + 布局偏移</h4>
+      <ul style="list-style:none;">
+        <li style="padding:5px 0 5px 24px; position:relative;">🔴 <b>CLS = 0.903</b>（达标 ≤0.1）—— 4 处布局偏移稳定复现，Lighthouse 性能分主要失分项（Lighthouse / perfeye）</li>
+        <li style="padding:5px 0 5px 24px; position:relative;">🔴 <b>vendors.42aef419.async.js</b> 打包 2.64MB / 未压缩 8.13MB，占 JS 下载量 89.5%，主线程阻塞 ~1.9s（WebPageTest + Lighthouse 交叉确认）</li>
+        <li style="padding:5px 0 5px 24px; position:relative;">🔴 静态资源<b>无 Cache-Control</b>，缓存评分 8/100，每次访问重新下载 3.2MB</li>
+        <li style="padding:5px 0 5px 24px; position:relative;">🟠 首屏白屏约 8s；HTTP/1.1 未启用 HTTP/2；DNS 解析 1064ms</li>
+        <li style="padding:5px 0 5px 24px; position:relative;">📌 建议：拆分 JS 首屏 < 500KB、加 hash 长缓存（<code>max-age=31536000, immutable</code>）、服务端 302 跳转鉴权、启用 HTTP/2</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-bottom:12px; font-size:16px;">🛡️ 安全 —— 无高危，集中在配置类问题（修复成本低）</h4>
+      <ul style="list-style:none;">
+        <li style="padding:5px 0 5px 24px; position:relative;">🟠 ZAP 主动扫描：<b>备份文件泄露 31 条</b>（<code>/ftp/quarantine*</code> 下 .bak / - Copy / .zip）—— 最突出中危</li>
+        <li style="padding:5px 0 5px 24px; position:relative;">🟠 CORS <code>Access-Control-Allow-Origin: *</code> 跨域读取风险，应收敛白名单（ZAP + Nikto 均命中）</li>
+        <li style="padding:5px 0 5px 24px; position:relative;">🟠 缺失安全响应头：CSP / HSTS / COEP / COOP / Referrer-Policy</li>
+        <li style="padding:5px 0 5px 24px; position:relative;">🟠 敏感目录可访问：<code>/ftp/encrypt.pyc</code>、<code>/ftp/package-lock.json.bak</code></li>
+        <li style="padding:5px 0 5px 24px; position:relative;">📌 结论：<b>未发现可直接利用的 RCE / SQLi</b>；ZAP 轻量化扫描深度浅，需放开 <code>-m</code> + 加 <code>-j</code> 现代蜘蛛才能更深层测</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4 style="margin-bottom:12px; font-size:16px;">⚠️ 工具本身的实战经验</h4>
+      <ul style="list-style:none;">
+        <li style="padding:5px 0 5px 24px; position:relative;"><b>Nikto 对 SPA 误报率高</b>：SPA 对未匹配路由统一返回 200，导致 140/152 条备份探测「全命中」→ 大概率误报，高危项必须人工复核</li>
+        <li style="padding:5px 0 5px 24px; position:relative;"><b>ZAP 主动扫描重资源</b>：曾压垮 Docker 引擎（Java 堆 ~2GB），需用 <code>-m 1</code> + 降线程 + 限容器资源轻量化；<code>ascan.maxAlertsPerRule=20</code> 疑似不生效</li>
+        <li style="padding:5px 0 5px 24px; position:relative;"><b>Docker 容器访问宿主机</b>用 <code>host.docker.internal</code>，不能写 localhost</li>
+        <li style="padding:5px 0 5px 24px; position:relative;"><b>测试环境污染</b>：Chrome 扩展会污染 Lighthouse 数据，正式测试应使用无扩展环境或 Lighthouse CI</li>
+        <li style="padding:5px 0 5px 24px; position:relative;"><b>PowerShell 别名陷阱</b>：<code>wget</code>/<code>curl</code> 是内置别名，须写 <code>wget.exe</code>/<code>curl.exe</code></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= Recommend ================= -->
+  <section id="recommend">
+    <h2>✅ 选型建议</h2>
+    <p class="sec-desc">按实际场景给出推荐组合，从「最小可用」到「完整防线」逐级加码。</p>
+
+    <div class="combos">
+      <div class="combo">
+        <h4>🧩 组合 1 · 最小可用</h4>
+        <div class="c-tools">Wget/curl + Lighthouse（本机已有）</div>
+        <div class="c-desc">curl 批量检查链接健康；Lighthouse 定期跑性能评分。<b>零安装</b>、零成本。</div>
+        <div class="c-fit">适合：个人开发者快速体检</div>
+      </div>
+
+      <div class="combo reco">
+        <div class="c-flag">推荐</div>
+        <h4>🏷️ 组合 2 · 标准质检</h4>
+        <div class="c-tools">LinkChecker + Lighthouse + ZAP（Docker）</div>
+        <div class="c-desc">LinkChecker 全站死链巡检；Lighthouse 发布前后性能对比；ZAP baseline 上线前安全基线。</div>
+        <div class="c-fit">适合：中小团队日常 QA</div>
+      </div>
+
+      <div class="combo">
+        <h4>🛰️ 组合 3 · 完整防线</h4>
+        <div class="c-tools">LinkChecker + Lighthouse + WebPageTest + ZAP + Nikto + Screaming Frog</div>
+        <div class="c-desc">链接 → 性能（快速+深度）→ 安全（应用+服务器）→ SEO 全站，分层执行。</div>
+        <div class="c-fit">适合：对质量有完整要求的产品/运维团队</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h4 style="margin-bottom:12px; font-size:16px;">💰 按工具成本排序（从低到高）</h4>
+      <div class="tbl-wrap" style="border:none;">
+        <table>
+          <thead><tr><th>工具</th><th>成本</th><th>维护成本</th></tr></thead>
+          <tbody>
+            <tr><td><code>Wget-Spider</code></td><td>免费，本机已具备</td><td>零</td></tr>
+            <tr><td><code>Lighthouse</code></td><td>免费</td><td>零（npm 更新即可）</td></tr>
+            <tr><td><code>LinkChecker</code></td><td>免费</td><td>低（Docker 镜像即用）</td></tr>
+            <tr><td><code>Nikto</code></td><td>免费</td><td>低（Docker）</td></tr>
+            <tr><td><code>OWASP ZAP</code></td><td>免费</td><td>中（需理解告警、定期更新规则）</td></tr>
+            <tr><td><code>WebPageTest</code></td><td>免费（限量）</td><td>低（云端）</td></tr>
+            <tr><td><code>Screaming Frog</code></td><td>免费 ≤500 URL；£199/年解锁</td><td>低（GUI）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:13.5px; color:var(--ink-soft); margin-top:10px;">
+        <b>决策要点：</b>① 先跑起来再升级（从组合 1 开始）；② 安全工具务必用授权靶场验证流程；③ 自动化优先落地 Lighthouse CI + ZAP baseline；④ 每次结果按模板归档便于月度对比。
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= Roadmap ================= -->
+  <section id="roadmap">
+    <h2>🗓️ 后续行动路线图</h2>
+    <p class="sec-desc">落地到日常 QA / 发布流程的分阶段行动清单（当前全部 ⬜ 未开始）。</p>
+
+    <div class="stage">
+      <h4>阶段一 · 环境与靶场 <span class="badge b-info">0.5–1 天</span></h4>
+      <ul>
+        <li>安装 Docker Desktop</li>
+        <li>启动 Juice Shop（<code>http://localhost:3000</code>）与本地静态站（<code>python -m http.server 8888</code>）</li>
+      </ul>
+    </div>
+
+    <div class="stage">
+      <h4>阶段二 · 逐工具验证 <span class="badge b-info">按需 2–4 天</span></h4>
+      <ul>
+        <li>Lighthouse / LinkChecker / Wget / ZAP baseline / Nikto / WebPageTest / Screaming Frog 逐一对靶场跑一遍</li>
+        <li>每项结果按《测试记录模板》归档</li>
+      </ul>
+    </div>
+
+    <div class="stage">
+      <h4>阶段三 · 自动化接入 <span class="badge b-info">可选 1–2 天</span></h4>
+      <ul>
+        <li>Lighthouse CI：PR 自动跑分防止性能回退（<code>npx @lhci/cli autorun</code>）</li>
+        <li>ZAP baseline：CI 每日定时被动扫描，告警归档</li>
+        <li>LinkChecker 定时巡检：计划任务每周全站死链并发报告</li>
+      </ul>
+    </div>
+
+    <div class="stage">
+      <h4>阶段四 · 常态化</h4>
+      <ul>
+        <li>建立月度性能/安全基线对比</li>
+        <li>重大发布前执行完整防线（组合 3）</li>
+        <li>关注工具更新：ZAP 规则库、Nikto 数据库、Lighthouse 版本</li>
+        <li>评估 Screaming Frog 付费版（若全站 URL > 500）</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= Compliance ================= -->
+  <section id="compliance">
+    <h2>🛡️ 合规提示</h2>
+    <div class="callout warn">
+      <span class="emoji">⚠️</span>
+      <div><b>安全工具（ZAP / Nikto）只对你有权扫描的目标使用。</b>本仓库统一推荐使用本地靶场（Juice Shop / DVWA）验证流程，<b>切勿对未授权的公网站点扫描</b>——主动扫描会向目标发送真实攻击请求，可能触发 WAF 告警、写入日志、影响服务，并存在法律风险。</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Web 测试工具调研 · 总结页 —— 由 Obsidian 笔记库生成 · 仓库结构：01-总览 / 02-工具手册 / 03-测试记录 / 04-结论
+</footer>
+
+<script>
+  // 顶部导航滚动高亮
+  (function(){
+    const links = Array.from(document.querySelectorAll('nav a'));
+    const map = {};
+    links.forEach(a => { map[a.getAttribute('href').slice(1)] = a; });
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    const onScroll = () => {
+      let cur = sections[0] && sections[0].id;
+      for (const s of sections) { if (window.scrollY + 80 >= s.offsetTop) cur = s.id; }
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+</body>
+</html>

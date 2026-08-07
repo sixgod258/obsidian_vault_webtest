@@ -1,0 +1,154 @@
+{
+  "tool": "Wget --spider 实现",
+  "target": "http://localhost:3000",
+  "timestamp": "2026-08-06T06:08:54.808Z",
+  "summary": {
+    "total": 20,
+    "ok": 18,
+    "broken": 2,
+    "redirects": 0
+  },
+  "results": [
+    {
+      "url": "http://localhost:3000",
+      "status": 200,
+      "timeMs": 20,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/login",
+      "status": 200,
+      "timeMs": 3,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/register",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/about",
+      "status": 200,
+      "timeMs": 3,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/contact",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/photo-wall",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/chatbot",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/basket",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/search",
+      "status": 200,
+      "timeMs": 3,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/forgot-password",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/score-board",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/deluxe-membership",
+      "status": 200,
+      "timeMs": 3,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/product/1",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/#/product/999",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/nonexistent-page",
+      "status": 200,
+      "timeMs": 8,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/rest/products/search?q=apple",
+      "status": 200,
+      "timeMs": 9,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/api/products",
+      "status": 200,
+      "timeMs": 23,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/rest/products",
+      "status": 500,
+      "timeMs": 6,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/rest/user/login",
+      "status": 500,
+      "timeMs": 5,
+      "redirect": null,
+      "err": null
+    },
+    {
+      "url": "http://localhost:3000/robots.txt",
+      "status": 200,
+      "timeMs": 2,
+      "redirect": null,
+      "err": null
+    }
+  ],
+  "verdict": "可完全实现——用 Playwright request API 逐 URL 发请求即可，无需渲染页面"
+}
