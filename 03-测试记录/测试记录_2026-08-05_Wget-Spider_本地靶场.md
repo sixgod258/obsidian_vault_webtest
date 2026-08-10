@@ -37,11 +37,13 @@ wget.exe --spider -r -l 2 http://localhost:3000
 | 爬取总耗时 | **0.5 s** |
 | 结论 | **PASS（通过）** |
 
+> 注：`--spider` + `-r`（递归）组合下，wget 仍会下载首页/robots/css 等用于解析后续链接（`--spider` 只跳过"正常模式"的落盘保存，不阻止递归解析所需的读取），故有"实际下载 3 个文件"与"响应体 8.14 MB"的传输统计。
+
 ### 资源结构
 
 | 内容类型 | 次数 | 说明 |
 |---|---|---|
-| image/svg+xml | 541 | 国旗 SVG（/media/ 目录 555 个） |
+| image/svg+xml | 541 | 国旗 SVG（/media/ 目录约 555 个，实际请求 541） |
 | application/javascript | 13 | main.js（765KB）+ 10 个 chunk |
 | font/woff(2) | 11 | Material Icons / font-mfizz |
 | 其他 | 9 | html/css/robots/favicon 等 |

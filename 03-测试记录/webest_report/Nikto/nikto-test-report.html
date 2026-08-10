@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nikto 安全测试报告 — host.docker.internal:3000</title>
+<style>
+  :root {
+    --primary: #1a3a6b;
+    --primary-light: #2c5aa0;
+    --bg: #f4f6f9;
+    --card-bg: #ffffff;
+    --border: #dde3ea;
+    --text: #2b3440;
+    --text-muted: #6b7686;
+    --high: #c0392b;
+    --medium: #e67e22;
+    --low: #f1c40f;
+    --info: #7f8c8d;
+    --high-bg: #fdecea;
+    --medium-bg: #fef3e7;
+    --low-bg: #fef9e7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 24px;
+  }
+  .container { max-width: 980px; margin: 0 auto; }
+  /* Header */
+  .report-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: #fff;
+    border-radius: 10px;
+    padding: 32px 36px;
+    margin-bottom: 24px;
+  }
+  .report-header h1 { font-size: 26px; margin-bottom: 8px; }
+  .report-header .sub { font-size: 14px; opacity: .9; }
+  /* Cards */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  }
+  .card h2 {
+    font-size: 19px;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    font-size: 16px;
+    color: var(--primary-light);
+    margin: 18px 0 10px;
+  }
+  .card h4 { font-size: 14px; margin: 14px 0 6px; color: var(--text); }
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 14px; }
+  th, td { padding: 9px 12px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { background: #eef2f7; color: var(--primary); font-weight: 600; white-space: nowrap; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  /* Severity badges */
+  .sev { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; }
+  .sev-high { background: var(--high); }
+  .sev-medium { background: var(--medium); }
+  .sev-low { background: var(--low); color: #6b5b00; }
+  .sev-info { background: var(--info); }
+  /* Finding blocks */
+  .finding {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  .finding .f-head { padding: 10px 16px; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .finding.high .f-head { background: var(--high-bg); color: var(--high); }
+  .finding.medium .f-head { background: var(--medium-bg); color: #9a4d0f; }
+  .finding.low .f-head { background: var(--low-bg); color: #7a6a00; }
+  .finding .f-body { padding: 14px 16px; }
+  .finding .f-body p, .finding .f-body ul, .finding .f-body li { margin: 6px 0; }
+  .finding .f-body ul { padding-left: 22px; }
+  .meta { font-size: 13px; color: var(--text-muted); }
+  .meta b { color: var(--text); }
+  code {
+    background: #f0f2f5;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12.5px;
+  }
+  pre {
+    background: #f6f8fa;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    font-family: Consolas, "Courier New", monospace;
+  }
+  /* Summary stats */
+  .stats { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0; }
+  .stat {
+    flex: 1 1 120px; text-align: center; padding: 14px 10px;
+    border-radius: 8px; border: 1px solid var(--border); background: #fafbfc;
+  }
+  .stat .num { font-size: 28px; font-weight: 700; line-height: 1.2; }
+  .stat .lbl { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .stat.high .num { color: var(--high); }
+  .stat.medium .num { color: var(--medium); }
+  .stat.low .num { color: #b7950b; }
+  .stat.total .num { color: var(--primary); }
+  .callout {
+    border-left: 4px solid var(--primary-light);
+    background: #f3f6fb;
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .callout.warn { border-left-color: var(--medium); background: var(--medium-bg); }
+  .footer {
+    text-align: center; color: var(--text-muted); font-size: 12.5px; margin-top: 30px;
+  }
+  a { color: var(--primary-light); }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .card { box-shadow: none; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===================== HEADER ===================== -->
+  <div class="report-header">
+    <h1>Nikto 安全测试报告</h1>
+    <div class="sub">测试目标：http://host.docker.internal:3000 &nbsp;|&nbsp; 数据来源：nikto-report.json &nbsp;|&nbsp; 报告生成日期：2026-08-05</div>
+  </div>
+
+  <!-- ===================== INFO ===================== -->
+  <div class="card">
+    <h2>📋 报告信息</h2>
+    <table>
+      <tr><th style="width:180px">项目</th><th>内容</th></tr>
+      <tr><td>测试工具</td><td>Nikto（Web 服务器扫描器）</td></tr>
+      <tr><td>测试目标</td><td>http://host.docker.internal:3000</td></tr>
+      <tr><td>目标 IP</td><td>192.168.65.254</td></tr>
+      <tr><td>目标端口</td><td>3000</td></tr>
+      <tr><td>数据来源</td><td><code>nikto-report.json</code></td></tr>
+      <tr><td>报告生成日期</td><td>2026-08-05</td></tr>
+      <tr><td>测试方式</td><td>无认证黑盒扫描</td></tr>
+    </table>
+  </div>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <div class="card">
+    <h2>📖 测试概述</h2>
+    <p>本次测试使用 Nikto 对目标主机 <code>host.docker.internal</code>（IP：<code>192.168.65.254</code>，端口：<code>3000</code>）进行 Web 服务安全扫描，共发现 <b>152 条</b> 告警记录。目标服务无 Banner 信息，结合请求特征判断，极可能为基于前端框架（存在 hash 路由 <code>#/jobs</code>）的 SPA 应用。</p>
+    <table>
+      <thead>
+        <tr><th>Nikto ID</th><th>告警类型</th><th>数量</th><th>严重程度</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>740001</td><td>潜在备份 / 证书文件</td><td>140</td><td><span class="sev sev-low">低（疑似误报）</span></td></tr>
+        <tr><td>013587</td><td>建议安全响应头缺失</td><td>4</td><td><span class="sev sev-medium">中</span></td></tr>
+        <tr><td>999986</td><td>跨域资源共享（CORS）配置不当</td><td>1</td><td><span class="sev sev-medium">中</span></td></tr>
+        <tr><td>999978</td><td>X-Frame-Options 头已弃用</td><td>1</td><td><span class="sev sev-low">低</span></td></tr>
+        <tr><td>999100</td><td>非常规响应头（信息泄露）</td><td>1</td><td><span class="sev sev-low">低</span></td></tr>
+        <tr><td>999997</td><td>robots.txt 条目目录可访问</td><td>1</td><td><span class="sev sev-medium">中</span></td></tr>
+        <tr><td>999996</td><td>robots.txt 存在</td><td>1</td><td><span class="sev sev-low">低</span></td></tr>
+        <tr><td>001675</td><td>目录可访问 <code>/ftp/</code></td><td>1</td><td><span class="sev sev-low">低</span></td></tr>
+        <tr><td>001811</td><td>目录可访问 <code>/public/</code></td><td>1</td><td><span class="sev sev-low">低</span></td></tr>
+        <tr><td>002739</td><td><code>.htpasswd</code> 包含认证信息</td><td>1</td><td><span class="sev sev-high">高（待确认）</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===================== TARGET ===================== -->
+  <div class="card">
+    <h2>🎯 目标信息</h2>
+    <table>
+      <tr><th style="width:180px">属性</th><th>值</th></tr>
+      <tr><td>主机名</td><td>host.docker.internal</td></tr>
+      <tr><td>IP 地址</td><td>192.168.65.254</td></tr>
+      <tr><td>端口 / 协议</td><td>3000 / HTTP</td></tr>
+      <tr><td>服务 Banner</td><td>无（未识别）</td></tr>
+      <tr><td>应用特征</td><td>前端 SPA，使用 hash 路由（<code>x-recruiting: /#/jobs</code>）</td></tr>
+    </table>
+  </div>
+
+  <!-- ===================== SUMMARY ===================== -->
+  <div class="card">
+    <h2>📊 测试结果摘要</h2>
+    <h3>3.1 严重程度分布</h3>
+    <div class="stats">
+      <div class="stat high"><div class="num">1</div><div class="lbl">高危</div></div>
+      <div class="stat medium"><div class="num">6</div><div class="lbl">中危</div></div>
+      <div class="stat low"><div class="num">145</div><div class="lbl">低危 / 信息</div></div>
+      <div class="stat total"><div class="num">152</div><div class="lbl">合计</div></div>
+    </div>
+    <table>
+      <thead>
+        <tr><th>严重程度</th><th>数量</th><th>占比</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="sev sev-high">🔴 高危</span></td><td>1</td><td>0.7%</td></tr>
+        <tr><td><span class="sev sev-medium">🟠 中危</span></td><td>6</td><td>3.9%</td></tr>
+        <tr><td><span class="sev sev-low">🟡 低危 / 信息</span></td><td>145</td><td>95.4%</td></tr>
+        <tr><td><b>合计</b></td><td><b>152</b></td><td><b>100%</b></td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.2 关键结论</h3>
+    <ul>
+      <li>未发现可直接利用的远程代码执行（RCE）、SQL 注入等严重漏洞。</li>
+      <li>最高风险点：<code>/.htpasswd</code> 疑似包含认证信息（待人工确认），以及 CORS 通配符配置。</li>
+      <li>140 条"备份/证书文件"告警高度疑似<b>误报</b>——SPA 应用通常对所有未匹配路由统一返回 <code>200</code>（回退到 <code>index.html</code>），导致 Nikto 判定所有探测路径"存在"，需人工复核确认。</li>
+      <li>服务端缺少多项安全响应头（CSP、HSTS 等），加固成本低，建议优先补齐。</li>
+    </ul>
+  </div>
+
+  <!-- ===================== DETAILS ===================== -->
+  <div class="card">
+    <h2>🔍 漏洞发现详情</h2>
+
+    <!-- HIGH -->
+    <h3>4.1 高危（High）</h3>
+    <div class="finding high">
+      <div class="f-head">
+        <span class="sev sev-high">高危</span>
+        4.1.1 <code>/.htpasswd</code> 疑似包含认证信息
+      </div>
+      <div class="f-body">
+        <p class="meta">
+          <b>Nikto ID：</b>002739 &nbsp;|&nbsp; <b>CWE：</b>CWE-200（信息泄露） &nbsp;|&nbsp; <b>请求：</b><code>GET /.htpasswd</code>
+        </p>
+        <p><b>描述：</b>Nikto 探测到 <code>/.htpasswd</code> 路径返回了疑似包含授权信息的响应。若 <code>.htpasswd</code> 文件真实暴露，将泄露 Basic 认证凭据（用户名 + 密码哈希），攻击者可离线破解或直接利用该凭据。</p>
+        <div class="callout warn"><b>⚠️ 注意：</b>该告警需人工确认实际 HTTP 状态码与响应内容。若返回的是 SPA 回退页面（<code>200 + index.html</code>），则属于误报。</div>
+        <p><b>修复建议：</b></p>
+        <ul>
+          <li>立即人工访问 <code>http://host.docker.internal:3000/.htpasswd</code> 核实响应内容与状态码；</li>
+          <li>若确认泄露，删除该文件并轮换所有相关凭据；</li>
+          <li>禁止在 Web 根目录存放 <code>.htpasswd</code> 等认证文件，通过服务端配置文件（如 <code>location</code> 块）阻止访问；</li>
+          <li>若为误报（SPA 回退），在 WAF / 反向代理层对敏感路径（<code>.htpasswd</code>、<code>/.git</code>、备份文件等）返回 <code>404/403</code>。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MEDIUM -->
+    <h3>4.2 中危（Medium）</h3>
+
+    <div class="finding medium">
+      <div class="f-head">
+        <span class="sev sev-medium">中危</span>
+        4.2.1 CORS 配置不当（<code>Access-Control-Allow-Origin: *</code>）
+      </div>
+      <div class="f-body">
+        <p class="meta"><b>Nikto ID：</b>999986 &nbsp;|&nbsp; <b>请求：</b><code>GET /</code></p>
+        <p><b>描述：</b>服务端返回了 <code>Access-Control-Allow-Origin: *</code>（通配符）。任意来源的网页脚本均可跨域读取本服务的响应内容。若该服务承载登录态接口或敏感数据，攻击者可构造恶意网页窃取数据。</p>
+        <p><b>修复建议：</b></p>
+        <ul>
+          <li>将 <code>Access-Control-Allow-Origin</code> 收敛为受信任的固定来源列表（白名单）；</li>
+          <li>禁止使用通配符 <code>*</code>，尤其不得与 <code>Access-Control-Allow-Credentials: true</code> 同时使用；</li>
+          <li>如需通配，应通过服务端动态校验 <code>Origin</code> 请求头后回显具体来源。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="finding medium">
+      <div class="f-head">
+        <span class="sev sev-medium">中危</span>
+        4.2.2 建议安全响应头缺失
+      </div>
+      <div class="f-body">
+        <p class="meta"><b>Nikto ID：</b>013587 &nbsp;|&nbsp; <b>请求：</b><code>GET /</code></p>
+        <p><b>描述：</b>服务端响应缺少以下 4 个建议安全头：</p>
+        <table>
+          <thead>
+            <tr><th>缺失的安全头</th><th>作用</th><th>参考文档</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>Content-Security-Policy</code></td><td>内容安全策略，缓解 XSS、数据注入</td><td><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank">MDN - CSP</a></td></tr>
+            <tr><td><code>Strict-Transport-Security</code></td><td>强制 HTTPS（HSTS），防止降级攻击</td><td><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security" target="_blank">MDN - HSTS</a></td></tr>
+            <tr><td><code>Referrer-Policy</code></td><td>控制 <code>Referer</code> 泄露范围</td><td><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy" target="_blank">MDN - Referrer-Policy</a></td></tr>
+            <tr><td><code>Permissions-Policy</code></td><td>限制浏览器功能（摄像头、定位等）</td><td><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy" target="_blank">MDN - Permissions-Policy</a></td></tr>
+          </tbody>
+        </table>
+        <p><b>修复建议：</b></p>
+        <ul>
+          <li>添加 CSP 头并逐步收紧（先 <code>Content-Security-Policy-Report-Only</code> 观察，再正式启用）；</li>
+          <li>全站启用 HTTPS 后配置 HSTS；</li>
+          <li>配置 <code>Referrer-Policy: strict-origin-when-cross-origin</code>；</li>
+          <li>按需配置 <code>Permissions-Policy</code>。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="finding medium">
+      <div class="f-head">
+        <span class="sev sev-medium">中危</span>
+        4.2.3 robots.txt 中 <code>/ftp/</code> 目录可访问
+      </div>
+      <div class="f-body">
+        <p class="meta">
+          <b>Nikto ID：</b>999997 &nbsp;|&nbsp; <b>参考：</b><a href="https://portswigger.net/kb/issues/00600600_robots-txt-file" target="_blank">PortSwigger KB - robots.txt</a> &nbsp;|&nbsp; <b>请求：</b><code>GET /ftp/</code>
+        </p>
+        <p><b>描述：</b><code>/robots.txt</code> 中声明了条目 <code>/ftp/</code>（通常表示该路径不应被爬取/公开），但访问 <code>/ftp/</code> 返回 <code>200</code>（非禁止或重定向状态码），说明该目录处于可访问状态。</p>
+        <p><b>修复建议：</b></p>
+        <ul>
+          <li>确认 <code>/ftp/</code> 目录的实际用途，若无需公开访问，应配置为 <code>403/404</code>；</li>
+          <li>robots.txt 本身并非访问控制手段，敏感资源须通过服务端权限控制保护；</li>
+          <li>若为 SPA 回退导致的 <code>200</code>，同 4.1.1 处理（代理层统一拦截敏感路径）。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LOW -->
+    <h3>4.3 低危 / 信息（Low / Info）</h3>
+
+    <div class="finding low">
+      <div class="f-head">
+        <span class="sev sev-low">低</span>
+        4.3.1 潜在备份 / 证书文件（140 条，疑似误报）
+      </div>
+      <div class="f-body">
+        <p class="meta">
+          <b>Nikto ID：</b>740001 &nbsp;|&nbsp; <b>CWE：</b><a href="https://cwe.mitre.org/data/definitions/530.html" target="_blank">CWE-530（备份文件暴露）</a> &nbsp;|&nbsp; <b>请求：</b>均为 <code>HEAD</code> 请求，探测 14 个基础文件名 × 10 种扩展名，共 140 个路径
+        </p>
+        <p><b>探测路径示例：</b></p>
+        <table>
+          <thead>
+            <tr><th>基础文件名</th><th>扩展名</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>archive</code> <code>backup</code> <code>database</code> <code>docker</code> <code>dump</code> <code>host</code> <code>host.docker</code> <code>host.docker.internal</code> <code>host_docker_internal</code> <code>hostdocker</code> <code>hostdockerinternal</code> <code>internal</code> <code>site</code> <code>192.168.65.254</code></td>
+            <td><code>.alz</code> <code>.cer</code> <code>.egg</code> <code>.jks</code> <code>.pem</code> <code>.tar</code> <code>.tar.bz2</code> <code>.tar.lzma</code> <code>.tgz</code> <code>.war</code></td>
+          </tbody>
+        </table>
+        <p><b>分析：</b>140 个探测路径"全部命中"这一特征与典型 SPA 应用行为高度吻合——SPA 前端服务器会对任意未匹配路由统一返回 <code>200</code>（回退 <code>index.html</code>），从而让 Nikto 将每个备份文件名探测都误判为"存在"。<b>因此本类告警大概率全部为误报</b>，但仍有小概率存在真实备份文件。</p>
+        <p><b>核实方法：</b></p>
+        <ul>
+          <li>随机抽样访问几个路径（如 <code>/backup.tar.bz2</code>、<code>/site.war</code>），确认响应内容是 SPA 首页 HTML 还是真实压缩包/证书文件；</li>
+          <li>查看响应 <code>Content-Type</code>（HTML 文本 vs <code>application/octet-stream</code>）与 <code>Content-Length</code>；</li>
+          <li>若确认为 SPA 回退，请在反向代理 / WAF 层对 <code>.tar</code>、<code>.war</code>、<code>.bak</code>、<code>.jks</code>、<code>.pem</code> 等备份扩展名统一返回 <code>404/403</code>。</li>
+        </ul>
+        <p><b>修复建议：</b>禁止在 Web 根目录存放任何备份、压缩包、证书或密钥文件；若为误报，按上述核实方法处理后可在后续扫描中加入白名单 / 排除规则。</p>
+      </div>
+    </div>
+
+    <div class="finding low">
+      <div class="f-head">
+        <span class="sev sev-low">低</span>
+        4.3.2 X-Frame-Options 头已弃用
+      </div>
+      <div class="f-body">
+        <p class="meta"><b>Nikto ID：</b>999978 &nbsp;|&nbsp; <b>参考：</b><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options" target="_blank">MDN - X-Frame-Options</a> &nbsp;|&nbsp; <b>请求：</b><code>GET /</code></p>
+        <p><b>描述：</b>服务端返回的 <code>X-Frame-Options</code> 头已被标准弃用，应改用 CSP 的 <code>frame-ancestors</code> 指令实现点击劫持防护。</p>
+        <p><b>修复建议：</b>在 CSP 中配置 <code>frame-ancestors</code>，并逐步移除 <code>X-Frame-Options</code>（过渡期可两者并存）。</p>
+      </div>
+    </div>
+
+    <div class="finding low">
+      <div class="f-head">
+        <span class="sev sev-low">低</span>
+        4.3.3 非常规响应头 <code>x-recruiting</code>
+      </div>
+      <div class="f-body">
+        <p class="meta"><b>Nikto ID：</b>999100 &nbsp;|&nbsp; <b>请求：</b><code>GET /</code></p>
+        <p><b>描述：</b>服务端返回了非常规响应头 <code>x-recruiting: /#/jobs</code>。该头泄露了应用内部"招聘"（jobs）页面的路由信息，可用于进一步的信息收集，说明该应用疑似为招聘类系统。</p>
+        <p><b>修复建议：</b>评估该自定义头的必要性，如非必要（如内部调试用）建议移除；确需保留则评估其信息暴露面。</p>
+      </div>
+    </div>
+
+    <div class="finding low">
+      <div class="f-head">
+        <span class="sev sev-low">低</span>
+        4.3.4 robots.txt 存在
+      </div>
+      <div class="f-body">
+        <p class="meta"><b>Nikto ID：</b>999996 &nbsp;|&nbsp; <b>参考：</b><a href="https://developer.mozilla.org/en-US/docs/Glossary/Robots.txt" target="_blank">MDN - Robots.txt</a> &nbsp;|&nbsp; <b>请求：</b><code>GET /robots.txt</code></p>
+        <p><b>描述：</b>根目录存在 <code>/robots.txt</code>，包含 1 个条目（<code>/ftp/</code>），需人工查看内容以确认是否泄露敏感路径。</p>
+        <p><b>修复建议：</b>人工检查 robots.txt 内容；注意 robots.txt 仅约束合规爬虫，不能作为访问控制手段。</p>
+      </div>
+    </div>
+
+    <div class="finding low">
+      <div class="f-head">
+        <span class="sev sev-low">低</span>
+        4.3.5 <code>/ftp/</code>、<code>/public/</code> 目录可访问
+      </div>
+      <div class="f-body">
+        <p class="meta"><b>Nikto ID：</b>001675（<code>/ftp/</code>）、001811（<code>/public/</code>） &nbsp;|&nbsp; <b>请求：</b><code>GET /ftp/</code>、<code>GET /public/</code></p>
+        <p><b>描述：</b><code>/ftp/</code> 与 <code>/public/</code> 目录返回了非禁止状态码（Nikto 判定"可能值得关注"），需确认是否存在目录列举或非预期文件暴露。</p>
+        <p><b>修复建议：</b>确认目录内容与访问控制；若为 SPA 回退导致的 <code>200</code>，按 4.1.1 的代理层拦截方案处理；若存在目录列举，应关闭自动索引。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== RISK ===================== -->
+  <div class="card">
+    <h2>⚖️ 风险分析</h2>
+    <h3>5.1 误报可能性评估</h3>
+    <table>
+      <thead>
+        <tr><th>告警类别</th><th>误报可能性</th><th>依据</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>备份/证书文件（740001，140 条）</td><td><b>极高</b></td><td>探测路径"全部命中"，与 SPA 对未匹配路由统一返回 <code>200</code> 的行为一致</td></tr>
+        <tr><td><code>/.htpasswd</code>（002739）</td><td>高</td><td>同 SPA 回退机制，Nikto 可能将回退响应误判为"含认证信息"</td></tr>
+        <tr><td><code>/ftp/</code>、<code>/public/</code>（001675 / 001811 / 999997）</td><td>中高</td><td>返回 <code>200</code> 与 SPA 回退特征吻合</td></tr>
+        <tr><td>CORS <code>*</code>（999986）</td><td>低</td><td>响应头为明确证据，需确认是否真实存在</td></tr>
+        <tr><td>缺失安全头（013587）</td><td>低</td><td>响应头缺失为确定性事实</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <b>说明：</b>由于目标高度疑似 SPA 应用（hash 路由 <code>#/jobs</code>），上述"目录 / 文件存在"类告警极可能由前端回退路由触发。<b>强烈建议人工抽样复核后再正式定级。</b>
+    </div>
+    <h3>5.2 影响面</h3>
+    <ul>
+      <li>若 <code>.htpasswd</code> 真实暴露 → 凭据泄露，影响高；</li>
+      <li>若 CORS <code>*</code> 存在于含鉴权接口的服务 → 跨域数据窃取，影响中高；</li>
+      <li>安全响应头缺失 → 增加 XSS、点击劫持、协议降级等攻击面，影响中。</li>
+    </ul>
+  </div>
+
+  <!-- ===================== REMEDIATION ===================== -->
+  <div class="card">
+    <h2>🛠️ 修复建议汇总</h2>
+    <table>
+      <thead>
+        <tr><th>优先级</th><th>修复项</th><th>对应告警</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>P0</b></td><td>人工核实并处置 <code>/.htpasswd</code>，若泄露立即下线并轮换凭据</td><td>002739</td></tr>
+        <tr><td><b>P1</b></td><td>收敛 CORS 白名单，禁止 <code>*</code></td><td>999986</td></tr>
+        <tr><td><b>P1</b></td><td>补齐安全响应头：CSP、HSTS、Referrer-Policy、Permissions-Policy</td><td>013587</td></tr>
+        <tr><td><b>P1</b></td><td>敏感路径在代理/WAF 层统一拦截（<code>.htpasswd</code>、备份扩展名、<code>/ftp/</code>、<code>/public/</code>）</td><td>002739 / 740001 / 001675 / 001811</td></tr>
+        <tr><td><b>P2</b></td><td>移除或评估自定义头 <code>x-recruiting</code></td><td>999100</td></tr>
+        <tr><td><b>P2</b></td><td>CSP 改用 <code>frame-ancestors</code>，过渡期保留 <code>X-Frame-Options</code></td><td>999978</td></tr>
+        <tr><td><b>P3</b></td><td>清理 robots.txt 中可访问的敏感条目；删除 Web 根目录备份文件</td><td>999996 / 999997</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===================== APPENDIX ===================== -->
+  <div class="card">
+    <h2>📎 附录</h2>
+    <h3>7.1 探测到的备份/证书文件路径清单（140 个）</h3>
+    <p>以下路径均为 Nikto <code>HEAD</code> 探测命中项，<b>大概率属于 SPA 回退误报</b>，需抽样核实：</p>
+    <table>
+      <thead>
+        <tr><th>基础名</th><th>路径</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>archive</code></td><td><code>/archive.alz</code> <code>/archive.cer</code> <code>/archive.egg</code> <code>/archive.jks</code> <code>/archive.pem</code> <code>/archive.tar</code> <code>/archive.tar.bz2</code> <code>/archive.tar.lzma</code> <code>/archive.tgz</code> <code>/archive.war</code></td></tr>
+        <tr><td><code>backup</code></td><td><code>/backup.alz</code> <code>/backup.cer</code> <code>/backup.egg</code> <code>/backup.jks</code> <code>/backup.pem</code> <code>/backup.tar</code> <code>/backup.tar.bz2</code> <code>/backup.tar.lzma</code> <code>/backup.tgz</code> <code>/backup.war</code></td></tr>
+        <tr><td><code>database</code></td><td><code>/database.alz</code> <code>/database.cer</code> <code>/database.egg</code> <code>/database.jks</code> <code>/database.pem</code> <code>/database.tar</code> <code>/database.tar.bz2</code> <code>/database.tar.lzma</code> <code>/database.tgz</code> <code>/database.war</code></td></tr>
+        <tr><td><code>docker</code></td><td><code>/docker.alz</code> <code>/docker.cer</code> <code>/docker.egg</code> <code>/docker.jks</code> <code>/docker.pem</code> <code>/docker.tar</code> <code>/docker.tar.bz2</code> <code>/docker.tar.lzma</code> <code>/docker.tgz</code> <code>/docker.war</code></td></tr>
+        <tr><td><code>dump</code></td><td><code>/dump.alz</code> <code>/dump.cer</code> <code>/dump.egg</code> <code>/dump.jks</code> <code>/dump.pem</code> <code>/dump.tar</code> <code>/dump.tar.bz2</code> <code>/dump.tar.lzma</code> <code>/dump.tgz</code> <code>/dump.war</code></td></tr>
+        <tr><td><code>host</code></td><td><code>/host.alz</code> <code>/host.cer</code> <code>/host.egg</code> <code>/host.jks</code> <code>/host.pem</code> <code>/host.tar</code> <code>/host.tar.bz2</code> <code>/host.tar.lzma</code> <code>/host.tgz</code> <code>/host.war</code></td></tr>
+        <tr><td><code>host.docker</code></td><td><code>/host.docker.alz</code> <code>/host.docker.cer</code> <code>/host.docker.egg</code> <code>/host.docker.jks</code> <code>/host.docker.pem</code> <code>/host.docker.tar</code> <code>/host.docker.tar.bz2</code> <code>/host.docker.tar.lzma</code> <code>/host.docker.tgz</code> <code>/host.docker.war</code></td></tr>
+        <tr><td><code>host.docker.internal</code></td><td><code>/host.docker.internal.alz</code> <code>/host.docker.internal.cer</code> <code>/host.docker.internal.egg</code> <code>/host.docker.internal.jks</code> <code>/host.docker.internal.pem</code> <code>/host.docker.internal.tar</code> <code>/host.docker.internal.tar.bz2</code> <code>/host.docker.internal.tar.lzma</code> <code>/host.docker.internal.tgz</code> <code>/host.docker.internal.war</code></td></tr>
+        <tr><td><code>host_docker_internal</code></td><td><code>/host_docker_internal.alz</code> <code>/host_docker_internal.cer</code> <code>/host_docker_internal.egg</code> <code>/host_docker_internal.jks</code> <code>/host_docker_internal.pem</code> <code>/host_docker_internal.tar</code> <code>/host_docker_internal.tar.bz2</code> <code>/host_docker_internal.tar.lzma</code> <code>/host_docker_internal.tgz</code> <code>/host_docker_internal.war</code></td></tr>
+        <tr><td><code>hostdocker</code></td><td><code>/hostdocker.alz</code> <code>/hostdocker.cer</code> <code>/hostdocker.egg</code> <code>/hostdocker.jks</code> <code>/hostdocker.pem</code> <code>/hostdocker.tar</code> <code>/hostdocker.tar.bz2</code> <code>/hostdocker.tar.lzma</code> <code>/hostdocker.tgz</code> <code>/hostdocker.war</code></td></tr>
+        <tr><td><code>hostdockerinternal</code></td><td><code>/hostdockerinternal.alz</code> <code>/hostdockerinternal.cer</code> <code>/hostdockerinternal.egg</code> <code>/hostdockerinternal.jks</code> <code>/hostdockerinternal.pem</code> <code>/hostdockerinternal.tar</code> <code>/hostdockerinternal.tar.bz2</code> <code>/hostdockerinternal.tar.lzma</code> <code>/hostdockerinternal.tgz</code> <code>/hostdockerinternal.war</code></td></tr>
+        <tr><td><code>internal</code></td><td><code>/internal.alz</code> <code>/internal.cer</code> <code>/internal.egg</code> <code>/internal.jks</code> <code>/internal.pem</code> <code>/internal.tar</code> <code>/internal.tar.bz2</code> <code>/internal.tar.lzma</code> <code>/internal.tgz</code> <code>/internal.war</code></td></tr>
+        <tr><td><code>site</code></td><td><code>/site.alz</code> <code>/site.cer</code> <code>/site.egg</code> <code>/site.jks</code> <code>/site.pem</code> <code>/site.tar</code> <code>/site.tar.bz2</code> <code>/site.tar.lzma</code> <code>/site.tgz</code> <code>/site.war</code></td></tr>
+        <tr><td><code>192.168.65.254</code></td><td><code>/192.168.65.254.alz</code> <code>/192.168.65.254.cer</code> <code>/192.168.65.254.egg</code> <code>/192.168.65.254.jks</code> <code>/192.168.65.254.pem</code> <code>/192.168.65.254.tar</code> <code>/192.168.65.254.tar.bz2</code> <code>/192.168.65.254.tar.lzma</code> <code>/192.168.65.254.tgz</code> <code>/192.168.65.254.war</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>7.2 其他告警明细</h3>
+    <table>
+      <thead>
+        <tr><th>Nikto ID</th><th>方法</th><th>URL</th><th>描述</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>999986</td><td>GET</td><td><code>/</code></td><td>Retrieved access-control-allow-origin header: *</td></tr>
+        <tr><td>999978</td><td>GET</td><td><code>/</code></td><td>X-Frame-Options header is deprecated...</td></tr>
+        <tr><td>999100</td><td>GET</td><td><code>/</code></td><td>Uncommon header 'x-recruiting' found, contents: /#/jobs</td></tr>
+        <tr><td>013587</td><td>GET</td><td><code>/</code></td><td>Suggested security header missing: permissions-policy / referrer-policy / strict-transport-security / content-security-policy</td></tr>
+        <tr><td>999997</td><td>GET</td><td><code>/ftp/</code></td><td>robots.txt entry '/ftp/' returned 200</td></tr>
+        <tr><td>999996</td><td>GET</td><td><code>/robots.txt</code></td><td>contains 1 entry</td></tr>
+        <tr><td>001675</td><td>GET</td><td><code>/ftp/</code></td><td>This might be interesting</td></tr>
+        <tr><td>001811</td><td>GET</td><td><code>/public/</code></td><td>This might be interesting</td></tr>
+        <tr><td>002739</td><td>GET</td><td><code>/.htpasswd</code></td><td>Contains authorization information</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    报告由 <code>nikto-report.json</code> 分析生成（2026-08-05）。建议复核结果后，使用 OWASP ZAP / Burp Suite 对确认的漏洞进行二次验证。
+  </div>
+
+</div>
+</body>
+</html>

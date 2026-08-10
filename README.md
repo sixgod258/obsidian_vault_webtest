@@ -45,7 +45,7 @@ cssclasses:
 
 ### 05 · Claude Code + Playwright 实现（2026-08-06 新增）
 - `05-ClaudeCode-Playwright实现/` — 用 Claude Code 驱动 Playwright 实现 7 款工具的实验
-- [[05-ClaudeCode-Playwright实现/README]] · [[01-可行性分析]] — 结论总表与逐工具实现方法
+- [[05-ClaudeCode-Playwright实现/00-索引]] · [[01-可行性分析]] — 结论总表与逐工具实现方法
 
 ---
 

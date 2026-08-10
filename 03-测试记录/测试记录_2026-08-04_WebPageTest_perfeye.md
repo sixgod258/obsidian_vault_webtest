@@ -26,7 +26,7 @@ webpagetest testAndWait "https://perfeye.testplus.cn/project/list?appKey=mecha" 
 
 ## 2. 测试结果
 
-> ⚠️ **重要前提**：测试最终渲染的是 **SSO 登录页**，而非目标页面——未登录时前端 JS 加载后跳转到 `https://sso.testplus.cn/login`。因此数据反映「目标 SPA 壳 + SSO 登录页」，不代表目标页真实性能。
+> ⚠️ **重要前提**：测试最终渲染的是 **SSO 登录页**，而非目标页面——未登录时前端 JS 加载后跳转到 `https://sso.testplus.cn/login`。因此数据反映「目标 SPA 壳 + SSO 登录页」，不代表目标页真实性能。**目标页真实性能见 [[测试记录_2026-08-04_Lighthouse_perfeye]]**（本记录与它指标差异大，正是因测了不同页面，不可直接对比）。
 
 ### 2.1 核心指标
 
@@ -39,6 +39,8 @@ webpagetest testAndWait "https://perfeye.testplus.cn/project/list?appKey=mecha" 
 | TBT | 143 ms | 🟢 优 |
 | CLS | 0.008 | 🟢 优 |
 | fullyLoaded | 14,056 ms | 🔴 差 |
+
+> ⚠️ 注：因跳转 SSO，本页出现 **LCP（9,819ms）< FCP（13,221ms）** 的反常口径——LCP 在跳转前捕获、FCP 落在 SSO 登录页上，两项均不代表目标页真实性能（与原始 JSON 一致）。
 
 ### 2.2 关键瓶颈
 

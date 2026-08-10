@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OWASP ZAP 安全扫描测试报告</title>
+<style>
+  :root {
+    --primary: #1a365d;
+    --accent: #2b6cb0;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #1a202c;
+    --muted: #718096;
+    --high: #e53e3e;
+    --medium: #dd6b20;
+    --low: #d69e2e;
+    --info: #3182ce;
+    --code-bg: #edf2f7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .container { max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  /* Header */
+  .report-header {
+    background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+    color: #fff;
+    padding: 40px 24px;
+    margin: -32px -24px 32px;
+  }
+  .report-header h1 { margin: 0 0 8px; font-size: 28px; font-weight: 700; }
+  .report-header .subtitle { opacity: .9; font-size: 15px; margin: 0; }
+
+  h2 {
+    font-size: 22px;
+    color: var(--primary);
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    margin: 40px 0 16px;
+  }
+  h3 { font-size: 18px; color: var(--primary); margin: 24px 0 12px; }
+  h4 { font-size: 16px; margin: 16px 0 8px; }
+
+  /* Cards & tables */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    margin: 12px 0 20px;
+    font-size: 14px;
+  }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  th { background: #edf2f7; color: var(--primary); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  td code, li code, p code {
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    word-break: break-all;
+  }
+
+  /* Risk badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .b-high { background: var(--high); }
+  .b-medium { background: var(--medium); }
+  .b-low { background: var(--low); }
+  .b-info { background: var(--info); }
+
+  .risk-block {
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 8px 0 16px;
+    font-size: 14px;
+    border: 1px solid;
+  }
+  .risk-high   { background: #fff5f5; border-color: #feb2b2; color: #742a2a; }
+  .risk-medium { background: #fffaf0; border-color: #fbd38d; color: #7c4a12; }
+  .risk-low    { background: #fffff0; border-color: #f6e05e; color: #5f5a12; }
+  .risk-info   { background: #ebf8ff; border-color: #90cdf4; color: #2a4365; }
+
+  /* Callout */
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: #ebf8ff;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .callout.warn { border-color: var(--low); background: #fffff0; }
+
+  /* Meta grid */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .meta-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; }
+  .meta-item .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .meta-item .value { font-size: 15px; font-weight: 600; color: var(--primary); margin-top: 2px; word-break: break-all; }
+
+  /* Stat cards */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 12px 0 20px; }
+  .stat { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px 12px; }
+  .stat .num { font-size: 28px; font-weight: 700; }
+  .stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .num.high { color: var(--high); } .num.medium { color: var(--medium); }
+  .num.low { color: var(--low); } .num.info { color: var(--info); } .num.total { color: var(--primary); }
+
+  ul, ol { padding-left: 22px; }
+  li { margin: 4px 0; }
+  .muted { color: var(--muted); font-size: 13px; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .refs p { margin: 2px 0; }
+  .refs a { word-break: break-all; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ======= 报告头 ======= -->
+  <header class="report-header">
+    <h1>🛡️ OWASP ZAP 安全扫描测试报告</h1>
+    <p class="subtitle">报告日期：2026-08-05 ｜ 扫描目标：http://host.docker.internal:3000 ｜ 工具版本：ZAP 2.17.0</p>
+  </header>
+
+  <!-- ======= 基本信息 ======= -->
+  <div class="meta-grid">
+    <div class="meta-item"><div class="label">报告日期</div><div class="value">2026-08-05</div></div>
+    <div class="meta-item"><div class="label">扫描工具</div><div class="value">OWASP ZAP</div></div>
+    <div class="meta-item"><div class="label">工具版本</div><div class="value">2.17.0</div></div>
+    <div class="meta-item"><div class="label">扫描时间</div><div class="value">2026-08-05 06:45:35 (UTC)</div></div>
+    <div class="meta-item"><div class="label">扫描目标</div><div class="value">http://host.docker.internal:3000</div></div>
+    <div class="meta-item"><div class="label">目标主机 / 端口</div><div class="value">host.docker.internal / 3000</div></div>
+    <div class="meta-item"><div class="label">数据来源</div><div class="value">zap-lite-report.json</div></div>
+  </div>
+
+  <!-- ======= 一、执行摘要 ======= -->
+  <h2>一、执行摘要</h2>
+  <p>本次安全扫描对目标应用（<code>http://host.docker.internal:3000</code>）执行了主动扫描。共发现 <strong>13 类</strong>安全问题，累计 <strong>79 个</strong>告警实例，其中：</p>
+
+  <div class="stat-grid">
+    <div class="stat"><div class="num high">0</div><div class="lbl">高（High）告警</div></div>
+    <div class="stat"><div class="num medium">4</div><div class="lbl">中（Medium）告警</div></div>
+    <div class="stat"><div class="num low">5</div><div class="lbl">低（Low）告警</div></div>
+    <div class="stat"><div class="num info">4</div><div class="lbl">信息（Info）告警</div></div>
+    <div class="stat"><div class="num total">79</div><div class="lbl">告警实例总数</div></div>
+  </div>
+
+  <table>
+    <tr><th>风险等级</th><th>告警数量</th><th>告警实例数</th></tr>
+    <tr><td><span class="badge b-high">高 (High)</span></td><td>0</td><td>0</td></tr>
+    <tr><td><span class="badge b-medium">中 (Medium)</span></td><td>4</td><td>42</td></tr>
+    <tr><td><span class="badge b-low">低 (Low)</span></td><td>5</td><td>21</td></tr>
+    <tr><td><span class="badge b-info">信息 (Informational)</span></td><td>4</td><td>16</td></tr>
+    <tr><td><strong>合计</strong></td><td><strong>13</strong></td><td><strong>79</strong></td></tr>
+  </table>
+
+  <div class="callout warn">
+    <strong>扫描结论：</strong>未发现高危漏洞，但存在 <strong>4 个中危问题</strong>（共 42 个实例），其中以“备份文件泄露”最为突出（31 个实例）。建议优先修复中危问题，特别是备份文件泄露与安全响应头配置缺失。
+  </div>
+
+  <!-- ======= 二、扫描范围与概况 ======= -->
+  <h2>二、扫描范围与概况</h2>
+  <table>
+    <tr><th>项目</th><th>数值</th><th>说明</th></tr>
+    <tr><td>HTTP 站点端点数</td><td>168</td><td class="muted">—</td></tr>
+    <tr><td>HTTPS 站点端点数</td><td>1</td><td class="muted">—</td></tr>
+    <tr><td>2xx 响应占比</td><td>93%</td><td class="muted">正常</td></tr>
+    <tr><td>3xx 响应占比</td><td>1%</td><td class="muted">正常</td></tr>
+    <tr><td>4xx 响应占比</td><td>5%</td><td><span class="badge b-low">超过低阈值</span></td></tr>
+    <tr><td>网络失败率</td><td>8%</td><td><span class="badge b-low">超过低阈值</span></td></tr>
+    <tr><td>慢响应占比</td><td>17%</td><td><span class="badge b-low">超过低阈值</span></td></tr>
+  </table>
+
+  <div class="callout warn">
+    ⚠️ <strong>重点关注：</strong>网络失败率 8%、4xx 响应 5%、慢响应 17% 均超过了 ZAP 设定的“低”告警阈值；同时 ZAP 自身记录了 <strong>1342 条警告</strong>、<strong>1 条错误</strong>日志，建议结合 <code>zap.log</code> 排查目标服务稳定性与连通性问题。
+  </div>
+
+  <!-- ======= 三、告警汇总表 ======= -->
+  <h2>三、告警汇总表</h2>
+  <table>
+    <tr>
+      <th>#</th><th>告警名称</th><th>风险 / 置信度</th><th>实例数</th><th>系统性</th><th>CWE</th>
+    </tr>
+    <tr><td>1</td><td>备份文件泄露 (Backup File Disclosure)</td><td><span class="badge b-medium">中 / 中</span></td><td><strong>31</strong></td><td>否</td><td>CWE-530</td></tr>
+    <tr><td>2</td><td>未设置内容安全策略 CSP 头</td><td><span class="badge b-medium">中 / 高</span></td><td>5</td><td>是</td><td>CWE-693</td></tr>
+    <tr><td>3</td><td>跨域配置错误 (CORS)</td><td><span class="badge b-medium">中 / 中</span></td><td>5</td><td>是</td><td>CWE-264</td></tr>
+    <tr><td>4</td><td>仅 HTTP 站点</td><td><span class="badge b-medium">中 / 中</span></td><td>1</td><td>否</td><td>CWE-311</td></tr>
+    <tr><td>5</td><td>缺少 Cross-Origin-Embedder-Policy 头</td><td><span class="badge b-low">低 / 中</span></td><td>5</td><td>否</td><td>CWE-693</td></tr>
+    <tr><td>6</td><td>缺少 Cross-Origin-Opener-Policy 头</td><td><span class="badge b-low">低 / 中</span></td><td>5</td><td>否</td><td>CWE-693</td></tr>
+    <tr><td>7</td><td>危险 JS 函数</td><td><span class="badge b-low">低 / 低</span></td><td>1</td><td>否</td><td>CWE-749</td></tr>
+    <tr><td>8</td><td>已弃用的 Feature-Policy 头</td><td><span class="badge b-low">低 / 中</span></td><td>5</td><td>是</td><td>CWE-16</td></tr>
+    <tr><td>9</td><td>Unix 时间戳泄露</td><td><span class="badge b-low">低 / 低</span></td><td>5</td><td>是</td><td>CWE-497</td></tr>
+    <tr><td>10</td><td>现代 Web 应用（提示）</td><td><span class="badge b-info">信息 / 中</span></td><td>5</td><td>是</td><td>—</td></tr>
+    <tr><td>11</td><td>可存储且可缓存内容</td><td><span class="badge b-info">信息 / 中</span></td><td>1</td><td>否</td><td>CWE-524</td></tr>
+    <tr><td>12</td><td>可存储但不可缓存内容</td><td><span class="badge b-info">信息 / 中</span></td><td>5</td><td>是</td><td>CWE-524</td></tr>
+    <tr><td>13</td><td>User Agent 模糊测试（提示）</td><td><span class="badge b-info">信息 / 中</span></td><td>5</td><td>是</td><td>CWE-0</td></tr>
+  </table>
+
+  <!-- ======= 四、漏洞详情 ======= -->
+  <h2>四、漏洞详情</h2>
+
+  <h3>🟠 中危漏洞</h3>
+
+  <!-- 4.1 -->
+  <div class="card">
+    <h4>4.1 备份文件泄露（Backup File Disclosure）<span class="badge b-medium" style="margin-left:8px;">中 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：10095 ｜ 实例数：<strong>31</strong> ｜ CWE-530（暴露未正确清理的敏感信息）</p>
+    <p><strong>描述：</strong>Web 服务器泄露了文件的备份副本。<code>/ftp/quarantine</code> 及其内容存在大量 <code>.bak</code>、<code>.zip</code>、<code>.tar</code>、<code>- Copy</code>、<code>~</code> 等形式的备份/副本，攻击者可借此获取不应公开的文件内容。</p>
+    <p><strong>典型受影响 URL：</strong></p>
+    <ul>
+      <li><code>http://host.docker.internal:3000/ftp/quarantine.bak</code></li>
+      <li><code>http://host.docker.internal:3000/ftp/quarantine.zip</code></li>
+      <li><code>http://host.docker.internal:3000/ftp/quarantine - Copy</code></li>
+      <li><code>http://host.docker.internal:3000/ftp/quarantinebackup/</code></li>
+      <li>以及多个平台恶意软件样本文件备份（<code>juicy_malware_*.url</code> 等）</li>
+    </ul>
+    <p><strong>修复建议：</strong></p>
+    <ul>
+      <li>不要在 Web 服务器上就地编辑文件，避免生成 <code>- Copy</code>、<code>~</code>、<code>.bak</code> 等临时/备份文件；</li>
+      <li>彻底清除服务器上不必要的、隐藏的备份文件与残余文件；</li>
+      <li>部署时采用构建产物复制而非原地修改，并配置 Web 服务器目录访问权限。</li>
+    </ul>
+    <div class="refs"><strong>参考：</strong><p><a href="https://cwe.mitre.org/data/definitions/530.html">https://cwe.mitre.org/data/definitions/530.html</a></p></div>
+  </div>
+
+  <!-- 4.2 -->
+  <div class="card">
+    <h4>4.2 未设置内容安全策略（CSP）响应头<span class="badge b-medium" style="margin-left:8px;">中 / 高</span></h4>
+    <p class="muted">ZAP 插件 ID：10038 ｜ 实例数：5（系统性）｜ CWE-693（保护机制失败）</p>
+    <p><strong>描述：</strong>服务器响应未设置 <code>Content-Security-Policy</code> 头。CSP 是抵御 XSS（跨站脚本）与数据注入攻击的关键防护层，缺失将明显增加页面被注入恶意脚本的风险。</p>
+    <p><strong>受影响 URL：</strong></p>
+    <ul>
+      <li><code>http://host.docker.internal:3000</code></li>
+      <li><code>http://host.docker.internal:3000/ftp</code></li>
+      <li><code>http://host.docker.internal:3000/ftp/coupons_2013.md.bak</code></li>
+      <li><code>http://host.docker.internal:3000/sitemap.xml</code></li>
+    </ul>
+    <p><strong>修复建议：</strong>在 Web 服务器 / 应用服务器 / 负载均衡器等统一配置 <code>Content-Security-Policy</code> 响应头，按业务实际声明允许加载的脚本、样式、图片等来源。</p>
+    <div class="refs"><strong>参考：</strong>
+      <p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP">MDN - CSP</a></p>
+      <p><a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html">OWASP CSP Cheat Sheet</a></p>
+    </div>
+  </div>
+
+  <!-- 4.3 -->
+  <div class="card">
+    <h4>4.3 跨域配置错误（CORS 配置过于宽松）<span class="badge b-medium" style="margin-left:8px;">中 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：10098 ｜ 实例数：5（系统性）｜ CWE-264（权限、特权与访问控制）</p>
+    <p><strong>描述：</strong>服务器存在 CORS 配置错误，响应头包含 <code>Access-Control-Allow-Origin: *</code>，允许任意第三方域名发起跨域读取请求。虽然浏览器会限制已认证 API 的跨域读取，但仍可能造成未认证数据的跨域窃取，或绕过依赖 IP 白名单等弱防护手段的数据访问控制。</p>
+    <p><strong>受影响 URL：</strong></p>
+    <ul>
+      <li><code>http://host.docker.internal:3000</code></li>
+      <li><code>http://host.docker.internal:3000/assets/public/favicon_js.ico</code></li>
+      <li><code>http://host.docker.internal:3000/robots.txt</code></li>
+      <li><code>http://host.docker.internal:3000/sitemap.xml</code></li>
+    </ul>
+    <p><strong>修复建议：</strong></p>
+    <ul>
+      <li>将 <code>Access-Control-Allow-Origin</code> 配置为更严格的受信任域名白名单（如显式域名列表）；</li>
+      <li>若无需跨域访问，应直接移除全部 CORS 响应头，由浏览器强制同源策略（SOP）；</li>
+      <li>确认敏感数据不以未认证方式（如 IP 白名单）对外暴露。</li>
+    </ul>
+  </div>
+
+  <!-- 4.4 -->
+  <div class="card">
+    <h4>4.4 仅 HTTP 站点（未启用 HTTPS）<span class="badge b-medium" style="margin-left:8px;">中 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：10106 ｜ 实例数：1 ｜ CWE-311（敏感信息缺失加密）</p>
+    <p><strong>描述：</strong>站点仅通过 HTTP 提供服务，ZAP 尝试通过 HTTPS 连接 <code>https://host.docker.internal:3000/ftp/</code> 失败。明文传输将导致数据在传输过程中可被窃听、篡改。</p>
+    <p><strong>修复建议：</strong>为 Web / 应用服务器配置 SSL/HTTPS，并启用 HTTP 到 HTTPS 的重定向与 HSTS。</p>
+    <div class="refs"><strong>参考：</strong>
+      <p><a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html">OWASP TLS Cheat Sheet</a></p>
+      <p><a href="https://letsencrypt.org/">Let's Encrypt</a></p>
+    </div>
+  </div>
+
+  <h3>🟡 低危漏洞</h3>
+
+  <!-- 4.5 -->
+  <div class="card">
+    <h4>4.5 缺少 Cross-Origin-Embedder-Policy（COEP）响应头<span class="badge b-low" style="margin-left:8px;">低 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：90004-2 ｜ 实例数：5 ｜ CWE-693</p>
+    <p><strong>描述：</strong>未设置 <code>Cross-Origin-Embedder-Policy</code> 头，页面可加载未经 CORP/CORS 授权的跨域资源，存在一定的资源泄露风险。</p>
+    <p><strong>受影响 URL：</strong>站点根路径、<code>/ftp</code>、<code>/sitemap.xml</code>、<code>/juice-shop/build/routes/fileServer.js:69:18</code> 等。</p>
+    <p><strong>修复建议：</strong>为文档响应设置 <code>Cross-Origin-Embedder-Policy: require-corp</code>，并确保浏览器兼容性。</p>
+  </div>
+
+  <!-- 4.6 -->
+  <div class="card">
+    <h4>4.6 缺少 Cross-Origin-Opener-Policy（COOP）响应头<span class="badge b-low" style="margin-left:8px;">低 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：90004-3 ｜ 实例数：5 ｜ CWE-693</p>
+    <p><strong>描述：</strong>未设置 <code>Cross-Origin-Opener-Policy</code> 头，当前文档可能与其他不可信文档共享浏览上下文，存在数据泄露风险。</p>
+    <p><strong>受影响 URL：</strong>与 4.5 相同的一组端点。</p>
+    <p><strong>修复建议：</strong>为文档设置 <code>Cross-Origin-Opener-Policy: same-origin</code>（避免使用较不安全的 <code>same-origin-allow-popups</code>）。</p>
+  </div>
+
+  <!-- 4.7 -->
+  <div class="card">
+    <h4>4.7 危险 JS 函数（Dangerous JavaScript Functions）<span class="badge b-low" style="margin-left:8px;">低 / 低</span></h4>
+    <p class="muted">ZAP 插件 ID：10110 ｜ 实例数：1 ｜ CWE-749（暴露危险的方法或函数）</p>
+    <p><strong>描述：</strong>前端脚本中使用了危险函数。<code>http://host.docker.internal:3000/main.js</code> 中检测到 <code>bypassSecurityTrustHtml(</code> 的调用（Angular 安全护栏绕过函数），若处理不可信输入，可能引入 XSS 风险。</p>
+    <p><strong>修复建议：</strong>审查 <code>main.js</code> 中该函数的使用场景，避免对不可信输入调用 <code>bypassSecurityTrustHtml</code>，尽量使用 Angular 内置的安全绑定。</p>
+    <div class="refs"><strong>参考：</strong><p><a href="https://v17.angular.io/guide/security">Angular Security</a></p></div>
+  </div>
+
+  <!-- 4.8 -->
+  <div class="card">
+    <h4>4.8 已弃用的 Feature-Policy 响应头<span class="badge b-low" style="margin-left:8px;">低 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：10063-2 ｜ 实例数：5（系统性）｜ CWE-16（配置）</p>
+    <p><strong>描述：</strong>服务器使用了已弃用的 <code>Feature-Policy</code> 头，应替换为 <code>Permissions-Policy</code>。</p>
+    <p><strong>受影响 URL：</strong>站点根路径、<code>/sitemap.xml</code>、<code>/chunk-5K74DZ2F.js</code>、<code>/chunk-VS3A3LTT.js</code> 等。</p>
+    <p><strong>修复建议：</strong>将 <code>Feature-Policy</code> 替换为 <code>Permissions-Policy</code> 响应头。</p>
+  </div>
+
+  <!-- 4.9 -->
+  <div class="card">
+    <h4>4.9 Unix 时间戳泄露（Timestamp Disclosure）<span class="badge b-low" style="margin-left:8px;">低 / 低</span></h4>
+    <p class="muted">ZAP 插件 ID：10096 ｜ 实例数：5（系统性）｜ CWE-497（敏感信息暴露给未授权参与者）</p>
+    <p><strong>描述：</strong>响应中泄露了 Unix 时间戳（如 <code>1666666667</code> / <code>1839622642</code>），可能暴露文件生成或构建时间等环境信息，便于攻击者推断部署规律。</p>
+    <p><strong>修复建议：</strong>人工确认这些时间戳数据是否敏感、是否可通过聚合分析出可利用模式；如无必要应避免在响应中暴露。</p>
+  </div>
+
+  <h3>⚪ 信息级提示</h3>
+
+  <!-- 4.10 -->
+  <div class="card">
+    <h4>4.10 现代 Web 应用（Modern Web Application）<span class="badge b-info" style="margin-left:8px;">信息 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：10109 ｜ 实例数：5（系统性）</p>
+    <p><strong>描述：</strong>应用为现代 Web 应用（页面含脚本但无传统链接），标准 Spider 可能无法完整遍历，建议使用 ZAP 的 Client Spider 进行后续自动探索。</p>
+  </div>
+
+  <!-- 4.11 -->
+  <div class="card">
+    <h4>4.11 可存储且可缓存内容（Storable and Cacheable Content）<span class="badge b-info" style="margin-left:8px;">信息 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：10049-3 ｜ 实例数：1 ｜ CWE-524</p>
+    <p><strong>描述：</strong><code>http://host.docker.internal:3000/robots.txt</code> 响应可被代理等共享缓存组件直接存储并按 1 年有效期命中，若缓存了敏感/用户相关数据则可能造成泄露。</p>
+    <p><strong>修复建议：</strong>对含敏感内容的响应配置 <code>Cache-Control: no-cache, no-store, must-revalidate, private</code>、<code>Pragma: no-cache</code>、<code>Expires: 0</code>。</p>
+  </div>
+
+  <!-- 4.12 -->
+  <div class="card">
+    <h4>4.12 可存储但不可缓存内容（Storable but Non-Cacheable Content）<span class="badge b-info" style="margin-left:8px;">信息 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：10049-2 ｜ 实例数：5（系统性）｜ CWE-524</p>
+    <p><strong>描述：</strong>部分响应（<code>max-age=0</code>）可被缓存组件存储，但会在上游重新验证后再返回。影响面有限，注意确认其中不含敏感信息。</p>
+  </div>
+
+  <!-- 4.13 -->
+  <div class="card">
+    <h4>4.13 User Agent 模糊测试（User Agent Fuzzer）<span class="badge b-info" style="margin-left:8px;">信息 / 中</span></h4>
+    <p class="muted">ZAP 插件 ID：10104 ｜ 实例数：5（系统性）</p>
+    <p><strong>描述：</strong>ZAP 使用不同 User-Agent（如老版本 IE）请求 <code>/assets</code>、<code>/assets/public</code> 等路径，用于检测是否存在针对不同 UA 的内容差异（如移动站、搜索引擎爬虫特殊处理），属于常规测试提示。</p>
+  </div>
+
+  <!-- ======= 五、扫描洞察 ======= -->
+  <h2>五、扫描洞察（Insights）</h2>
+  <table>
+    <tr><th>级别</th><th>原因</th><th>说明</th><th>统计值</th></tr>
+    <tr><td><span class="badge b-low">低</span></td><td>警告</td><td>ZAP 日志中存在警告</td><td>1342</td></tr>
+    <tr><td><span class="badge b-low">低</span></td><td>超过低阈值</td><td>网络失败率超过阈值</td><td>8%</td></tr>
+    <tr><td><span class="badge b-low">低</span></td><td>警告</td><td>ZAP 日志中存在错误</td><td>1</td></tr>
+    <tr><td><span class="badge b-info">信息</span></td><td>超过低阈值</td><td>4xx 响应占比超过阈值</td><td>5%</td></tr>
+    <tr><td><span class="badge b-info">信息</span></td><td>超过低阈值</td><td>慢响应占比超过阈值</td><td>17%</td></tr>
+    <tr><td><span class="badge b-info">信息</span></td><td>提示</td><td>2xx 响应占比</td><td>93%</td></tr>
+    <tr><td><span class="badge b-info">信息</span></td><td>提示</td><td>3xx 响应占比</td><td>1%</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <strong>洞察解读：</strong>
+    <ul style="margin:8px 0 0;">
+      <li>8% 的网络请求失败、17% 的慢响应、1342 条 ZAP 警告，提示目标服务在扫描期间存在<strong>性能与稳定性问题</strong>（可能受扫描负载影响），建议排查应用与网络配置；</li>
+      <li>4xx 响应占 5%，多为目录不存在等正常 404，建议结合应用日志确认是否存在异常路径探测。</li>
+    </ul>
+  </div>
+
+  <!-- ======= 六、修复优先级 ======= -->
+  <h2>六、修复优先级建议</h2>
+  <table>
+    <tr><th>优先级</th><th>处理事项</th><th>对应告警</th></tr>
+    <tr><td><span class="badge b-high">P1 高</span></td><td>清理 <code>/ftp/quarantine*</code> 目录下所有备份/副本文件，防止文件内容泄露</td><td>4.1 备份文件泄露</td></tr>
+    <tr><td><span class="badge b-high">P1 高</span></td><td>移除或收紧 <code>Access-Control-Allow-Origin: *</code>，配置域名白名单</td><td>4.3 CORS 跨域配置错误</td></tr>
+    <tr><td><span class="badge b-medium">P2 中</span></td><td>统一配置 CSP、COEP、COOP、Permissions-Policy 等安全响应头</td><td>4.2 / 4.5 / 4.6 / 4.8</td></tr>
+    <tr><td><span class="badge b-medium">P2 中</span></td><td>全站启用 HTTPS 并配置 HSTS，杜绝明文传输</td><td>4.4 仅 HTTP 站点</td></tr>
+    <tr><td><span class="badge b-low">P3 低</span></td><td>审查并移除 <code>main.js</code> 中危险的 <code>bypassSecurityTrustHtml</code> 调用</td><td>4.7 危险 JS 函数</td></tr>
+    <tr><td><span class="badge b-low">P3 低</span></td><td>确认并去除响应中的时间戳等环境信息</td><td>4.9 时间戳泄露</td></tr>
+    <tr><td><span class="badge b-low">P3 低</span></td><td>按内容敏感性配置合理的缓存响应头</td><td>4.11 / 4.12</td></tr>
+    <tr><td><span class="badge b-info">P4 建议</span></td><td>排查扫描期间网络失败、慢响应与 ZAP 警告日志，确认服务稳定性</td><td>扫描洞察</td></tr>
+  </table>
+
+  <!-- ======= 七、附录 ======= -->
+  <h2>七、附录</h2>
+
+  <h4>7.1 风险等级说明</h4>
+  <table>
+    <tr><th>等级</th><th>风险码</th><th>含义</th></tr>
+    <tr><td><span class="badge b-high">High</span></td><td>3</td><td>高危：存在严重可利用漏洞，需立即处理</td></tr>
+    <tr><td><span class="badge b-medium">Medium</span></td><td>2</td><td>中危：存在可利用风险，应尽快修复</td></tr>
+    <tr><td><span class="badge b-low">Low</span></td><td>1</td><td>低危：安全加固类问题，建议限期整改</td></tr>
+    <tr><td><span class="badge b-info">Informational</span></td><td>0</td><td>信息级：仅供参考，通常无需改动</td></tr>
+  </table>
+
+  <h4>7.2 相关资源</h4>
+  <div class="refs">
+    <p><a href="https://www.zaproxy.org/">OWASP Zed Attack Proxy (ZAP)</a></p>
+    <p><a href="https://owasp.org/www-project-web-security-testing-guide/">OWASP Web Security Testing Guide</a></p>
+    <p><a href="https://cwe.mitre.org/">CWE 目录</a></p>
+  </div>
+
+  <h4>7.3 数据来源</h4>
+  <p class="muted">本报告由 <code>zap-lite-report.json</code>（ZAP 2.17.0 生成，扫描时间 2026-08-05 06:45:35 UTC）分析生成。</p>
+
+  <hr style="border:none;border-top:1px solid var(--border);margin-top:40px;">
+  <p class="muted" style="text-align:center;">— 报告结束 —</p>
+</div>
+</body>
+</html>

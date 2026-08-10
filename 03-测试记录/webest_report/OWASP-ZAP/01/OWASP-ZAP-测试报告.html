@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OWASP ZAP 网站安全测试报告</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-dark: #1e429f;
+    --high: #dc2626;
+    --medium: #ea8c00;
+    --low: #d69e2e;
+    --info: #3b82f6;
+    --ok: #16a34a;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --code-bg: #f8fafc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 15px;
+  }
+  .container { max-width: 1060px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1e429f 0%, #1a56db 60%, #3f83f8 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 36px 40px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 10px 30px rgba(30, 66, 159, 0.25);
+  }
+  .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; letter-spacing: 0.5px; }
+  .header .subtitle { opacity: 0.92; font-size: 14px; }
+  .header .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px 30px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    font-size: 13.5px;
+  }
+  .header .meta-grid .item span { display: block; opacity: 0.75; font-size: 12px; }
+  .header .meta-grid .item strong { font-weight: 600; }
+
+  /* Sections */
+  section { margin-bottom: 34px; }
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin: 0 0 16px;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2 .tag {
+    font-size: 12px;
+    font-weight: 600;
+    background: #eef2ff;
+    color: var(--primary-dark);
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 20px 0 10px;
+    color: #111827;
+  }
+  p { margin-bottom: 10px; }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: #be185d;
+  }
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 14px 18px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.55;
+    margin: 10px 0 14px;
+  }
+  pre code { background: none; border: none; color: inherit; padding: 0; }
+  ul, ol { padding-left: 22px; margin-bottom: 12px; }
+  li { margin-bottom: 5px; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  /* Risk badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .badge.high { background: var(--high); }
+  .badge.medium { background: var(--medium); }
+  .badge.low { background: var(--low); }
+  .badge.info { background: var(--info); }
+  .badge.ok { background: var(--ok); }
+
+  .conf { font-size: 12px; color: var(--muted); }
+
+  /* Stat cards row */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .stat .num { font-size: 30px; font-weight: 800; line-height: 1.2; }
+  .stat .lbl { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .stat.high .num { color: var(--high); }
+  .stat.medium .num { color: var(--medium); }
+  .stat.low .num { color: var(--low); }
+  .stat.info .num { color: var(--info); }
+  .stat.total .num { color: var(--primary-dark); }
+
+  /* Tables */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 700;
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:hover { background: #f8fafc; }
+  td.mono, code.url { font-size: 12.5px; word-break: break-all; }
+
+  /* Alert detail */
+  .alert-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .alert-head h3 { margin: 0; }
+  .alert-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .alert-meta b { color: var(--text); font-weight: 600; }
+  .desc-block { margin-bottom: 12px; }
+  .desc-block .block-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    margin-bottom: 4px;
+  }
+  .url-list {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    list-style: none;
+    font-size: 13px;
+  }
+  .url-list li {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12.5px;
+    padding: 3px 0;
+    border-bottom: 1px dashed var(--border);
+    word-break: break-all;
+  }
+  .url-list li:last-child { border-bottom: none; }
+  .evid {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 12.5px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    border-radius: 6px;
+    padding: 4px 10px;
+    display: inline-block;
+    margin-top: 2px;
+  }
+  .refs a { font-size: 12.5px; }
+
+  /* Priority table */
+  .prio-p0 td:first-child { color: var(--high); font-weight: 700; }
+  .prio-p1 td:first-child { color: var(--medium); font-weight: 700; }
+  .prio-p2 td:first-child { color: var(--low); font-weight: 700; }
+
+  /* Callout */
+  .callout {
+    border-left: 4px solid var(--primary);
+    background: #eff6ff;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13.5px;
+  }
+  .callout.warn { border-left-color: var(--medium); background: #fff7ed; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12.5px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; }
+    .header { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ============ Header ============ -->
+  <div class="header">
+    <h1>🛡️ OWASP ZAP 网站安全测试报告</h1>
+    <div class="subtitle">基于 OWASP ZAP 2.17.0 被动安全扫描结果的测试评估</div>
+    <div class="meta-grid">
+      <div class="item"><span>测试工具</span><strong>OWASP ZAP 2.17.0 (被动扫描)</strong></div>
+      <div class="item"><span>测试目标</span><strong>http://host.docker.internal:3000</strong></div>
+      <div class="item"><span>主机 / 端口</span><strong>host.docker.internal : 3000 (HTTP)</strong></div>
+      <div class="item"><span>报告生成时间</span><strong>2026-08-05 01:52:24 (UTC)</strong></div>
+      <div class="item"><span>扫描方式</span><strong>爬虫 Spider + 被动扫描</strong></div>
+      <div class="item"><span>应用特征</span><strong>现代 Web 应用 (Angular SPA / Juice Shop)</strong></div>
+    </div>
+  </div>
+
+  <!-- ============ Overview ============ -->
+  <section>
+    <h2>1. 测试概述 <span class="tag">Overview</span></h2>
+    <div class="card">
+      <p>本次测试使用 OWASP ZAP 对目标站点执行了基于爬虫的<strong>被动安全扫描</strong>,未执行主动攻击测试 (Active Scan)。被动扫描仅分析已获取的 HTTP 响应,因此发现的均为<strong>响应配置类与信息泄露类问题</strong>,不包含主动注入类验证。</p>
+      <p>扫描共发现 <strong>10 类安全告警、42 个告警实例</strong>。整体来看,<strong>未发现高危漏洞</strong>;核心问题集中在<strong>安全响应头配置缺失</strong>与 <strong>CORS 跨域策略过于宽松</strong> 两个方面,属于常见且较易修复的配置类问题。</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat high"><div class="num">0</div><div class="lbl">高风险 (High)</div></div>
+      <div class="stat medium"><div class="num">2 / 10</div><div class="lbl">中风险 (类型 / 实例)</div></div>
+      <div class="stat low"><div class="num">5 / 21</div><div class="lbl">低风险 (类型 / 实例)</div></div>
+      <div class="stat info"><div class="num">3 / 11</div><div class="lbl">信息级 (类型 / 实例)</div></div>
+      <div class="stat total"><div class="num">10 / 42</div><div class="lbl">告警合计</div></div>
+    </div>
+  </section>
+
+  <!-- ============ Summary ============ -->
+  <section>
+    <h2>2. 测试结果汇总 <span class="tag">Summary</span></h2>
+
+    <h3>2.1 风险等级分布</h3>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>风险等级</th><th>告警类型数</th><th>实例数</th><th>占比</th><th>风险徽标</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>高风险 (High)</td><td>0</td><td>0</td><td>0%</td><td><span class="badge high">HIGH</span></td></tr>
+            <tr><td>中风险 (Medium)</td><td>2</td><td>10</td><td>23.8%</td><td><span class="badge medium">MEDIUM</span></td></tr>
+            <tr><td>低风险 (Low)</td><td>5</td><td>21</td><td>50.0%</td><td><span class="badge low">LOW</span></td></tr>
+            <tr><td>信息级 (Informational)</td><td>3</td><td>11</td><td>26.2%</td><td><span class="badge info">INFO</span></td></tr>
+            <tr><td><strong>合计</strong></td><td><strong>10</strong></td><td><strong>42</strong></td><td>100%</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3>2.2 告警清单总览</h3>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>告警名称</th><th>风险</th><th>置信度</th><th>实例数</th><th>系统性</th><th>CWE</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Content Security Policy (CSP) Header Not Set</td>
+              <td><span class="badge medium">中</span></td><td>高</td><td>5</td><td>✔</td><td>CWE-693</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Cross-Domain Misconfiguration (CORS)</td>
+              <td><span class="badge medium">中</span></td><td>中</td><td>5</td><td>✔</td><td>CWE-264</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Cross-Origin-Embedder-Policy Header Missing</td>
+              <td><span class="badge low">低</span></td><td>中</td><td>5</td><td>✔</td><td>CWE-693</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Cross-Origin-Opener-Policy Header Missing</td>
+              <td><span class="badge low">低</span></td><td>中</td><td>5</td><td>✔</td><td>CWE-693</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Dangerous JS Functions</td>
+              <td><span class="badge low">低</span></td><td>低</td><td>1</td><td>—</td><td>CWE-749</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Deprecated Feature Policy Header Set</td>
+              <td><span class="badge low">低</span></td><td>中</td><td>5</td><td>✔</td><td>CWE-16</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Timestamp Disclosure - Unix</td>
+              <td><span class="badge low">低</span></td><td>低</td><td>5</td><td>✔</td><td>CWE-497</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>Modern Web Application</td>
+              <td><span class="badge info">信息</span></td><td>中</td><td>5</td><td>✔</td><td>—</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>Storable and Cacheable Content</td>
+              <td><span class="badge info">信息</span></td><td>中</td><td>1</td><td>—</td><td>CWE-524</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>Storable but Non-Cacheable Content</td>
+              <td><span class="badge info">信息</span></td><td>中</td><td>5</td><td>✔</td><td>CWE-524</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3>2.3 站点基本信息 (Insights)</h3>
+    <div class="card">
+      <ul>
+        <li>响应状态码:约 <strong>95%</strong> 为 2xx,约 <strong>4%</strong> 为 4xx</li>
+        <li>爬取端点总数:<strong>135</strong> 个,请求方法 <strong>100%</strong> 为 GET</li>
+        <li>内容类型分布:text/html <strong>82%</strong>、application/javascript <strong>9%</strong>、text/css <strong>5%</strong>、text/plain <strong>5%</strong>、image/x-icon <strong>5%</strong>、application/octet-stream <strong>3%</strong>、text/markdown <strong>2%</strong></li>
+        <li>慢响应比例:约 <strong>37%</strong> (可作为性能参考)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Medium ============ -->
+  <section>
+    <h2>3. 中风险问题详情 <span class="tag">Medium</span></h2>
+
+    <!-- CSP -->
+    <div class="card">
+      <div class="alert-head">
+        <h3>3.1 Content Security Policy (CSP) Header Not Set</h3>
+      </div>
+      <div class="alert-meta">
+        <span><b>风险:</b> <span class="badge medium">中</span> <span class="conf">(高置信)</span></span>
+        <span><b>实例数:</b> 5 (系统性)</span>
+        <span><b>CWE:</b> CWE-693</span>
+      </div>
+      <div class="desc-block">
+        <div class="block-title">描述</div>
+        <p>服务器未在响应中设置 <code>Content-Security-Policy</code> 响应头。CSP 是抵御跨站脚本 (XSS) 与数据注入攻击的重要防线,可声明浏览器允许加载的合法内容来源。缺少该头意味着页面一旦存在 XSS 注入点,攻击者可自由加载任意第三方恶意资源。</p>
+      </div>
+      <div class="desc-block">
+        <div class="block-title">受影响 URL (5)</div>
+        <ul class="url-list">
+          <li>http://host.docker.internal:3000/</li>
+          <li>http://host.docker.internal:3000/ftp/encrypt.pyc</li>
+          <li>http://host.docker.internal:3000/ftp/package-lock.json.bak</li>
+          <li>http://host.docker.internal:3000/juice-shop/node_modules/express/lib/router/chunk-UNFVUBM2.js</li>
+          <li>http://host.docker.internal:3000/sitemap.xml</li>
+        </ul>
+      </div>
+      <div class="callout warn">
+        <strong>附加发现:</strong> <code>/ftp/encrypt.pyc</code>、<code>/ftp/package-lock.json.bak</code> 等敏感文件可被直接访问,存在<strong>源码 / 备份 / 依赖清单泄露</strong>风险,建议一并核实并限制 FTP 目录的公开访问权限。
+      </div>
+      <div class="desc-block">
+        <div class="block-title">修复建议</div>
+        <p>在 Web 服务器 / 应用服务器 / 反向代理上为所有响应配置 CSP 响应头,例如:</p>
+        <pre><code>Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'self'; base-uri 'self'</code></pre>
+        <p class="refs"><b>参考:</b> <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP" target="_blank">MDN CSP</a> · <a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html" target="_blank">OWASP CSP Cheat Sheet</a></p>
+      </div>
+    </div>
+
+    <!-- CORS -->
+    <div class="card">
+      <div class="alert-head">
+        <h3>3.2 Cross-Domain Misconfiguration (CORS)</h3>
+      </div>
+      <div class="alert-meta">
+        <span><b>风险:</b> <span class="badge medium">中</span> <span class="conf">(中置信)</span></span>
+        <span><b>实例数:</b> 5 (系统性)</span>
+        <span><b>CWE:</b> CWE-264</span>
+      </div>
+      <div class="desc-block">
+        <div class="block-title">描述</div>
+        <p>服务器配置了过宽的跨域资源共享 (CORS) 策略,响应头包含 <span class="evid">Access-Control-Allow-Origin: *</span>,允许<strong>任意第三方域名</strong>发起跨域读取请求。攻击者可利用该配置诱导受害者浏览器请求本域上的未认证接口并读取返回数据。浏览器机制虽不允许第三方读取携带认证信息的接口响应,但仍可能泄露依赖 IP 白名单等其它访问控制的未认证敏感数据。</p>
+      </div>
+      <div class="desc-block">
+        <div class="block-title">受影响 URL (5) — 证据:Access-Control-Allow-Origin: *</div>
+        <ul class="url-list">
+          <li>http://host.docker.internal:3000/assets/public/favicon_js.ico</li>
+          <li>http://host.docker.internal:3000/chunk-5K74DZ2F.js</li>
+          <li>http://host.docker.internal:3000/chunk-QBYXNN7Z.js</li>
+          <li>http://host.docker.internal:3000/robots.txt</li>
+          <li>http://host.docker.internal:3000/styles.css</li>
+        </ul>
+      </div>
+      <div class="desc-block">
+        <div class="block-title">修复建议</div>
+        <ol>
+          <li>将 <code>Access-Control-Allow-Origin</code> 收紧为明确的受信任域名白名单,禁止使用通配符 <code>*</code> (尤其携带凭证时);</li>
+          <li>若接口无需跨域访问,应直接移除 CORS 响应头,由浏览器同源策略 (SOP) 提供限制;</li>
+          <li>确保敏感数据不以未认证方式对外提供。</li>
+        </ol>
+        <p class="refs"><b>参考:</b> <a href="https://vulncat.fortify.com/en/detail?category=HTML5&subcategory=Overly%20Permissive%20CORS%20Policy" target="_blank">Fortify: Overly Permissive CORS Policy</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Low ============ -->
+  <section>
+    <h2>4. 低风险问题详情 <span class="tag">Low</span></h2>
+
+    <!-- COEP -->
+    <div class="card">
+      <div class="alert-head"><h3>4.1 Cross-Origin-Embedder-Policy Header Missing or Invalid</h3></div>
+      <div class="alert-meta">
+        <span><b>风险:</b> <span class="badge low">低</span> <span class="conf">(中置信)</span></span>
+        <span><b>实例数:</b> 5 (系统性)</span>
+        <span><b>CWE:</b> CWE-693</span>
+      </div>
+      <p>未设置 <code>Cross-Origin-Embedder-Policy</code> 响应头。该头可防止文档加载未显式授权 (通过 CORP 或 CORS) 的跨源资源,降低跨源数据泄露风险。</p>
+      <p><b>受影响 URL:</b> <code>/</code>、<code>/ftp</code>、<code>/sitemap.xml</code> 等 5 处</p>
+      <div class="desc-block">
+        <div class="block-title">修复建议</div>
+        <p>为文档响应设置 <code>Cross-Origin-Embedder-Policy: require-corp</code>。</p>
+        <p class="refs"><b>参考:</b> <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy" target="_blank">MDN COEP</a></p>
+      </div>
+    </div>
+
+    <!-- COOP -->
+    <div class="card">
+      <div class="alert-head"><h3>4.2 Cross-Origin-Opener-Policy Header Missing or Invalid</h3></div>
+      <div class="alert-meta">
+        <span><b>风险:</b> <span class="badge low">低</span> <span class="conf">(中置信)</span></span>
+        <span><b>实例数:</b> 5 (系统性)</span>
+        <span><b>CWE:</b> CWE-693</span>
+      </div>
+      <p>未设置 <code>Cross-Origin-Opener-Policy</code> 响应头。若文档与不受信任的跨源页面共享浏览上下文,可能导致数据泄露。</p>
+      <p><b>受影响 URL:</b> <code>/</code>、<code>/ftp</code>、<code>/sitemap.xml</code> 等 5 处</p>
+      <div class="desc-block">
+        <div class="block-title">修复建议</div>
+        <p>为文档响应设置 <code>Cross-Origin-Opener-Policy: same-origin</code>;<code>same-origin-allow-popups</code> 安全性较弱,应避免使用。</p>
+        <p class="refs"><b>参考:</b> <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy" target="_blank">MDN COOP</a></p>
+      </div>
+    </div>
+
+    <!-- Dangerous JS -->
+    <div class="card">
+      <div class="alert-head"><h3>4.3 Dangerous JS Functions</h3></div>
+      <div class="alert-meta">
+        <span><b>风险:</b> <span class="badge low">低</span> <span class="conf">(低置信)</span></span>
+        <span><b>实例数:</b> 1 (非系统性)</span>
+        <span><b>CWE:</b> CWE-749</span>
+      </div>
+      <p>前端代码 <code>/main.js</code> 中调用了 Angular 的危险函数 <span class="evid">bypassSecurityTrustHtml(</span>。该函数会绕过 Angular 内置的 HTML 消毒机制,若被绑定到不受信任的输入,可能引入 XSS 风险。<strong>注:</strong> 若该用法针对的是经过严格校验的受信内容,则风险可控,但需人工确认。</p>
+      <div class="desc-block">
+        <div class="block-title">受影响 URL</div>
+        <ul class="url-list"><li>http://host.docker.internal:3000/main.js</li></ul>
+      </div>
+      <div class="desc-block">
+        <div class="block-title">修复建议</div>
+        <ul>
+          <li>尽量避免使用 <code>bypassSecurityTrustHtml</code> 等信任绕过函数;</li>
+          <li>如确需使用,确保传入内容经过严格的白名单校验与消毒,且不包含用户可控输入。</li>
+        </ul>
+        <p class="refs"><b>参考:</b> <a href="https://v17.angular.io/guide/security" target="_blank">Angular Security Guide</a></p>
+      </div>
+    </div>
+
+    <!-- Feature Policy -->
+    <div class="card">
+      <div class="alert-head"><h3>4.4 Deprecated Feature Policy Header Set</h3></div>
+      <div class="alert-meta">
+        <span><b>风险:</b> <span class="badge low">低</span> <span class="conf">(中置信)</span></span>
+        <span><b>实例数:</b> 5 (系统性)</span>
+        <span><b>CWE:</b> CWE-16</span>
+      </div>
+      <p>站点仍在使用已废弃的 <code>Feature-Policy</code> 响应头 (证据:<span class="evid">Feature-Policy</span>)。该头已被重命名为 <code>Permissions-Policy</code>,旧头在主流浏览器中将被忽略,浏览器权限控制可能失效。</p>
+      <p><b>受影响 URL:</b> <code>/</code>、<code>/chunk-5K74DZ2F.js</code>、<code>/chunk-PX7UKXVL.js</code>、<code>/chunk-QBYXNN7Z.js</code>、<code>/sitemap.xml</code></p>
+      <div class="desc-block">
+        <div class="block-title">修复建议</div>
+        <p>将 <code>Feature-Policy</code> 迁移为 <code>Permissions-Policy</code> 头并调整对应指令语法。</p>
+        <p class="refs"><b>参考:</b> <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Permissions-Policy" target="_blank">MDN Permissions-Policy</a></p>
+      </div>
+    </div>
+
+    <!-- Timestamp -->
+    <div class="card">
+      <div class="alert-head"><h3>4.5 Timestamp Disclosure - Unix</h3></div>
+      <div class="alert-meta">
+        <span><b>风险:</b> <span class="badge low">低</span> <span class="conf">(低置信)</span></span>
+        <span><b>实例数:</b> 5 (系统性)</span>
+        <span><b>CWE:</b> CWE-497</span>
+      </div>
+      <p>在 <code>/styles.css</code> 中披露了 Unix 时间戳,例如 <code>1528301887</code> (2018-06-06)、<code>1578947368</code> (2020-01-13)、<code>1602209945</code> (2020-10-09)、<code>1636363636</code> (2021-11-08)、<code>1818181818</code> (2027-08-13)。此类时间戳多为版本号或缓存标记,一般不会造成直接威胁,但可能被用于推断系统构建时间或聚合分析。</p>
+      <p><b>受影响 URL:</b> <code>http://host.docker.internal:3000/styles.css</code> (5 个实例)</p>
+      <div class="desc-block">
+        <div class="block-title">修复建议</div>
+        <p>人工确认这些时间戳不包含敏感信息,且无法被聚合利用。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Info ============ -->
+  <section>
+    <h2>5. 信息级问题 <span class="tag">Informational</span></h2>
+
+    <div class="card">
+      <div class="alert-head"><h3>5.1 Modern Web Application</h3></div>
+      <div class="alert-meta"><span><b>信息级</b> (中置信)</span><span><b>实例数:</b> 5 (系统性)</span></div>
+      <p>应用为现代 SPA (含大量脚本、无直接链接),标准爬虫覆盖有限。提示若需自动化探索可选用 ZAP 的 <strong>Client Spider</strong> (基于浏览器) 以获得更完整的覆盖。</p>
+    </div>
+
+    <div class="card">
+      <div class="alert-head"><h3>5.2 Storable and Cacheable Content</h3></div>
+      <div class="alert-meta"><span><b>信息级</b> (中置信)</span><span><b>实例数:</b> 1 (非系统性)</span><span><b>CWE:</b> CWE-524</span></div>
+      <p><code>/robots.txt</code> 响应缺少显式缓存指令,按 RFC 7234 启发式策略可能被缓存约 1 年。由于内容非敏感,风险较低。</p>
+    </div>
+
+    <div class="card">
+      <div class="alert-head"><h3>5.3 Storable but Non-Cacheable Content</h3></div>
+      <div class="alert-meta"><span><b>信息级</b> (中置信)</span><span><b>实例数:</b> 5 (系统性)</span><span><b>CWE:</b> CWE-524</span></div>
+      <p><code>/</code>、<code>/assets/public/favicon_js.ico</code>、<code>/chunk-5K74DZ2F.js</code>、<code>/chunk-QBYXNN7Z.js</code>、<code>/sitemap.xml</code> 的响应设置了 <code>Cache-Control: max-age=0</code>,内容可存储但每次需回源校验,行为安全。若个别响应含用户特定数据,建议补充 <code>no-store</code>。</p>
+    </div>
+  </section>
+
+  <!-- ============ Records ============ -->
+  <section>
+    <h2>6. 安全测试记录 <span class="tag">Records</span></h2>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <tbody>
+            <tr><th style="width:50%">告警类型总数</th><td><strong>10</strong></td></tr>
+            <tr><th>告警实例总数</th><td><strong>42</strong></td></tr>
+            <tr><th>爬取端点总数</th><td><strong>135</strong></td></tr>
+            <tr><th>中危实例数</th><td><strong>10</strong></td></tr>
+            <tr><th>低危实例数</th><td><strong>21</strong></td></tr>
+            <tr><th>信息级实例数</th><td><strong>11</strong></td></tr>
+            <tr><th>高风险实例数</th><td><strong>0</strong></td></tr>
+            <tr><th>扫描时间</th><td>2026-08-05 01:52:24 (UTC)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Conclusion ============ -->
+  <section>
+    <h2>7. 结论与建议 <span class="tag">Conclusion</span></h2>
+
+    <div class="card">
+      <h3>7.1 结论</h3>
+      <p>本次被动安全扫描<strong>未发现高危 (High) 漏洞</strong>,目标站点不存在直接的严重注入类问题,安全性总体处于<strong>中等偏上</strong>水平。主要风险集中在<strong>安全响应头的缺失/配置不当</strong>与 <strong>CORS 策略过于宽松</strong> 两类配置缺陷上,修复成本低、见效快。</p>
+    </div>
+
+    <div class="card">
+      <h3>7.2 修复优先级建议</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>优先级</th><th>事项</th><th>对应告警</th></tr>
+          </thead>
+          <tbody>
+            <tr class="prio-p0"><td>P0 (高)</td><td>收紧 CORS 策略,移除 <code>Access-Control-Allow-Origin: *</code></td><td>3.2</td></tr>
+            <tr class="prio-p0"><td>P0 (高)</td><td>配置 <code>Content-Security-Policy</code> 响应头</td><td>3.1</td></tr>
+            <tr class="prio-p1"><td>P1 (中)</td><td>限制 <code>/ftp/</code> 目录下敏感文件 (<code>encrypt.pyc</code>、<code>package-lock.json.bak</code>) 的公开访问</td><td>3.1 附带发现</td></tr>
+            <tr class="prio-p1"><td>P1 (中)</td><td>配置 <code>Cross-Origin-Embedder-Policy</code> / <code>Cross-Origin-Opener-Policy</code></td><td>4.1 / 4.2</td></tr>
+            <tr class="prio-p2"><td>P2 (低)</td><td>迁移 <code>Feature-Policy</code> → <code>Permissions-Policy</code>;人工复核 <code>bypassSecurityTrustHtml</code> 用法及时间戳</td><td>4.3 / 4.4 / 4.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>7.3 后续建议</h3>
+      <ol>
+        <li><strong>启用主动扫描:</strong> 本次仅执行被动扫描,建议在授权范围内对关键接口启用主动扫描 (Active Scan),覆盖 SQL 注入、XSS、SSRF 等注入类漏洞。</li>
+        <li><strong>使用 Client Spider:</strong> 针对 SPA 应用,使用 ZAP Client Spider 完善动态内容覆盖。</li>
+        <li><strong>引入持续集成:</strong> 将 ZAP Baseline 扫描接入 CI/CD 流水线,配合 <code>failOnError</code> 在出现高危告警时阻断发布。</li>
+        <li><strong>定期回归:</strong> 修复上述配置问题后重新扫描,确认告警消除并防止回归。</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    本报告由 OWASP ZAP 2.17.0 被动扫描结果自动整理生成,供安全评估参考。<br>
+    所有测试均针对授权目标进行 · 生成时间 2026-08-05 01:52:24 (UTC)
+  </footer>
+
+</div>
+</body>
+</html>

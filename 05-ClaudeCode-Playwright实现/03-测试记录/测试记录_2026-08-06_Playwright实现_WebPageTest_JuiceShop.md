@@ -48,14 +48,14 @@ const data = await page.evaluate(() => ({
 
 | 指标 | 实测 | 达标线 |
 |---|---|---|
-| **TTFB** | 4 ms | < 0.8s |
+| **TTFB** | 5 ms | < 0.8s |
 | First Paint | 160 ms | — |
-| **FCP**（首次内容绘制） | 168 ms | — |
-| DOMContentLoaded | 141 ms | — |
-| Load | 171 ms | — |
-| **Fully Loaded**（networkidle） | **4522 ms** | 越短越好 |
+| **FCP**（首次内容绘制） | 164 ms | — |
+| DOMContentLoaded | 149 ms | — |
+| Load | 183 ms | — |
+| **Fully Loaded**（networkidle） | **4531 ms** | 越短越好 |
 
-> ⚠️ 有趣发现：`Load` 只有 171ms，但 `Fully Loaded` 却要 4.5s——因为 Juice Shop 用 **socket.io 长连接**，networkidle 要等 socket 稳定。这类"页面已渲染但网络未完全安静"的现象，正是瀑布图/时序指标才能暴露的。
+> ⚠️ 有趣发现：`Load` 只有 183ms，但 `Fully Loaded` 却要 4.5s——因为 Juice Shop 用 **socket.io 长连接**，networkidle 要等 socket 稳定。这类"页面已渲染但网络未完全安静"的现象，正是瀑布图/时序指标才能暴露的。
 
 ### 资源瀑布（53 个请求，~1.0 MB）
 
@@ -98,7 +98,7 @@ const data = await page.evaluate(() => ({
 ## 4. 结论
 
 - **核心可实现**：瀑布图数据 + 电影胶片 + 时序指标，信息量与 WebPageTest 等价。
-- 本靶场测试揭示了 Juice Shop 的真实性能特征：**首屏快（Load 171ms）、长尾慢（socket.io + 重复 API 请求导致 4.5s networkidle）**。
+- 本靶场测试揭示了 Juice Shop 的真实性能特征：**首屏快（Load 183ms）、长尾慢（socket.io + 重复 API 请求导致 4.5s networkidle）**。
 - 唯一不可实现的是**多地域云端节点**（那是 WPT 的分布式基础设施）；但本地性能诊断（瀑布/胶片）完全够用。
 - 若需要视觉化瀑布图，`05-waterfall.html` 即开即用；也可升级为 SVG/PNG 导出。
 

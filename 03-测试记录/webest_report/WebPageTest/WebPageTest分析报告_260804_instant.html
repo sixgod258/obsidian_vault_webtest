@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebPageTest 性能分析报告 · 260804_instant</title>
+<style>
+  :root{
+    --bg:#f4f6fa; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
+    --red:#dc2626; --red-bg:#fef2f2; --orange:#ea580c; --orange-bg:#fff7ed;
+    --yellow:#ca8a04; --yellow-bg:#fefce8; --green:#16a34a; --green-bg:#f0fdf4;
+    --blue:#2563eb; --blue-bg:#eff6ff;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--ink); font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif; line-height:1.65; padding:32px 16px;}
+  .wrap{max-width:960px; margin:0 auto;}
+  header.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb); color:#fff; border-radius:14px; padding:28px 32px; margin-bottom:24px;}
+  header.hero h1{font-size:26px; margin-bottom:8px;}
+  header.hero p{opacity:.9; font-size:14px;}
+  .meta-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px; margin-top:16px;}
+  .meta-grid .cell{background:rgba(255,255,255,.14); border-radius:8px; padding:8px 12px; font-size:13px;}
+  .meta-grid .cell b{display:block; font-size:14px;}
+  section{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px 28px; margin-bottom:20px;}
+  section h2{font-size:19px; margin-bottom:14px; padding-left:10px; border-left:4px solid var(--blue);}
+  section h3{font-size:15px; margin:18px 0 8px; color:#111827;}
+  p{margin-bottom:10px;}
+  .summary{background:var(--yellow-bg); border:1px solid #fde68a; border-left:5px solid var(--yellow); border-radius:8px; padding:14px 18px; margin-bottom:14px; font-size:14px;}
+  .summary b{color:#92400e;}
+  table{width:100%; border-collapse:collapse; font-size:13.5px; margin:10px 0 4px;}
+  th{background:#f1f5f9; text-align:left; font-weight:600; padding:8px 10px; border:1px solid var(--line); white-space:nowrap;}
+  td{padding:7px 10px; border:1px solid var(--line); vertical-align:top;}
+  tr:nth-child(even) td{background:#fafbfc;}
+  .num{font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap;}
+  .badge{display:inline-block; padding:1px 8px; border-radius:10px; font-size:12px; font-weight:600;}
+  .b-red{background:var(--red-bg); color:var(--red);}
+  .b-orange{background:var(--orange-bg); color:var(--orange);}
+  .b-yellow{background:var(--yellow-bg); color:var(--yellow);}
+  .b-green{background:var(--green-bg); color:var(--green);}
+  .b-blue{background:var(--blue-bg); color:var(--blue);}
+  code{background:#eef2f7; border:1px solid var(--line); border-radius:4px; padding:1px 6px; font-family:Consolas,Monaco,monospace; font-size:12.5px; word-break:break-all;}
+  .issue{border-left:4px solid var(--gray,var(--line)); background:#f9fafb; border-radius:6px; padding:8px 12px; margin-bottom:8px; font-size:13.5px;}
+  .issue.lv-high{border-color:var(--red); background:var(--red-bg);}
+  .issue.lv-mid{border-color:var(--orange); background:var(--orange-bg);}
+  .issue.lv-low{border-color:var(--yellow); background:var(--yellow-bg);}
+  ul,ol{margin:6px 0 10px 22px;}
+  li{margin-bottom:4px;}
+  .timeline td:first-child{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  .footer{text-align:center; color:var(--muted); font-size:12.5px; margin:20px 0 40px;}
+  .tag{display:inline-block; background:var(--blue-bg); color:var(--blue); border-radius:4px; padding:0 6px; font-size:12px; margin-left:6px;}
+  @media print{
+    body{background:#fff; padding:0;}
+    section{break-inside:avoid; box-shadow:none;}
+    header.hero{background:#1e3a8a;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>WebPageTest 性能分析报告</h1>
+  <p>数据来源：<code style="color:#fff;background:rgba(255,255,255,.18)">260804_instant_18b60f46bacf413d931360272473c07a.json</code></p>
+  <div class="meta-grid">
+    <div class="cell"><b>测试时间</b>2026-08-04 16:12:09</div>
+    <div class="cell"><b>浏览器</b>Chrome 148.0.0.0</div>
+    <div class="cell"><b>模拟环境</b>移动端 400×266 · 延迟 2ms</div>
+    <div class="cell"><b>测试轮数</b>1 轮（首屏）</div>
+  </div>
+  <div class="meta-grid" style="margin-top:10px;">
+    <div class="cell" style="grid-column:1/-1;"><b>测试地址</b><span style="word-break:break-all;">https://perfeye.testplus.cn/project/list?appKey=mecha</span></div>
+  </div>
+</header>
+
+<!-- 结论摘要 -->
+<section>
+  <h2>一、结论摘要</h2>
+  <div class="summary"><b>⚠️ 重要前提：</b>测试最终渲染的是 <b>SSO 登录页</b>，而非目标页面。由于访问 <code>/project/list?appKey=mecha</code> 时未登录，前端应用加载完成后跳转到了 <code>https://sso.testplus.cn/login</code>。因此本次数据反映的是 <b>「目标 SPA 壳 + SSO 登录页」的整体表现</b>，不能代表目标页面的真实性能。</div>
+  <p><b>整体表现较差</b>：fullyLoaded 耗时 14.1s，FCP 13.2s，核心瓶颈是 <b>超大的 JS 打包文件</b>（约 3.2MB 下载 / 10MB 未压缩）导致首屏白屏近 8 秒。</p>
+  <table>
+    <thead><tr><th>关键结论</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>🚨 最大问题</td><td><code>vendors.42aef419.async.js</code> 下载 2.64MB、未压缩 <b>8.13MB</b></td></tr>
+      <tr><td>🚨 第二大问题</td><td>所有静态 JS/CSS <b>响应头缺失 Cache-Control</b>，完全无法利用缓存</td></tr>
+      <tr><td>⚠️ 跳转链</td><td>perfeye SPA 未鉴权 → 客户端跳转到 sso 登录页，测试数据失真</td></tr>
+      <tr><td>⚠️ 连接耗时</td><td>首个请求 TTFB 中 DNS+TCP+SSL 连接耗时 1619ms（服务端实际响应仅 291ms）</td></tr>
+      <tr><td>✅ 表现良好</td><td>gzip/压缩 100 分、keep-alive 100 分、CLS 0.008（优）、TBT 143ms（优）</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 核心指标 -->
+<section>
+  <h2>二、核心性能指标</h2>
+  <table>
+    <thead><tr><th>指标</th><th class="num">值</th><th>评级</th></tr></thead>
+    <tbody>
+      <tr><td>TTFB（首字节）</td><td class="num">1,912 ms</td><td><span class="badge b-red">🔴 差</span></td></tr>
+      <tr><td>— 其中服务端响应</td><td class="num">~291 ms</td><td><span class="badge b-green">🟢 良</span></td></tr>
+      <tr><td>FCP（首次内容绘制）</td><td class="num">13,221 ms</td><td><span class="badge b-red">🔴 差</span></td></tr>
+      <tr><td>LCP（最大内容绘制）</td><td class="num">9,819 ms</td><td><span class="badge b-red">🔴 差</span></td></tr>
+      <tr><td>Speed Index（速度指数）</td><td class="num">13,146 ms</td><td><span class="badge b-red">🔴 差</span></td></tr>
+      <tr><td>TBT（总阻塞时间）</td><td class="num">143 ms</td><td><span class="badge b-green">🟢 优</span></td></tr>
+      <tr><td>CLS（布局偏移）</td><td class="num">0.008</td><td><span class="badge b-green">🟢 优</span></td></tr>
+      <tr><td>视觉完成 95%</td><td class="num">13,200 ms</td><td><span class="badge b-red">🔴 差</span></td></tr>
+      <tr><td>fullyLoaded（完全加载）</td><td class="num">14,056 ms</td><td><span class="badge b-red">🔴 差</span></td></tr>
+      <tr><td>DOMContentLoaded</td><td class="num">2,923 ms</td><td><span class="badge b-yellow">🟡 中</span></td></tr>
+      <tr><td>LoadEvent</td><td class="num">3,391 ms</td><td><span class="badge b-yellow">🟡 中</span></td></tr>
+      <tr><td>CPU 总耗时</td><td class="num">3,579 ms</td><td><span class="badge b-yellow">🟡 中</span></td></tr>
+    </tbody>
+  </table>
+  <p style="color:var(--muted); font-size:13px; margin-top:8px;">说明：LCP(9.8s) 早于 FCP(13.2s) 是因为 LCP 记录在页面跳转<b>之前</b>（perfeye SPA 加载阶段），而 FCP 是跳转后 SSO 登录页的首次绘制。</p>
+</section>
+
+<!-- 加载时间线 -->
+<section>
+  <h2>三、加载时间线（水印帧分析）</h2>
+  <p>从视频帧（videoFrames）还原的视觉进度：</p>
+  <table class="timeline">
+    <thead><tr><th>时间点</th><th class="num">视觉完成度</th><th>事件</th></tr></thead>
+    <tbody>
+      <tr><td>0 ~ 7,900 ms</td><td class="num">0%</td><td>白屏 —— 下载并执行 perfeye 的 JS 大包</td></tr>
+      <tr><td>8,000 ms</td><td class="num">1%</td><td>perfeye 页面开始渲染</td></tr>
+      <tr><td>10,000 ms</td><td class="num">2%</td><td>perfeye 壳渲染中</td></tr>
+      <tr><td>10,142 ms</td><td class="num">—</td><td><b>JS 未鉴权 → 跳转 SSO 登录页</b>（新的 HTML 文档）</td></tr>
+      <tr><td>12,200 ms</td><td class="num">0%</td><td>页面导航切换，画面再次清空</td></tr>
+      <tr><td>13,200 ms</td><td class="num">98%</td><td>SSO 登录页完成绘制</td></tr>
+      <tr><td>13,700 ms</td><td class="num">100%</td><td>视觉完全完成</td></tr>
+    </tbody>
+  </table>
+  <p><b>白屏 8 秒的根因</b>：<code>umi.6fc7066c.js</code>(585KB) 与 <code>vendors.42aef419.async.js</code>(2.64MB) 需在首屏前下载并执行，主线程仅 EvaluateScript 就消耗 168ms、v8 编译 117ms，另有 2 个长任务（93ms / 49ms）阻塞渲染。</p>
+</section>
+
+<!-- 请求分析 -->
+<section>
+  <h2>四、请求分析</h2>
+  <h3>4.1 总体</h3>
+  <table>
+    <thead><tr><th>指标</th><th>值</th></tr></thead>
+    <tbody>
+      <tr><td>请求总数</td><td>24</td></tr>
+      <tr><td>总下载量</td><td>3.52 MB</td></tr>
+      <tr><td>平均有效带宽</td><td>~290 Kbps（慢速网络模拟）</td></tr>
+      <tr><td>连接协议</td><td>HTTP/1.1（未启用 HTTP/2，TLS 1.2）</td></tr>
+      <tr><td>HTTP 状态码</td><td>200×23，302×1（favicon.ico 重定向）</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.2 按资源类型</h3>
+  <table>
+    <thead><tr><th>类型</th><th class="num">请求数</th><th class="num">下载量</th><th class="num">占比</th></tr></thead>
+    <tbody>
+      <tr><td>Script（JS）</td><td class="num">8</td><td class="num">3.15 MB</td><td class="num">89.5%</td></tr>
+      <tr><td>Stylesheet（CSS）</td><td class="num">5</td><td class="num">175 KB</td><td class="num">5.0%</td></tr>
+      <tr><td>Image</td><td class="num">5</td><td class="num">13 KB</td><td class="num">0.4%</td></tr>
+      <tr><td>Document（HTML）</td><td class="num">2</td><td class="num">19 KB</td><td class="num">0.5%</td></tr>
+      <tr><td>Other / 其他</td><td class="num">4</td><td class="num">158 KB</td><td class="num">4.6%</td></tr>
+    </tbody>
+  </table>
+  <p>JS 占全部下载量的 <b>89.5%</b>，是绝对瓶颈。</p>
+
+  <h3>4.3 按域名</h3>
+  <table>
+    <thead><tr><th>域名</th><th class="num">请求数</th><th>归属</th></tr></thead>
+    <tbody>
+      <tr><td>perfeye.testplus.cn</td><td class="num">10</td><td>目标应用（大 JS/CSS 包）</td></tr>
+      <tr><td>sso.testplus.cn</td><td class="num">7</td><td>SSO 登录页及其静态资源</td></tr>
+      <tr><td>hm.baidu.com</td><td class="num">3</td><td>百度统计（第三方追踪）</td></tr>
+      <tr><td>staticres.testplus.cn</td><td class="num">1</td><td>公共导航脚本</td></tr>
+      <tr><td>testplus.ks3-cn-beijing.ksyun.com</td><td class="num">1</td><td>对象存储</td></tr>
+      <tr><td>ks3-cn-beijing.ksyuncs.com</td><td class="num">1</td><td>对象存储</td></tr>
+      <tr><td>gw.alipayobjects.com</td><td class="num">1</td><td>支付宝 CDN（LCP 图片来源）</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.4 体积最大的资源 Top 8</h3>
+  <table>
+    <thead><tr><th>资源</th><th class="num">下载大小</th><th class="num">未压缩大小</th><th class="num">耗时</th></tr></thead>
+    <tbody>
+      <tr><td><code>vendors.42aef419.async.js</code></td><td class="num">2.64 MB</td><td class="num">8.13 MB</td><td class="num">2,358 ms</td></tr>
+      <tr><td><code>umi.6fc7066c.js</code></td><td class="num">585 KB</td><td class="num">1.94 MB</td><td class="num">3,498 ms</td></tr>
+      <tr><td><code>testplus-admin.min.css</code> (sso)</td><td class="num">90 KB</td><td class="num">505 KB</td><td class="num">787 ms</td></tr>
+      <tr><td><code>vendors.36c6a22c.chunk.css</code></td><td class="num">70 KB</td><td class="num">435 KB</td><td class="num">325 ms</td></tr>
+      <tr><td><code>jquery.min.js</code> (sso)</td><td class="num">40 KB</td><td class="num">112 KB</td><td class="num">312 ms</td></tr>
+      <tr><td><code>public-nav-v2.js</code></td><td class="num">26 KB</td><td class="num">73 KB</td><td class="num">1,711 ms</td></tr>
+      <tr><td><code>umi.22abead7.css</code></td><td class="num">11 KB</td><td class="num">73 KB</td><td class="num">289 ms</td></tr>
+      <tr><td><code>hm.js</code>（百度统计）</td><td class="num">11 KB</td><td class="num">30 KB</td><td class="num">1,070 ms</td></tr>
+    </tbody>
+  </table>
+
+  <h3>4.5 重定向链</h3>
+  <div class="issue" style="border-color:var(--blue); background:var(--blue-bg);">
+    <code>GET https://sso.testplus.cn/favicon.ico &nbsp;→&nbsp; 302 &nbsp;→&nbsp; /login</code>
+  </div>
+  <ul>
+    <li>sso.testplus.cn 的 <code>favicon.ico</code> 未正确配置，返回 302 跳转到登录页（服务端 fallback 配置缺陷）。</li>
+    <li>主跳转（perfeye → sso）由前端 JS 在加载后发起（约 10.1s），不是 HTTP 302，请求列表中无对应 <code>redirect_locations</code>，属于<b>客户端路由跳转</b>。</li>
+  </ul>
+</section>
+
+<!-- 优化评分 -->
+<section>
+  <h2>五、优化评分（WebPageTest 审计）</h2>
+  <table>
+    <thead><tr><th>项</th><th class="num">得分</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>gzip / 压缩</td><td class="num">100</td><td>资源已正确压缩</td></tr>
+      <tr><td>keep-alive</td><td class="num">100</td><td>连接复用良好</td></tr>
+      <tr><td>渐进式 JPEG</td><td class="num">-1</td><td>未检测（无此类图片）</td></tr>
+      <tr><td><b>缓存（cache）</b></td><td class="num"><span class="badge b-red">8</span></td><td>🔴 <b>极差</b> —— 静态资源缺失缓存头</td></tr>
+      <tr><td><b>CDN</b></td><td class="num"><span class="badge b-red">8</span></td><td>🔴 大量资源未走 CDN</td></tr>
+    </tbody>
+  </table>
+  <h3>各资源缓存头明细（关键）</h3>
+  <table>
+    <thead><tr><th>资源</th><th>Cache-Control</th><th class="num">缓存评分</th></tr></thead>
+    <tbody>
+      <tr><td>perfeye 的 <code>umi.js</code> / <code>vendors.js</code> / 各 CSS / 图片</td><td><b>无响应头</b></td><td class="num">0</td></tr>
+      <tr><td>sso 的 <code>font-awesome.css</code> / <code>testplus-admin.css</code> / <code>jquery.js</code> / logo</td><td><code>no-cache</code></td><td class="num">-1</td></tr>
+      <tr><td>alipay CDN svg（LCP 图）</td><td><code>max-age=2592000</code>（30 天）</td><td class="num"><span class="badge b-green">100 ✅</span></td></tr>
+      <tr><td>百度统计</td><td><code>max-age=0, must-revalidate</code></td><td class="num">-1</td></tr>
+    </tbody>
+  </table>
+  <p><b>结论</b>：除支付宝 CDN 外，几乎全部静态资源都无法被浏览器缓存，每次访问都要重新下载 3.2MB JS。</p>
+</section>
+
+<!-- 问题清单 -->
+<section>
+  <h2>六、问题清单</h2>
+  <div class="issue lv-high"><b>🔴 [1] 高 · 未登录跳转 SSO，目标页指标失真</b><br>document_URL = sso <code>/login</code>；10.1s 客户端跳转</div>
+  <div class="issue lv-high"><b>🔴 [2] 高 · vendors JS 打包 8.13MB 未压缩、2.64MB 下载</b><br><code>vendors.42aef419.async.js</code></div>
+  <div class="issue lv-high"><b>🔴 [3] 高 · 静态资源无长缓存头</b><br>score_cache=8；大资源 c_ctrl 为空</div>
+  <div class="issue lv-mid"><b>🟠 [4] 中 · 首屏白屏 ~8s</b><br>视频帧 0-7900ms 视觉 0%</div>
+  <div class="issue lv-mid"><b>🟠 [5] 中 · HTTP/1.1 未启用 HTTP/2/3</b><br>proto=http/1.1，TLS 1.2</div>
+  <div class="issue lv-mid"><b>🟠 [6] 中 · 首个请求连接耗时 1.6s（DNS 1064ms）</b><br>DNS 解析慢（首个请求）</div>
+  <div class="issue lv-mid"><b>🟠 [7] 中 · 可访问性：<code>maximum-scale=1</code> 禁用缩放</b><br>axe meta-viewport，impact=critical</div>
+  <div class="issue lv-mid"><b>🟠 [8] 中 · Mixed Content：HTTPS 页加载了 http:// 资源</b><br>console 安全警告</div>
+  <div class="issue lv-low"><b>🟡 [9] 低 · 图标字体未加载（FontAwesome/Glyphicons unloaded）</b><br>fonts 状态 unloaded</div>
+  <div class="issue lv-low"><b>🟡 [10] 低 · 第三方追踪：百度统计 3 个请求</b><br>hm.baidu.com</div>
+  <div class="issue lv-low"><b>🟡 [11] 低 · favicon.ico 302 → /login</b><br>重定向链</div>
+  <div class="issue lv-low"><b>🟡 [12] 低 · DOM 输入框缺少 autocomplete 属性</b><br>console 建议</div>
+  <div class="issue lv-low"><b>🟡 [13] 低 · 主线程长任务 93ms + 49ms</b><br>blockingTimes</div>
+  <div class="issue lv-low"><b>🟡 [14] 低 · Lit 库整包加载（core features 合并）</b><br>console 警告</div>
+</section>
+
+<!-- 优化建议 -->
+<section>
+  <h2>七、优化建议</h2>
+  <h3>1. 前端打包（收益最大）</h3>
+  <ul>
+    <li><b>拆分 vendors 大包</b>：8.13MB 未压缩的 <code>vendors.42aef419.async.js</code> 应按路由/依赖拆分，利用 webpack/vite 的动态 import，只加载首屏所需依赖。</li>
+    <li>对 <code>umi.js</code>（1.94MB 未压缩）做更细粒度代码分割 + tree-shaking。</li>
+    <li>目标：首屏 JS 下载量控制在 <b>&lt; 500KB</b>。</li>
+  </ul>
+  <h3>2. 缓存策略</h3>
+  <ul>
+    <li>对所有<b>带内容 hash 的静态资源</b>（umi/vendors/chunk）返回：<code>Cache-Control: public, max-age=31536000, immutable</code></li>
+    <li>未带 hash 的资源（如 sso 的 css/js）至少返回 <code>max-age=86400</code>。</li>
+    <li>预计可将重复访问的下载量从 3.2MB 降到 0。</li>
+  </ul>
+  <h3>3. 登录 / 鉴权流程</h3>
+  <ul>
+    <li>目标页面建议<b>服务端鉴权</b>（未登录直接 302 到 SSO），避免先下载 3.2MB JS 再客户端跳转，可省去 perfeye 壳的整个加载开销。</li>
+    <li>若必须前端鉴权，用<b>更轻的独立登录页/iframe</b>，避免加载完整业务 bundle。</li>
+  </ul>
+  <h3>4. 网络与传输</h3>
+  <ul>
+    <li>服务端启用 <b>HTTP/2 / HTTP/3</b>（当前 1.1 串行加载，大文件下载慢）。</li>
+    <li>首屏 HTML 静态资源接入 CDN（当前 score_cdn=8）。</li>
+    <li>排查 DNS 解析慢问题（首个请求 DNS 耗时 1064ms），可上 CDN 的 Anycast DNS。</li>
+  </ul>
+  <h3>5. 其他</h3>
+  <ul>
+    <li>修复 <code>&lt;meta name="viewport"&gt;</code>，移除 <code>maximum-scale=1</code>（无障碍 critical 项）。</li>
+    <li>修复 Mixed Content（将 http:// 子资源升级为 https）。</li>
+    <li>图标字体使用 <code>font-display: swap</code> 或改为内联 SVG 图标。</li>
+    <li>百度统计脚本改为 <code>async</code> 加载并放最后，或使用 datalayer 上报替代。</li>
+    <li>修正 sso 的 favicon.ico 配置（当前 302 到 /login）。</li>
+  </ul>
+</section>
+
+<!-- 附录 -->
+<section>
+  <h2>八、附录</h2>
+  <h3>8.1 Console 日志（5 条）</h3>
+  <table>
+    <thead><tr><th>级别</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-blue">log</span></td><td><code>modify time: 20220720-1</code></td></tr>
+      <tr><td><span class="badge b-yellow">warning</span></td><td>Lit 从合并了所有核心特性的 bundle 加载，建议拆分以减小传输/解析成本</td></tr>
+      <tr><td><span class="badge b-blue">log</span></td><td><code>list</code>（public-nav-v2.js）</td></tr>
+      <tr><td><span class="badge b-red">warning</span></td><td><b>Mixed Content</b>：HTTPS 页面请求了 http:// 不安全元素</td></tr>
+      <tr><td><span class="badge b-blue">verbose</span></td><td>DOM 输入框建议增加 autocomplete 属性（如 <code>current-password</code>）</td></tr>
+    </tbody>
+  </table>
+
+  <h3>8.2 可访问性审计（axe）</h3>
+  <div class="issue lv-mid">
+    <b>违规 1 项，severity = critical：</b><br>
+    <code>meta-viewport</code> — <code>maximum-scale=1</code> 在移动端禁用了页面缩放<br>
+    违规元素：<code>&lt;meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"&gt;</code>
+  </div>
+
+  <h3>8.3 JS 漏洞库</h3>
+  <p><code>jsLibsVulns</code>：无已知漏洞（0 条）</p>
+
+  <h3>8.4 布局偏移</h3>
+  <p>单次偏移，时间 13,648ms，score 0.007998，位于 rect <code>[345,92,320,456]</code>（登录页元素定位引起的微小偏移）。</p>
+
+  <h3>8.5 CPU 耗时 Top（主线程）</h3>
+  <table>
+    <thead><tr><th>任务</th><th class="num">耗时</th></tr></thead>
+    <tbody>
+      <tr><td>EvaluateScript</td><td class="num">168 ms</td></tr>
+      <tr><td>v8.compile</td><td class="num">117 ms</td></tr>
+      <tr><td>Layout</td><td class="num">115 ms</td></tr>
+      <tr><td>UpdateLayoutTree</td><td class="num">16 ms</td></tr>
+      <tr><td>ParseAuthorStyleSheet</td><td class="num">14 ms</td></tr>
+    </tbody>
+  </table>
+
+  <h3>8.6 原始请求时间线</h3>
+  <div style="overflow-x:auto;">
+  <table class="timeline">
+    <thead><tr><th class="num">#</th><th class="num">开始</th><th class="num">结束</th><th class="num">耗时</th><th>状态</th><th>类型</th><th class="num">下载大小</th><th>URL</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td class="num">1</td><td class="num">1913</td><td class="num">1911</td><td>200</td><td>Document</td><td class="num">1.6 KB</td><td><code>/project/list?appKey=mecha</code></td></tr>
+      <tr><td class="num">3</td><td class="num">1064</td><td class="num">4838</td><td class="num">3498</td><td>200</td><td>Script</td><td class="num">585 KB</td><td><code>/umi.6fc7066c.js</code></td></tr>
+      <tr><td class="num">9</td><td class="num">1316</td><td class="num">5263</td><td class="num">803</td><td>200</td><td>Script</td><td class="num">1.1 KB</td><td><code>/layouts__SecurityLayout.0f4ebd0c.async.js</code></td></tr>
+      <tr><td class="num">5</td><td class="num">1923</td><td class="num">3887</td><td class="num">1711</td><td>200</td><td>Script</td><td class="num">26 KB</td><td><code>/dist/public-nav-v2.js</code></td></tr>
+      <tr><td class="num">2</td><td class="num">1929</td><td class="num">2218</td><td class="num">289</td><td>200</td><td>Stylesheet</td><td class="num">11 KB</td><td><code>/umi.22abead7.css</code></td></tr>
+      <tr><td class="num">4</td><td class="num">2223</td><td class="num">3293</td><td class="num">1070</td><td>200</td><td>Script</td><td class="num">11 KB</td><td><code>/hm.js</code>（百度统计）</td></tr>
+      <tr><td class="num">6</td><td class="num">3311</td><td class="num">3647</td><td class="num">336</td><td>200</td><td>Image</td><td class="num">43 B</td><td><code>/hm.gif</code>（百度统计）</td></tr>
+      <tr><td class="num">7</td><td class="num">4984</td><td class="num">5309</td><td class="num">325</td><td>200</td><td>Stylesheet</td><td class="num">71 KB</td><td><code>/vendors.36c6a22c.chunk.css</code></td></tr>
+      <tr><td class="num">8</td><td class="num">4987</td><td class="num">7345</td><td class="num">2358</td><td>200</td><td>Script</td><td class="num">2.64 MB</td><td><code>/vendors.42aef419.async.js</code></td></tr>
+      <tr><td class="num">11</td><td class="num">5007</td><td class="num">6529</td><td class="num">1269</td><td>200</td><td>Image</td><td class="num">1.8 KB</td><td><code>/cn/images/logo.png</code></td></tr>
+      <tr><td class="num">10</td><td class="num">5012</td><td class="num">6170</td><td class="num">1157</td><td>200</td><td>Image</td><td class="num">7 KB</td><td><code>/testplus/cn/images/帮助.png</code></td></tr>
+      <tr><td class="num">12</td><td class="num">7476</td><td class="num">7762</td><td class="num">286</td><td>200</td><td>Stylesheet</td><td class="num">0.8 KB</td><td><code>/layouts__UserLayout.c8709276.chunk.css</code></td></tr>
+      <tr><td class="num">13</td><td class="num">7476</td><td class="num">7785</td><td class="num">309</td><td>200</td><td>Script</td><td class="num">1.2 KB</td><td><code>/layouts__UserLayout.695ee880.async.js</code></td></tr>
+      <tr><td class="num">14</td><td class="num">7832</td><td class="num">8136</td><td class="num">304</td><td>200</td><td>Script</td><td class="num">0.7 KB</td><td><code>/p__user__login__NoLogin.603d9c93.async.js</code></td></tr>
+      <tr><td class="num">15</td><td class="num">7834</td><td class="num">9575</td><td class="num">1740</td><td>200</td><td>Image</td><td class="num">2.5 KB</td><td><code>/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg</code>（LCP）</td></tr>
+      <tr><td class="num">16</td><td class="num">9586</td><td class="num">9896</td><td class="num">310</td><td>200</td><td>Other</td><td class="num">10 KB</td><td><code>/favicon.png</code></td></tr>
+      <tr><td class="num">17</td><td class="num">10142</td><td class="num">11608</td><td class="num">1466</td><td>200</td><td>Document</td><td class="num">9 KB</td><td><code>/login?redirect_url=…</code>（SSO 登录页）</td></tr>
+      <tr><td class="num">18</td><td class="num">11617</td><td class="num">11960</td><td class="num">343</td><td>200</td><td>其他</td><td class="num">43 B</td><td><code>/hm.gif</code></td></tr>
+      <tr><td class="num">19</td><td class="num">11626</td><td class="num">11904</td><td class="num">278</td><td>200</td><td>Stylesheet</td><td class="num">6.7 KB</td><td><code>/static/css/font-awesome.min.css</code></td></tr>
+      <tr><td class="num">22</td><td class="num">11627</td><td class="num">13528</td><td class="num">1901</td><td>200</td><td>Image</td><td class="num">1.8 KB</td><td><code>/static/images/logo-black.png</code></td></tr>
+      <tr><td class="num">20</td><td class="num">11904</td><td class="num">12691</td><td class="num">787</td><td>200</td><td>Stylesheet</td><td class="num">90 KB</td><td><code>/static/css/testplus-admin.min.css</code></td></tr>
+      <tr><td class="num">21</td><td class="num">12692</td><td class="num">13004</td><td class="num">312</td><td>200</td><td>Script</td><td class="num">40 KB</td><td><code>/static/js/jquery.min.js</code></td></tr>
+      <tr><td class="num">23</td><td class="num">13537</td><td class="num">13792</td><td class="num">255</td><td>302</td><td>其他</td><td class="num">0 B</td><td><code>/favicon.ico</code> → /login</td></tr>
+      <tr><td class="num">24</td><td class="num">13794</td><td class="num">14056</td><td class="num">262</td><td>200</td><td>Other</td><td class="num">9 KB</td><td><code>/login</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<div class="footer">
+  报告生成时间：2026-08-04 · 数据来源：<code>260804_instant_18b60f46bacf413d931360272473c07a.json</code><br>
+  <span style="opacity:.75">本报告由 WebPageTest JSON 分析生成</span>
+</div>
+
+</div>
+</body>
+</html>

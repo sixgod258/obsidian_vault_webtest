@@ -71,7 +71,7 @@ docker pull ghcr.io/zaproxy/zaproxy:stable
 docker run --rm -v "${PWD}:/zap/wrk/:rw" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://host.docker.internal:3000 -m 2 -r zap-report.html -J zap-report.json
 ```
 
-> 💡 **要点**：`${PWD}` 自动替换为当前目录，也可直接写完整路径（如 `-v D:\obsi_for_webtest\03-测试记录:/zap/wrk/:rw`）。容器内访问宿主机靶场必须用 `host.docker.internal`（不能写 `localhost`）。容器以非 root 用户运行，若报告未生成，请确认输出目录对容器可写。
+> 💡 **要点**：`${PWD}` 自动替换为当前目录，也可直接写完整路径（如 `-v D:\webest_report\OWASP-ZAP:/zap/wrk/:rw`）。容器内访问宿主机靶场必须用 `host.docker.internal`（不能写 `localhost`）。容器以非 root 用户运行，若报告未生成，请确认输出目录对容器可写。
 
 ### 6.2 主动扫描（Active Scan，Docker）
 
@@ -230,7 +230,7 @@ docker run --rm -d -p 3000:3000 --name juice-shop bkimminich/juice-shop
 
 **预防**：
 
-- 跑主动扫描前先停掉其他重容器：`docker stop <容器名>`（如 gbrain）
+- 跑主动扫描前先停掉其他重容器：`docker stop <容器名>`（如你本机的其他容器）
 - 常规巡检用**基线扫描** `zap-baseline.py`（无攻击载荷，更轻），主动扫描只在需要时开
 - 主动扫描仅对授权靶场进行，必要时把 `-m 2` 减到 `-m 1` 缩短爬取
 

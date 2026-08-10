@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lighthouse 测试报告差异分析</title>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --primary: #2563eb;
+    --green: #16a34a;
+    --red: #dc2626;
+    --amber: #d97706;
+    --code-bg: #f3f4f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", "Microsoft YaHei", "PingFang SC", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 32px 16px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+  header { margin-bottom: 32px; }
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h1 .badge { font-size: 13px; font-weight: 500; color: #fff; background: var(--primary); padding: 3px 10px; border-radius: 999px; }
+  .subtitle { color: var(--muted); font-size: 14px; }
+  h2 {
+    font-size: 19px;
+    margin: 36px 0 14px;
+    padding-left: 12px;
+    border-left: 4px solid var(--primary);
+  }
+  h3 { font-size: 16px; margin: 22px 0 10px; color: #111827; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: #f9fafb; font-weight: 600; color: #374151; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  .up { color: var(--green); font-weight: 600; }
+  .down { color: var(--red); font-weight: 600; }
+  .flat { color: var(--muted); }
+  .bad { color: var(--red); font-weight: 600; }
+  .good { color: var(--green); font-weight: 600; }
+  .warn { color: var(--amber); font-weight: 600; }
+  .note {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 4px solid var(--amber);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin: 14px 0;
+  }
+  .note strong { color: var(--amber); }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 14px 0; }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04);
+  }
+  .stat .label { font-size: 12px; color: var(--muted); }
+  .stat .value { font-size: 22px; font-weight: 700; margin-top: 2px; }
+  .stat .delta { font-size: 12px; margin-top: 2px; }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 13px;
+    font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+  }
+  ol, ul { padding-left: 22px; }
+  li { margin: 6px 0; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 13px; text-align: center; }
+  .tags { margin-top: 6px; }
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--primary);
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    padding: 2px 10px;
+    margin: 0 4px 4px 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Lighthouse 测试报告差异分析 <span class="badge">Lighthouse 13.3.0</span></h1>
+  <div class="subtitle">对比两份 JSON 报告：<code>perfeye.testplus.cn-20260804T142217.json</code> 与 <code>perfeye.testplus.cn-20260804T142605.json</code></div>
+</header>
+
+<!-- 1. 基本信息 -->
+<h2>1. 测试基本信息</h2>
+<div class="card">
+  <table>
+    <tr><th style="width:140px">项目</th><th>报告 1</th><th>报告 2</th></tr>
+    <tr><td>文件名</td><td><code>…-20260804T142217.json</code></td><td><code>…-20260804T142605.json</code></td></tr>
+    <tr><td>抓取时间</td><td>2026-08-04 06:22:17 (UTC)</td><td>2026-08-04 06:26:05 (UTC)</td></tr>
+    <tr><td>间隔</td><td colspan="2">约 3 分 48 秒</td></tr>
+    <tr><td>Lighthouse 版本</td><td colspan="2">13.3.0（相同）</td></tr>
+    <tr><td>请求 URL</td><td colspan="2"><code>https://perfeye.testplus.cn/project/list?appKey=mecha</code></td></tr>
+    <tr><td>测试配置</td><td colspan="2">移动端模拟 (412×823, DPR 1.75)，DevTools 通道，模拟节流</td></tr>
+  </table>
+  <div class="subtitle" style="margin-top:10px">两次测试<strong>相同 URL、相同版本、相同配置</strong>，仅相隔约 4 分钟连续执行，适合观察同一版本页面的稳定性与波动。</div>
+</div>
+
+<!-- 2. 总体评分 -->
+<h2>2. 总体评分对比</h2>
+<div class="summary-grid">
+  <div class="stat"><div class="label">Performance 性能</div><div class="value">57 → 58 <span class="up">↑</span></div><div class="delta up">+1 分</div></div>
+  <div class="stat"><div class="label">Accessibility 无障碍</div><div class="value">67 → 67</div><div class="delta flat">持平</div></div>
+  <div class="stat"><div class="label">Best Practices 最佳实践</div><div class="value">54 → 54</div><div class="delta flat">持平</div></div>
+  <div class="stat"><div class="label">SEO</div><div class="value">67 → 67</div><div class="delta flat">持平</div></div>
+</div>
+<div class="card">
+  <table>
+    <tr><th>分类</th><th class="num">报告 1</th><th class="num">报告 2</th><th>变化</th></tr>
+    <tr><td>Performance（性能）</td><td class="num">57</td><td class="num">58</td><td><span class="up">↑ +1</span></td></tr>
+    <tr><td>Accessibility（无障碍）</td><td class="num">67</td><td class="num">67</td><td class="flat">—</td></tr>
+    <tr><td>Best Practices（最佳实践）</td><td class="num">54</td><td class="num">54</td><td class="flat">—</td></tr>
+    <tr><td>SEO</td><td class="num">67</td><td class="num">67</td><td class="flat">—</td></tr>
+  </table>
+  <div class="subtitle" style="margin-top:10px">性能分小幅提升 1 分，其余三个分类完全一致。总审计数均为 155 项，各状态计数（binary/notApplicable/numeric/informative/metricSavings/manual = 53/38/12/22/19/11）两次完全一致。</div>
+</div>
+
+<!-- 3. 核心性能指标 -->
+<h2>3. 核心性能指标差异</h2>
+
+<h3>3.1 Lighthouse 核心指标（Web Vitals 相关）</h3>
+<div class="card">
+  <table>
+    <tr><th>指标</th><th class="num">报告 1</th><th class="num">报告 2</th><th>变化</th><th>影响</th></tr>
+    <tr><td>FCP 首次内容绘制</td><td class="num">385 ms</td><td class="num">376 ms</td><td class="down">↓ 9 ms</td><td class="good">略好</td></tr>
+    <tr><td>LCP 最大内容绘制</td><td class="num">799 ms</td><td class="num">809 ms</td><td class="up">↑ 10 ms</td><td class="bad">略差</td></tr>
+    <tr><td>Speed Index 速度指数</td><td class="num">1.0 s</td><td class="num">1.1 s</td><td class="up">↑ 71 ms</td><td class="bad">略差（0.97 → 0.95）</td></tr>
+    <tr><td>TBT 总阻塞时间</td><td class="num">400 ms</td><td class="num">380 ms</td><td class="down">↓ 20 ms</td><td class="good">好（0.41 → 0.44）</td></tr>
+    <tr><td>TTI 可交互时间</td><td class="num">1.8 s</td><td class="num">1.7 s</td><td class="down">↓ 39 ms</td><td class="good">略好</td></tr>
+    <tr><td>Max Potential FID 最大潜在 FID</td><td class="num">336 ms</td><td class="num">328 ms</td><td class="down">↓ 8 ms</td><td class="good">略好</td></tr>
+    <tr><td>CLS 累积布局偏移</td><td class="num"><strong>0.903</strong></td><td class="num"><strong>0.903</strong></td><td class="flat">≈ 持平</td><td class="bad">两次均极差（0.03 分）</td></tr>
+  </table>
+  <div class="note"><strong>结论：</strong>核心指标整体在 ±10% 内小幅波动，方向有升有降，属于运行噪声级差异，<strong>页面性能没有实质性的改进或退化</strong>。其中 <strong>CLS ≈ 0.90 是两次共性的严重问题</strong>（极差），是性能分被拉低的主要原因之一。</div>
+</div>
+
+<h3>3.2 布局偏移明细（两次一致，共性问题）</h3>
+<div class="card">
+  <p>CLS 为 0.903，两次均检出 <strong>4 处布局偏移</strong>，偏移元素完全相同：</p>
+  <ul>
+    <li><code>main.ant-layout-content</code> 主内容区</li>
+    <li><code>header.public-nav-header &gt; div.right-container</code> 公共导航</li>
+    <li><code>div.right-menu-wra…</code>（用户菜单）</li>
+    <li><code>main.ant-layout-content</code> 下的页面内容容器</li>
+  </ul>
+  <div class="note">说明布局偏移是<strong>稳定复现的代码问题</strong>，并非偶发，需要优先定位这些元素在加载过程中的位移来源（如字体加载、异步数据渲染导致高度变化等）。</div>
+</div>
+
+<!-- 4. 主线程 -->
+<h2>4. 主线程与 JS 执行差异</h2>
+
+<h3>4.1 总览</h3>
+<div class="card">
+  <table>
+    <tr><th>审计</th><th class="num">报告 1</th><th class="num">报告 2</th><th>变化</th></tr>
+    <tr><td>bootup-time（JS 执行耗时）</td><td class="num">1.6 s</td><td class="num">1.7 s</td><td class="up">↑ 略差（均 0 分）</td></tr>
+    <tr><td>mainthread-work-breakdown（主线程总耗时）</td><td class="num">2.6 s</td><td class="num">2.5 s</td><td class="down">↓ 略好（均 0 分）</td></tr>
+    <tr><td>long-tasks（长任务数）</td><td class="num">12 个</td><td class="num">11 个</td><td class="down">↓ 1 个</td></tr>
+  </table>
+</div>
+
+<h3>4.2 主线程耗时构成（单位 ms）</h3>
+<div class="card">
+  <table>
+    <tr><th>工作类别</th><th class="num">报告 1</th><th class="num">报告 2</th><th>变化</th></tr>
+    <tr><td>Script Evaluation</td><td class="num">1205.7</td><td class="num">1199.7</td><td class="down">↓ 6</td></tr>
+    <tr><td>Script Parsing &amp; Compilation</td><td class="num">680.2</td><td class="num">679.5</td><td class="flat">≈ 持平</td></tr>
+    <tr><td>Other</td><td class="num">409.0</td><td class="num">382.4</td><td class="down">↓ 26.6</td></tr>
+    <tr><td>Style &amp; Layout</td><td class="num">154.9</td><td class="num">158.7</td><td class="up">↑ 3.8</td></tr>
+    <tr><td>Rendering</td><td class="num">97.7</td><td class="num">55.0</td><td class="down">↓ 42.7</td></tr>
+    <tr><td>Garbage Collection</td><td class="num">30.8</td><td class="num">30.0</td><td class="flat">≈ 持平</td></tr>
+    <tr><td>Parse HTML &amp; CSS</td><td class="num">7.9</td><td class="num">8.2</td><td class="flat">≈ 持平</td></tr>
+  </table>
+  <div class="subtitle" style="margin-top:10px">主线程耗时主体是 <strong>JS 解析与执行（合计约 1.9s，占 75%）</strong>，两次一致，是主要优化方向。</div>
+</div>
+
+<h3>4.3 最长任务</h3>
+<div class="card">
+  <table>
+    <tr><th>任务来源</th><th class="num">报告 1</th><th class="num">报告 2</th></tr>
+    <tr><td>vendors.42aef419.async.js（最长）</td><td class="num">336 ms</td><td class="num">328 ms</td></tr>
+    <tr><td>vendors.42aef419.async.js（次长）</td><td class="num">163 ms</td><td class="num">158 ms</td></tr>
+    <tr><td>umi.6fc7066c.js</td><td class="num">110 ms</td><td class="num">101 ms</td></tr>
+    <tr><td><code>chrome-extension://…/183.js</code></td><td class="num">76 ms</td><td class="num">93 ms</td></tr>
+    <tr><td><code>chrome-extension://…/content_main.js</code></td><td class="num">68 ms</td><td class="num">69 ms</td></tr>
+  </table>
+  <div class="note"><strong>⚠️ 注意：</strong>长任务与 unused-javascript 审计中出现了 <code>chrome-extension://</code> 的脚本（见第 6 节），说明测试时浏览器启用了 Chrome 扩展，扩展脚本会污染主线程指标与内存/网络统计，且不可控。正式性能测试建议使用无扩展的 Chrome 或 Lighthouse CI 环境。</div>
+</div>
+
+<!-- 5. 网络 -->
+<h2>5. 网络相关差异</h2>
+<div class="card">
+  <table>
+    <tr><th>审计</th><th class="num">报告 1</th><th class="num">报告 2</th><th>变化</th></tr>
+    <tr><td>Server Backend Latency（后端延迟）</td><td class="num"><strong>130 ms</strong></td><td class="num"><strong>80 ms</strong></td><td class="down">↓ 50 ms（好）</td></tr>
+    <tr><td>Initial server response time（TTFB）</td><td class="num">50 ms</td><td class="num">60 ms</td><td class="up">↑ 10 ms（略差）</td></tr>
+    <tr><td>Network RTT</td><td class="num">≈ 0 ms</td><td class="num">≈ 0 ms</td><td class="flat">持平</td></tr>
+  </table>
+  <p style="margin-top:12px">后端延迟的差异完全来自第三方 <code>https://hm.baidu.com</code>（百度统计）：</p>
+  <ul>
+    <li>报告 1：<strong>127.9 ms</strong></li>
+    <li>报告 2：<strong>82.3 ms</strong></li>
+  </ul>
+  <p style="margin-top:8px">站内 origin（perfeye / staticres / ks3 / ksyuncs 等）后端响应时间均为 0。TTFB 的 50→60 ms 波动也在正常范围内。<strong>网络层面无明显异常，属正常抖动。</strong></p>
+</div>
+
+<!-- 6. 资源与动画 -->
+<h2>6. 资源与动画差异</h2>
+<div class="card">
+  <table>
+    <tr><th>审计</th><th class="num">报告 1</th><th class="num">报告 2</th><th>说明</th></tr>
+    <tr><td>Avoids enormous network payloads</td><td class="num">63 KiB</td><td class="num">63 KiB</td><td>站内资源总量几乎不变（64,062 → 64,089 字节）</td></tr>
+    <tr><td>Reduce unused JavaScript</td><td class="num">可省 2,283 KiB</td><td class="num">可省 2,288 KiB</td><td>几乎全部来自 <strong>Chrome 扩展</strong>（如 content_main.js 3.4MB、wasted 1.97MB）</td></tr>
+    <tr><td>Avoid non-composited animations</td><td class="num">3 个元素</td><td class="num">2 个元素</td><td>详见下方</td></tr>
+  </table>
+  <p style="margin-top:12px"><strong>非合成动画：</strong>两次共同的元素为 <code>ul.ant-pagination &gt; li.ant-pagination-next &gt; button</code>（分页下一页按钮）。报告 1 额外的元素为表单搜索区的 <code>span.ant-input-affix-wrapper</code> / <code>input#useCaseName</code>，报告 2 额外元素为 <code>button.ant-btn</code>（表单按钮）。说明表单控件区域的动画元素存在，但集合不稳定（可能与页面渲染时机/元素出现顺序有关）。</p>
+</div>
+
+<!-- 7. 共性 -->
+<h2>7. 两次完全一致的共性问题（无差异但需关注）</h2>
+<div class="card">
+  <p>以下审计在两次报告中失败内容完全相同，属于<strong>稳定的存量问题</strong>，与本次对比无关但应列入优化清单：</p>
+  <table>
+    <tr><th>分类</th><th>问题</th><th class="num">数量</th></tr>
+    <tr><td rowspan="4">Accessibility</td><td>color-contrast 颜色对比度</td><td class="num">35 项</td></tr>
+    <tr><td>aria-prohibited-attr / aria-required-attr / aria-valid-attr-value</td><td class="num">24 / 11 / 12 项</td></tr>
+    <tr><td>label / button-name / image-alt / td-has-header</td><td class="num">11 / 1 / 1 / 1 项</td></tr>
+    <tr><td>（无障碍分类小计）</td><td class="num">—</td></tr>
+    <tr><td rowspan="4">Best Practices</td><td>is-on-https（不安全请求）</td><td class="num">11 个</td></tr>
+    <tr><td>third-party-cookies</td><td class="num">8 个</td></tr>
+    <tr><td>errors-in-console / inspector-issues</td><td class="num">2 / 2 项</td></tr>
+    <tr><td>valid-source-maps / bf-cache</td><td class="num">2 项 / 1 个失败原因</td></tr>
+    <tr><td rowspan="3">SEO</td><td>robots-txt</td><td class="num"><strong>131 个错误</strong></td></tr>
+    <tr><td>crawlable-anchors</td><td class="num">18 项</td></tr>
+    <tr><td>meta-description / meta-viewport</td><td class="num">缺失 / 1 项</td></tr>
+  </table>
+</div>
+
+<!-- 8. 总结 -->
+<h2>8. 总结</h2>
+<div class="card">
+  <ol>
+    <li><strong>两次测试结果高度一致</strong>：除性能分 57→58 外，其余分类评分完全一致；155 项审计中仅 17 项存在数值级差异。</li>
+    <li><strong>差异均属于运行噪声</strong>：核心指标（FCP/LCP/SI/TBT/TTI/FID/CLS）波动都在 ±10% 以内，且方向有升有降，<strong>没有证据表明两次之间发生了代码变更或环境变化带来的实质影响</strong>。后端延迟 130→80ms 的变化完全来自百度统计第三方请求的抖动。</li>
+    <li><strong>最值得优先解决的问题（两次稳定复现）</strong>：
+      <ul>
+        <li><strong>CLS = 0.903</strong>（4 处固定布局偏移）——性能分主要失分项；</li>
+        <li><strong>主线程 JS 耗时约 1.9s</strong>（解析+执行），其中 vendors/umi 的 JS 为长任务主因；</li>
+        <li><strong>robots.txt 131 个错误、颜色对比度 35 项</strong>等无障碍/SEO 存量问题。</li>
+      </ul>
+    </li>
+    <li><strong>测试环境建议</strong>：报告中出现 Chrome 扩展脚本占用的主线程与 unused-js 统计，建议测试时使用无扩展浏览器，以获得更干净、可复现的基线数据。</li>
+  </ol>
+</div>
+
+<footer>
+  生成于 2026-08-04 · 数据来源：Lighthouse 13.3.0 JSON 报告对比
+</footer>
+
+</div>
+</body>
+</html>

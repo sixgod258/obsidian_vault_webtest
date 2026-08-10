@@ -352,20 +352,6 @@
         </thead>
         <tbody>
           <tr>
-            <td><b>🚀 Lighthouse</b></td>
-            <td><span class="badge b-perf">性能/SEO</span></td>
-            <td><span class="stars">★★★★<span class="dim">★</span></span></td>
-            <td>注入 PerformanceObserver 采 LCP/CLS/INP/TTFB + DOM 检查清单</td>
-            <td>无 0–100 专有评分；INP 需交互</td>
-          </tr>
-          <tr>
-            <td><b>🌐 WebPageTest</b></td>
-            <td><span class="badge b-perf">性能</span></td>
-            <td><span class="stars">★★★★<span class="dim">★</span></span></td>
-            <td>resource entries 采集瀑布数据 + 逐帧截图</td>
-            <td>无多地域节点</td>
-          </tr>
-          <tr>
             <td><b>🔗 LinkChecker</b></td>
             <td><span class="badge b-link">链接</span></td>
             <td><span class="stars">★★★★★</span></td>
@@ -380,6 +366,27 @@
             <td>与 wget 同样不渲染 JS</td>
           </tr>
           <tr>
+            <td><b>🐸 Screaming Frog</b></td>
+            <td><span class="badge b-seo">SEO</span></td>
+            <td><span class="stars">★★★★★</span></td>
+            <td>全站爬取 + 逐页 SEO 指标聚合</td>
+            <td>无商业可视化</td>
+          </tr>
+          <tr>
+            <td><b>🚀 Lighthouse</b></td>
+            <td><span class="badge b-perf">性能/SEO</span></td>
+            <td><span class="stars">★★★★<span class="dim">★</span></span></td>
+            <td>注入 PerformanceObserver 采 LCP/CLS/INP/TTFB + DOM 检查清单</td>
+            <td>无 0–100 专有评分；INP 需交互</td>
+          </tr>
+          <tr>
+            <td><b>🌐 WebPageTest</b></td>
+            <td><span class="badge b-perf">性能</span></td>
+            <td><span class="stars">★★★★<span class="dim">★</span></span></td>
+            <td>resource entries 采集瀑布数据 + 逐帧截图</td>
+            <td>无多地域节点</td>
+          </tr>
+          <tr>
             <td><b>🛡️ OWASP ZAP</b></td>
             <td><span class="badge b-sec">安全</span></td>
             <td><span class="stars">★★★<span class="dim">★★</span></span></td>
@@ -392,13 +399,6 @@
             <td><span class="stars">★★★<span class="dim">★★</span></span></td>
             <td>敏感路径探测 + 头指纹 + 目录列表</td>
             <td>无 CVE/OSVDB 匹配库</td>
-          </tr>
-          <tr>
-            <td><b>🐸 Screaming Frog</b></td>
-            <td><span class="badge b-seo">SEO</span></td>
-            <td><span class="stars">★★★★★</span></td>
-            <td>全站爬取 + 逐页 SEO 指标聚合</td>
-            <td>无商业可视化</td>
           </tr>
         </tbody>
       </table>
@@ -722,7 +722,7 @@ for (const u of URLS) {
 <p>⚠️ 这正是 <code>wget --spider</code> 语义下的&quot;链接无效&quot;——但它其实是<strong>接口被错误方法访问</strong>，不是页面死链。结论：批量状态码检查能快速暴露问题，但需人工研判。</p>
 </blockquote>
 <h3>关键洞察：SPA 的 catch-all 陷阱</h3>
-<p><code>/nonexistent-page</code>、<code>/#/product/999</code>（不存在产品）都返回 <strong>200</strong>——因为 SPA 服务器对任意路径都返回 index.html。<strong>在 SPA 上，&quot;HTTP 200&quot;不能证明页面真实存在</strong>，<code>wget --spider</code> 与 Playwright request API 都有这个盲区；需要 JS 渲染后看内容（这正是 LinkChecker 实现 里补充的做法）。</p>
+<p><code>/nonexistent-page</code>、<code>/#/product/999</code>（不存在产品）都返回 <strong>200</strong>——因为 SPA 服务器对任意路径都返回 index.html。<strong>在 SPA 上，&quot;HTTP 200&quot;不能证明页面真实存在</strong>，<code>wget --spider</code> 与 Playwright request API 都有这个盲区；需要 JS 渲染后看内容——渲染 <code>#/路由</code> 后检测 <code>body</code> 是否渲染出实质内容（文本长度判空）：有内容 = 真实页面，内容为空 = 软 404 / catch-all 壳。</p>
 <h2>3. 与原工具对比</h2>
 <table>
 <thead>
@@ -737,18 +737,18 @@ for (const u of URLS) {
 <td>单 URL 状态码检查</td>
 <td>✅</td>
 <td>✅</td>
-<td><strong>100%</strong></td>
+<td><strong>已实现 + 实测验证</strong></td>
 </tr>
 <tr>
 <td>批量 URL 检查</td>
 <td>需脚本</td>
 <td>for 循环</td>
-<td><strong>100%</strong></td>
+<td><strong>已实现 + 实测验证</strong></td>
 </tr>
 <tr>
 <td>递归全站（<code>-r</code>）</td>
 <td>✅</td>
-<td>见 LinkChecker 实现</td>
+<td>共享爬虫 <code>crawlSite()</code> 做 BFS：读 <code>a[href]</code> + <code>[routerLink]</code> 收集站内链接，去重后逐个 <code>reqCtx.get()</code> 查状态（还能看见纯静态爬虫看不见的客户端路由）</td>
 <td>可实现</td>
 </tr>
 <tr>
@@ -932,7 +932,7 @@ for (const u of uniqueLinks) {
 <td>状态码/重定向/超时</td>
 <td>✅</td>
 <td>✅</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>多线程加速</td>
@@ -944,7 +944,7 @@ for (const u of uniqueLinks) {
 <td>多格式报告 CSV/HTML</td>
 <td>✅</td>
 <td>JSON + Claude 写 MD</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>遵守 robots.txt</td>
@@ -1112,31 +1112,31 @@ const p = await page.evaluate(() =&gt; ({
 <td>全站爬取</td>
 <td>✅</td>
 <td>✅</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>Title/Desc/H1/Canonical 提取</td>
 <td>✅</td>
 <td>✅</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>重复/缺失问题聚合</td>
 <td>✅</td>
 <td>✅</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>结构化数据检查</td>
 <td>✅（新版）</td>
 <td>✅ json-ld</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>重定向/状态码分组</td>
 <td>✅</td>
 <td>✅（见 LinkChecker 实现）</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>可视化（站点图/重定向图）</td>
@@ -1367,7 +1367,7 @@ const metrics = await page.evaluate(() =&gt; ({ ttfb: navigationEntry.responseSt
 <td>Web Vitals 实测值</td>
 <td>✅</td>
 <td>✅ LCP/CLS/TTFB</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>INP</td>
@@ -1615,19 +1615,19 @@ const data = await page.evaluate(() =&gt; ({
 <td>瀑布图</td>
 <td>✅</td>
 <td>✅ 数据 + HTML 自绘</td>
-<td><strong>100%</strong></td>
+<td><strong>已实现 + 实测验证</strong></td>
 </tr>
 <tr>
 <td>电影胶片</td>
 <td>✅</td>
 <td>✅ 逐帧 PNG</td>
-<td><strong>100%</strong></td>
+<td><strong>已实现 + 实测验证</strong></td>
 </tr>
 <tr>
 <td>TTFB/FCP/LCP/Fully Loaded</td>
 <td>✅</td>
 <td>✅</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>多地域节点</td>
@@ -1645,7 +1645,7 @@ const data = await page.evaluate(() =&gt; ({
 <td>多轮取均值</td>
 <td>✅</td>
 <td>循环跑 N 次取中位数</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 </tbody></table>
 <h2>4. 结论</h2>
@@ -1835,13 +1835,13 @@ page.on(&#39;response&#39;, (r) =&gt; {
 <td>告警分级</td>
 <td>✅</td>
 <td>✅ 自定义分级</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>Spider 爬取</td>
 <td>✅</td>
 <td>✅ crawlSite</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>主动扫描（XSS/SQLi 载荷库）</td>
@@ -2042,13 +2042,13 @@ for (const p of PATHS) {   // /admin, /backup, /.env, /.git/HEAD, /phpmyadmin/ .
 <td>目录列表检测</td>
 <td>✅</td>
 <td>✅ 正则判定</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td>响应头指纹</td>
 <td>✅</td>
 <td>✅</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 <tr>
 <td><strong>SPA 假阳性过滤</strong></td>
@@ -2060,7 +2060,7 @@ for (const p of PATHS) {   // /admin, /backup, /.env, /.git/HEAD, /phpmyadmin/ .
 <td>多格式报告</td>
 <td>✅</td>
 <td>JSON + MD</td>
-<td>100%</td>
+<td>已实现 + 实测验证</td>
 </tr>
 </tbody></table>
 <h2>5. 结论</h2>

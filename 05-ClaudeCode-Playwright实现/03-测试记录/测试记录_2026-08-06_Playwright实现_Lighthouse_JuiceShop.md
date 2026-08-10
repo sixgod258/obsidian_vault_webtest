@@ -51,7 +51,7 @@ const metrics = await page.evaluate(() => ({ ttfb: navigationEntry.responseStart
 |---|---|---|---|
 | **LCP**（最大内容绘制） | **456 ms** | ≤ 2.5s | 🟢 |
 | **CLS**（累积布局偏移） | **0.061** | ≤ 0.1 | 🟢 |
-| **INP**（交互延迟） | 未采集 | ≤ 200ms | ⚪（需真实交互触发） |
+| **INP**（交互延迟） | 尝试采集，未触发有效交互 | ≤ 200ms | ⚪（需真实交互触发） |
 | **TTFB**（首字节） | **4 ms** | < 0.8s | 🟢 |
 | DOMContentLoaded | 146 ms | — | — |
 | Load | 181 ms | — | — |
@@ -65,12 +65,14 @@ const metrics = await page.evaluate(() => ({ ttfb: navigationEntry.responseStart
 | 最重资源类型 | 图片 460 KB（17 个）> 脚本 314 KB（5 个）> 其他 152 KB > CSS 129 KB |
 
 > 解读：图片占了近一半流量，JS 其次——典型的 SPA 首屏构成；本地直连所以 TTFB 极快（生产环境会显著上升）。
+>
+> 注：传输量为本脚本单次加载统计（~1.06 MB）；同页另一次独立运行（[[测试记录_2026-08-06_Playwright实现_WebPageTest_JuiceShop]]）为 ~1.0 MB——两次加载缓存状态不同所致，属正常波动，非数据错误。
 
 ### SEO 检查
 
 | 检查项 | 结果 |
 |---|---|
-| `<title>` | ✅ 存在（但全站共用，见 Screaming-Frog 实现） |
+| `<title>` | ✅ 存在（但全站共用，见 [[测试记录_2026-08-06_Playwright实现_ScreamingFrog_JuiceShop]]） |
 | meta description | ✅ 存在 |
 | viewport | ✅ |
 | html lang | ✅ `en` |
