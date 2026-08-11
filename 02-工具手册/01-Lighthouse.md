@@ -77,7 +77,7 @@ npx lighthouse --version
 lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html
 
 # 同时输出 HTML + JSON（JSON 便于后续解析/记录）
-lighthouse http://localhost:3000 --output=html,json --output-path=./report --chrome-flags="--headless --no-sandbox"
+lighthouse http://localhost:3000 --output="html,json" --output-path=./report --chrome-flags="--headless --no-sandbox"
 ```
 
 ### 6.2 只测某一类
@@ -87,7 +87,7 @@ lighthouse http://localhost:3000 --output=html,json --output-path=./report --chr
 lighthouse http://localhost:3000 --only-categories=performance
 
 # 只看 SEO + 可访问性
-lighthouse http://localhost:3000 --only-categories=seo,accessibility
+lighthouse http://localhost:3000 --only-categories="seo,accessibility"
 ```
 
 ### 6.3 指定模拟设备（默认移动端）
